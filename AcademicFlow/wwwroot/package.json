@@ -1,0 +1,10 @@
+{
+  "name": "AcademicFlow",
+  "version": "1.0.0",
+  "source": "src/index.js",
+  "main": "dist/main.js",
+  "devDependencies": {
+    "jquery": "^3.7.1",
+    "parcel": "latest"
+  }
+}
