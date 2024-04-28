@@ -17,17 +17,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05_Helpers", "05_Helpers", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06_Tests", "06_Tests", "{8DBEAAA9-78FA-46DF-9487-6C4017969A74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademicFlow.Domain.Contracts", "AcademicFlow.Domain.Contracts\AcademicFlow.Domain.Contracts.csproj", "{230DBAA9-2578-46EF-A2A0-76FCD8AB9BFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcademicFlow.Domain.Contracts", "AcademicFlow.Domain.Contracts\AcademicFlow.Domain.Contracts.csproj", "{230DBAA9-2578-46EF-A2A0-76FCD8AB9BFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademicFlow.Domain", "AcademicFlow.Domain\AcademicFlow.Domain.csproj", "{5CB87777-661B-4CD2-A607-903E9C4F9A0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcademicFlow.Domain", "AcademicFlow.Domain\AcademicFlow.Domain.csproj", "{5CB87777-661B-4CD2-A607-903E9C4F9A0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademicFlow.Infrastructure", "AcademicFlow.Infrastructure\AcademicFlow.Infrastructure.csproj", "{F7333A9C-FB0B-40FA-9125-6418325E4DC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcademicFlow.Infrastructure", "AcademicFlow.Infrastructure\AcademicFlow.Infrastructure.csproj", "{F7333A9C-FB0B-40FA-9125-6418325E4DC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademicFlow.Migrations", "AcademicFlow.Migrations\AcademicFlow.Migrations.csproj", "{5DA0411C-1160-4277-9CC7-DC9F582A1BF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcademicFlow.Migrations", "AcademicFlow.Migrations\AcademicFlow.Migrations.csproj", "{5DA0411C-1160-4277-9CC7-DC9F582A1BF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademicFlow.Domain.Helpers", "AcademicFlow.Domain.Helpers\AcademicFlow.Domain.Helpers.csproj", "{3E2E58C8-971C-4CEF-A7E4-A90ACF4E9A41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcademicFlow.Domain.Helpers", "AcademicFlow.Domain.Helpers\AcademicFlow.Domain.Helpers.csproj", "{3E2E58C8-971C-4CEF-A7E4-A90ACF4E9A41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademicFlow.Tests", "AcademicFlow.Tests\AcademicFlow.Tests.csproj", "{885E289F-E26B-41D1-87B5-B7CE78DD8190}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcademicFlow.Tests", "AcademicFlow.Tests\AcademicFlow.Tests.csproj", "{885E289F-E26B-41D1-87B5-B7CE78DD8190}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

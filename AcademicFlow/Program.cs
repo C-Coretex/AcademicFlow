@@ -1,6 +1,10 @@
-using AcademicFlow.Models;
+using AcademicFlow.Domain.Extensions;
+using AcademicFlow.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.RegisterServices();
+builder.Services.RegisterRepositories();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

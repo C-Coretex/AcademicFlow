@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AcademicFlow.Domain.Helpers\AcademicFlow.Domain.Helpers.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -10,4 +10,9 @@
     <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AcademicFlow.Domain\AcademicFlow.Domain.csproj" />
+    <ProjectReference Include="..\AcademicFlow.Infrastructure\AcademicFlow.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

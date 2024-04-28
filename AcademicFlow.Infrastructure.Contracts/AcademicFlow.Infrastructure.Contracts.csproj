@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AcademicFlow.Domain.Contracts\AcademicFlow.Domain.Contracts.csproj" />
     <ProjectReference Include="..\AcademicFlow.Domain.Helpers\AcademicFlow.Domain.Helpers.csproj" />
+    <ProjectReference Include="..\AcademicFlow.Domain\AcademicFlow.Domain.csproj" />
   </ItemGroup>
 
 </Project>
