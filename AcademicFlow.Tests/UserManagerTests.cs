@@ -1,5 +1,4 @@
 ﻿using AcademicFlow.Domain.Contracts.IRepositories;
-using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Entities;
 using AcademicFlow.Domain.Services;
 using AcademicFlow.Managers.Contracts.IManagers;
@@ -13,7 +12,7 @@ namespace AcademicFlow.Tests
     public class UserManagerTests
     {
         #region Mocks
-        private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
+        private readonly Mock<IUserRepository> _userRepositoryMock = new();
         #endregion
 
         private List<User> _users = [];

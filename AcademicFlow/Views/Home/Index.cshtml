@@ -110,6 +110,7 @@
 <script>
     $(document).ready(function () {
         $('#addUserForm').submit(function (event) {
+            event.preventDefault();
             var formData = $(this).serialize();
             $.ajax({
                 type: 'PUT',
@@ -123,7 +124,7 @@
                     console.error('Error adding user:', error);
                     // Handle error response if needed
                 }
-            }).done()
+            })
 
         });
     });
