@@ -11,8 +11,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AcademicFlow.Domain\AcademicFlow.Domain.csproj" />
     <ProjectReference Include="..\AcademicFlow.Infrastructure\AcademicFlow.Infrastructure.csproj" />
+    <ProjectReference Include="..\AcademicFlow.Managers\AcademicFlow.Managers.csproj" />
   </ItemGroup>
 
 </Project>

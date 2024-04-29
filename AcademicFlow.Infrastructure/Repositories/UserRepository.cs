@@ -7,7 +7,7 @@ namespace AcademicFlow.Infrastructure.Repositories
 {
     public class UserRepository : RepositoryBase<AcademicFlowDbContext, User>, IUserRepository
     {
-        public UserRepository(AcademicFlowDbContext dbContext) : base(dbContext, dbContext.Users)
+        public UserRepository(AcademicFlowDbContext dbContext) : base(dbContext, dbContext.User)
         {
         }
     }

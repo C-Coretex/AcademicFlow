@@ -1,12 +1,13 @@
 using AcademicFlow.Domain.Extensions;
 using AcademicFlow.Infrastructure.Extensions;
+using AcademicFlow.Managers.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("AcademicFlowConnectionString") ?? throw new InvalidOperationException("Connection string 'AcademicFlowConnectionString' not found.");
-builder.Services.RegisterRepositories(connectionString);
+var academicFlowConnectionString = builder.Configuration.GetConnectionString("AcademicFlowConnectionString") ?? throw new InvalidOperationException("Connection string 'AcademicFlowConnectionString' not found.");
+builder.Services.RegisterRepositories(academicFlowConnectionString);
 builder.Services.RegisterServices();
-
+builder.Services.RegisterManagers();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
