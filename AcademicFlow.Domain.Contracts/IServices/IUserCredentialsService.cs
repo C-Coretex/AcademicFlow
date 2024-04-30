@@ -6,6 +6,7 @@ namespace AcademicFlow.Domain.Contracts.IServices
     {
         Task AddUserCredentials(int userId, string username, string password);
         Task<bool> IsUserCredentialsValid(string username, string password);
+        Task<bool> IsUsernameTaken(string username);
         Task<User?> GetUserByCredentials(string username, string password);
     }
 }

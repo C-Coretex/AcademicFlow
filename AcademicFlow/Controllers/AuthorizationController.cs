@@ -4,6 +4,7 @@ using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Models;
 using AcademicFlow.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Authentication;
 
 namespace AcademicFlow.Controllers
@@ -29,6 +30,10 @@ namespace AcademicFlow.Controllers
                 AuthorizationHelpers.LoginUser(HttpContext.Session, userModel.Id);
 
                 return Ok();
+            }
+            catch (ValidationException e)
+            {
+                return BadRequest(e.Message);
             }
             catch (Exception e)
             {

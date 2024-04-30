@@ -3,6 +3,7 @@ using AcademicFlow.Domain.Entities;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models.UserModels;
 using AutoMapper;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Authentication;
 
 namespace AcademicFlow.Managers.Managers
@@ -17,6 +18,10 @@ namespace AcademicFlow.Managers.Managers
 
         public async Task RegisterUser(int userId, string username, string password)
         {
+            var isUsernameTaken = await _userCredentialsService.IsUsernameTaken(username);
+            if(isUsernameTaken)
+                throw new ValidationException("Username is already taken");
+
             await _userCredentialsService.AddUserCredentials(userId, username, password);
         }
 

@@ -51,6 +51,11 @@ namespace AcademicFlow.Domain.Services
             return userCredentials!.User;
         }
 
+        public async Task<bool> IsUsernameTaken(string username)
+        {
+            return await _userCredentialsRepository.GetAll().AnyAsync(x => x.Username == username);
+        }
+
         private static bool IsUserCredentialsCorrect(UserCredentials? userCredentials, string password)
         {
             if (userCredentials == null)
