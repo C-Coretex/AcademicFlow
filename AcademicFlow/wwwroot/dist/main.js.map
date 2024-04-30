@@ -1,1 +1,1 @@
-{"mappings":"AAAA,EAAE,UAAU,KAAK,CAAC;IACd,QAAQ,GAAG,CAAC;AAChB","sources":["src/index.js"],"sourcesContent":["$(document).ready(function () {\r\n    console.log(\"Hello World!\");\r\n});"],"names":[],"version":3,"file":"main.js.map"}
+{"mappings":"AAAA,EAAE,UAAU,KAAK,CAAC,YAClB","sources":["src/index.js"],"sourcesContent":["$(document).ready(function () {\r\n});"],"names":[],"version":3,"file":"main.js.map"}

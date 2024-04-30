@@ -1,6 +1,4 @@
-$(document).ready(function() {
-    console.log("Hello World!");
-});
+$(document).ready(function() {});
 
 
 //# sourceMappingURL=main.js.map

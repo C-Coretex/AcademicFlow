@@ -1,13 +1,22 @@
 {
-  "name": "AcademicFlow",
+  "name": "academicflow",
   "version": "1.0.0",
-  "source": "src/index.js",
-  "main": "dist/main.js",
   "devDependencies": {
     "jquery": "^3.7.1",
     "parcel": "^2.12.0"
+  },
+  "targets": {
+    "authentification": {
+      "source": "js/authentification/auth.js",
+      "distDir": "js/dist"
+    }
+  },
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build"
   },
   "dependencies": {
     "sass": "^1.75.0"
   }
 }
+
