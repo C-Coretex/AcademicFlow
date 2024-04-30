@@ -13,6 +13,7 @@ namespace AcademicFlow.Infrastructure.Extensions
                 options.UseSqlServer(connectionString));
 
             serviceCollection.AddScoped<IUserRepository, UserRepository>();
+            serviceCollection.AddScoped<IUserCredentialsRepository, UserCredentialsRepository>();
 
             return serviceCollection;
         }

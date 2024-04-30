@@ -9,6 +9,7 @@ namespace AcademicFlow.Domain.Extensions
         public static IServiceCollection RegisterServices(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<IUserService, UserService>();
+            serviceCollection.AddScoped<IUserCredentialsService, UserCredentialsService>();
 
             return serviceCollection;
         }

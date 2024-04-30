@@ -1,4 +1,5 @@
 ﻿using AcademicFlow.Domain.Entities;
+using AcademicFlow.Filters;
 using AcademicFlow.Managers.Contracts.IManagers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,8 +10,8 @@ namespace AcademicFlow.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserManager _userManager;
-        private readonly ILogger<HomeController> _logger;
-        public UserController(IUserManager userManager, ILogger<HomeController> logger)
+        private readonly ILogger<UserController> _logger;
+        public UserController(IUserManager userManager, ILogger<UserController> logger)
         {
             _userManager = userManager;
             _logger = logger;
@@ -33,6 +34,7 @@ namespace AcademicFlow.Controllers
             }
         }
 
+        [AuthorizeUser]
         [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers()
         {

@@ -1,4 +1,5 @@
-﻿using AcademicFlow.Domain.Helpers.Interfaces;
+﻿using AcademicFlow.Domain.Contracts.Entities;
+using AcademicFlow.Domain.Helpers.Interfaces;
 
 namespace AcademicFlow.Domain.Entities
 {
@@ -11,6 +12,8 @@ namespace AcademicFlow.Domain.Entities
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public int? Age { get; set; }
+
+        public UserCredentials UserCredentials { get; set; }
 
         public User()
         {}
