@@ -12,13 +12,13 @@ namespace AcademicFlow.Managers.Extensions
             serviceCollection.AddScoped<IUserManager, UserManager>();
             serviceCollection.AddScoped<IUserCredentialsManager, UserCredentialsManager>();
 
-            var mapper = GetConfiguration().CreateMapper();
+            var mapper = GetMapperConfiguration().CreateMapper();
             serviceCollection.AddSingleton(mapper);
 
             return serviceCollection;
         }
 
-        private static MapperConfiguration GetConfiguration()
+        public static MapperConfiguration GetMapperConfiguration()
         {
             var types = AppDomain.CurrentDomain
                                 .GetAssemblies()

@@ -2,6 +2,7 @@
 using AcademicFlow.Domain.Entities;
 using AcademicFlow.Domain.Services;
 using AcademicFlow.Managers.Contracts.IManagers;
+using AcademicFlow.Managers.Extensions;
 using AcademicFlow.Managers.Managers;
 using MockQueryable.Moq;
 using Moq;
@@ -21,7 +22,8 @@ namespace AcademicFlow.Tests
         {
             BuildDefaultMocks();
             var _userService = new UserService(_userRepositoryMock!.Object);
-            _userManager = new UserManager(_userService);
+            var mapper = ServiceCollectionExtensions.GetMapperConfiguration().CreateMapper();
+            _userManager = new UserManager(mapper, _userService);
         }
 
         [Fact]
