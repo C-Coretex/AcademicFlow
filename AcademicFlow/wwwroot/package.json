@@ -6,8 +6,20 @@
     "parcel": "^2.12.0"
   },
   "targets": {
+    "site": {
+      "source": "js/site.js",
+      "distDir": "js/dist"
+    },
+    "navigation": {
+      "source": "js/components/navigation.js",
+      "distDir": "js/dist"
+    },
     "authentification": {
-      "source": "js/authentification/auth.js",
+      "source": "js/pages/authentification/auth.js",
+      "distDir": "js/dist"
+    },
+    "admin": {
+      "source": "js/pages/admin/admin.js",
       "distDir": "js/dist"
     }
   },
@@ -16,7 +28,7 @@
     "build": "parcel build"
   },
   "dependencies": {
+    "fullcalendar": "^6.1.11",
     "sass": "^1.75.0"
   }
 }
-

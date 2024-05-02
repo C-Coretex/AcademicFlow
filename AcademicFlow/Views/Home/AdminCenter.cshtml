@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewData["Title"] = "Admin Center";
+}
+<div class="main d-flex">
+    <div class="row">
+        @*TODO: add as Razor page element *@
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light min-vh-100" style="width: 280px;">
+            <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <i class="fa-solid fa-graduation-cap me-2"></i>
+                <span class="fs-4"> @ViewData["Title"]</span>
+            </a>
+            <hr>
+            <ul class="nav navigation-pane nav-pills flex-column mb-auto">
+                <li class="nav-item" data-nav-el="allUsers">
+                    <a class="nav-link active">
+                        <i class="fa-solid fa-users me-2"></i>
+                        All Users
+                    </a>
+                </li>
+                <li class="nav-item" data-nav-el="addUser">
+                    <a class="nav-link link-dark">
+                        <i class="fa-solid fa-user-plus me-2"></i>
+                        Add User
+                    </a>
+                </li>
+                <li class="nav-item" data-nav-el="addCourse">
+                    <a class="nav-link link-dark">
+                        <i class="fa-solid fa-notes-medical me-2"></i>
+                        Add course
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="dropdown">
+                <a class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle cursor-pointer" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-circle-user me-2"></i>
+                    <div class="js-user-name"></div>
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><button class="dropdown-item js-logout-user"><i class="fa-solid fa-arrow-right-from-bracket"></i><span> Sign out</span></button></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="add-user-container col d-none">
+            <h1 class="authentication-page__heading">Add new user</h1>
+            <h5 class="authentication-page__message"></h5>
+            <form id="registerForm" class="">
+                <div class="form__input-container mb-2">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" class="form__input form-control form-outline" placeholder="Name" aria-label="name" required>
+                </div>
+                <div class="form__input-container mb-2">
+                    <label for="surname">Surname</label>
+                    <input type="text" id="surname" name="surname" class="form__input form-control" placeholder="Surname" aria-label="surname" required>
+                </div>
+                <div class="form__input-container mb-2">
+                    <label for="personalCode">Personal Code</label>
+                    <input type="text" id="personalCode" name="personalCode" class="form__input form-control" placeholder="Personal Code" aria-label="personalCode" required>
+                </div>
+                <div class="form__input-container mb-2">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form__input form-control" placeholder="Email" aria-label="email">
+                </div>
+                <div class="form__input-container mb-2">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input type="tel" id="phoneNumber" name="phoneNumber" class="form__input form-control" placeholder="Phone number" aria-label="phoneNumber">
+                </div>
+                <div class="form__input-container mb-2">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" class="form__input form-control" placeholder="Age" aria-label="age">
+                </div>
+                <button type="button" class="btn btn-primary btn-lg w-100 js-add-user"><i class="fa-solid fa-plus"></i><span> Add User</span></button>
+                <div class="error-message"></div>
+            </form>
+        </div>
+        <div class="user-table col">
+            <h2>User Data</h2>
+            <table class="table table-striped" id="userTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Personal Code</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Age</th>
+                        <th class="table__action-buttons"></th>
+                    </tr>
+                </thead>
+                <tbody id="userData">
+                </tbody>
+            </table>
+        </div>
+    </div>
+   
+    
+</div>
+
+<script type="module" src="~/js/dist/site.js" asp-append-version="true"></script>
+<script type="module" src="~/js/dist/pages/admin/admin.js" asp-append-version="true"></script>
+
