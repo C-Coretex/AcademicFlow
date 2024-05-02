@@ -125,43 +125,27 @@
     </div>
 
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <div class="d-flex justify-content-between">
-                    <h4 class="text-center">Add User</h4>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-                <form id="addUserForm">
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="surname">Surname:</label>
-                        <input type="text" class="form-control" id="surname" name="surname" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="personalCode">Personal Code:</label>
-                        <input type="text" class="form-control" id="personalCode" name="personalCode" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="phoneNumber">Phone Number:</label>
-                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber">
-                    </div>
-                    <div class="form-group">
-                        <label for="age">Age:</label>
-                        <input type="number" class="form-control" id="age" name="age">
-                    </div>
-                    
-                </form>
-            </div>
-        </div>
-    </div>
+    <form id="addUserForm" action="api/User/AddUser" method="PUT" enctype="multipart/form-data">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="surname">Surname:</label><br>
+        <input type="text" id="surname" name="surname"><br>
+
+        <label for="personalCode">Personal Code:</label><br>
+        <input type="text" id="personalCode" name="personalCode"><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br>
+
+        <label for="phoneNumber">Phone Number:</label><br>
+        <input type="text" id="phoneNumber" name="phoneNumber"><br>
+
+        <label for="age">Age:</label><br>
+        <input type="number" id="age" name="age"><br>
+
+        <input type="submit" value="Submit">
+    </form>
 
     <style>
         table {
@@ -204,7 +188,9 @@
         try {
             const response = await fetch("/api/User/GetAllUsers");
             const data = await response.json();
-            populateTable(data);
+
+            if (data != null && data.status !== 401)
+                populateTable(data);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -230,27 +216,29 @@
     }
 </script>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#addUserForm').submit(function (event) {
-            event.preventDefault();
-            var formData = $(this).serialize();
-            $.ajax({
-                type: 'PUT',
-                url: '/api/User/AddUser',
-                data: formData,
-                success: function (response) {
-                    console.log('User added successfully');
-                    // Handle success response if needed
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error adding user:', error);
-                    // Handle error response if needed
+    document.getElementById('addUserForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission
+        var form = event.target;
+        var formData = new FormData(form);
+
+        // Construct and send the PUT request using fetch API
+        fetch(form.action, {
+            method: 'PUT',
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("User added successfully!");
+                    form.reset(); // Optionally reset the form fields after successful submission
+                } else {
+                    throw new Error('Failed to add user');
                 }
             })
-        });
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to add user: ' + error.message);
+            });
     });
 </script> *@
 <div class="main container-fluid">
@@ -315,3 +303,7 @@
 <script type="module" src="~/js/" asp-append-version="true"></script>
 
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script type="module" src="~/dist/main.js" asp-append-version="true"></script>
