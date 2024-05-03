@@ -1,0 +1,2 @@
+(()=>{async function o(){try{let o=await fetch("/api/Authorization/LogoutUser",{method:"GET"});if(!o.ok){let t=await o.text();throw Error(t)}console.log("User logged out successfully!")}catch(o){console.error("Error:",o),alert("Failed to logout. Please try again.")}}$(document).ready(function(){$(".js-user-name").html("<strong>Name</strong>"),$(".js-logout-user").click(function(){console.log("aaaa"),o().then(()=>{window.location.href="/"}).catch(o=>{console.error("Error logging out:",o)})})})})();
+//# sourceMappingURL=navigation.js.map

@@ -1,13 +1,34 @@
 {
-  "name": "AcademicFlow",
+  "name": "academicflow",
   "version": "1.0.0",
-  "source": "src/index.js",
-  "main": "dist/main.js",
   "devDependencies": {
     "jquery": "^3.7.1",
     "parcel": "^2.12.0"
   },
+  "targets": {
+    "site": {
+      "source": "js/site.js",
+      "distDir": "js/dist"
+    },
+    "navigation": {
+      "source": "js/components/navigation.js",
+      "distDir": "js/dist"
+    },
+    "authentification": {
+      "source": "js/pages/authentification/auth.js",
+      "distDir": "js/dist"
+    },
+    "admin": {
+      "source": "js/pages/admin/admin.js",
+      "distDir": "js/dist"
+    }
+  },
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build"
+  },
   "dependencies": {
+    "fullcalendar": "^6.1.11",
     "sass": "^1.75.0"
   }
 }
