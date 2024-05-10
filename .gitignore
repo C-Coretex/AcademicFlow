@@ -332,8 +332,6 @@ FakesAssemblies/
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat
 node_modules/
-js/dist/
-site.min.css
 
 # Visual Studio 6 build log
 *.plg
@@ -450,3 +448,5 @@ FodyWeavers.xsd
 #Custom gitignore
 wwwroot/.parcel-cache/
 AcademicFlow/wwwroot/.parcel-cache/
+AcademicFlow/wwwroot/css/site.min.css
+AcademicFlow/wwwroot/js/dist
