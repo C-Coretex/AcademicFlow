@@ -23,9 +23,11 @@ namespace AcademicFlow.Controllers
             try
             {
                 var user = new User(name, surname, personalCode, email, phoneNumber, age);
-                await _userManager.AddUser(user);
+                var securityKey = await _userManager.AddUser(user);
 
-                return Ok();
+                var userRegistrationEndpoint = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/Home/UserRegistration?secretKey={securityKey}";
+
+                return Ok(userRegistrationEndpoint);
             }
             catch (Exception e)
             {

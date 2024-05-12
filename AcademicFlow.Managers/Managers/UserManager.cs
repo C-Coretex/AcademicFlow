@@ -1,5 +1,8 @@
-﻿using AcademicFlow.Domain.Contracts.IServices;
+﻿using AcademicFlow.Domain.Contracts.Constants;
+using AcademicFlow.Domain.Contracts.Entities;
+using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Entities;
+using AcademicFlow.Domain.Helpers.Helpers;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models.UserModels;
 using AutoMapper;
@@ -16,9 +19,20 @@ namespace AcademicFlow.Managers.Managers
             _userService = userService;
         }
 
-        public async Task AddUser(User user)
+        public async Task<string> AddUser(User user)
         {
-            await _userService.AddUser(user);
+            user = await _userService.AddUser(user);
+
+            var securityKey = CryptographyHelper.GetRandomString(UserConstants.SecurityKeySize);
+            var userCredentials = new UserCredentials()
+            {
+                SecurityKey = securityKey
+            };
+            user.UserCredentials = userCredentials;
+
+            await _userService.UpdateUser(user);
+
+            return securityKey;
         }
 
         public IAsyncEnumerable<UserWebModel> GetUsers()

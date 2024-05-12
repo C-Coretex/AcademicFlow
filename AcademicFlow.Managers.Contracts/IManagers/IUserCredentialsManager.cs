@@ -5,7 +5,8 @@ namespace AcademicFlow.Managers.Contracts.IManagers
 {
     public interface IUserCredentialsManager
     {
-        Task RegisterUser(int userId, string username, string password);
+        Task<User> RegisterUser(string secretKey, string username, string password);
         Task<UserWebModel> LoginUser(string username, string password);
+        Task<UserWebModel> GetUserBySecretKey(string secretKey);
     }
 }

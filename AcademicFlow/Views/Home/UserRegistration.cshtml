@@ -1,0 +1,41 @@
+﻿@using AcademicFlow.Managers.Contracts.IManagers
+@inject IUserCredentialsManager _userCredentialsManager
+@{
+    var secret = Context.Request.Query["secretKey"];
+    if(string.IsNullOrWhiteSpace(secret))
+        throw new Exception("Secret is null");
+
+    var user = await _userCredentialsManager.GetUserBySecretKey(secret!);
+    if (user == null)
+        throw new Exception("Secret is incorrect");
+
+    ViewData["Title"] = "User Registration";
+}
+<h1>@user.Name @user.Surname, please register yourself</h1>
+<div class="register-container col-4 align-self-center">
+    <h1 class="authentication-page__heading">Sign up</h1>
+    <h5 class="authentication-page__message">Sign up to dive into studies adventure</h5>
+    <form id="registerForm" class="">
+        <div class="form__input-container mb-2" hidden>
+            <input type="text" id="secretKey" name="secretKey" class="form__input form-control" aria-label="secretKey" value="@secret"><i class="fa-solid fa-user"></i>
+        </div>
+        <div class="form__input-container mb-2">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" class="form__input form-control" placeholder="Username" aria-label="Username"><i class="fa-solid fa-user"></i>
+        </div>
+        <div class="form__input-container mb-2">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form__input form-control" placeholder="Password" aria-label="Password"><i class="fa-solid fa-lock"></i>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg w-100 js-register-user"><i class="fa-solid fa-right-to-bracket"></i><span> Sign up</span></button>
+        <div class="error-message"></div>
+
+    </form>
+
+    <hr class="hr" />
+    <div class="divider d-flex justify-content-around"><span>or</span></div>
+    <div class="register d-flex"><div class="me-2">Already have an account?</div><button class="js-show-log-in-form btn btn-link"><span> Log in</span></button></div>
+</div>
+
+
+<script type="module" src="~/js/dist/pages/authentification/auth.js" asp-append-version="true"></script>

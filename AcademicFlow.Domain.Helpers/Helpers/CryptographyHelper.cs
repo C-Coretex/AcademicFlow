@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,11 @@ namespace AcademicFlow.Domain.Helpers.Helpers
         {
             var newHash = HashData(data, salt);
             return originalHash == newHash;
+        }
+
+        public static string GetRandomString(int length)
+        {
+            return GetSalt(length);
         }
 
         private static string GetSalt(int size)
