@@ -20,8 +20,9 @@ async function getUsersData() {
 }
 
 function populateTable(users) {
-    const tableBody = document.getElementById("userData");
-    /*tableBody.innerHTML = "";
+    //TODO delete after tests
+    /*const tableBody = document.getElementById("userData");
+    tableBody.innerHTML = "";
     users.forEach(user => {
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -36,6 +37,10 @@ function populateTable(users) {
                         `;
         tableBody.appendChild(row);
     });*/
+
+    if ($.fn.DataTable.isDataTable('#userTable')) {
+        $('#userTable').DataTable().destroy();
+    }
 
     const columns = [
         {
