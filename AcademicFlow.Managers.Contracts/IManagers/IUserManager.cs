@@ -7,5 +7,8 @@ namespace AcademicFlow.Managers.Contracts.IManagers
     {
         Task AddUser(User user);
         IAsyncEnumerable<UserWebModel> GetUsers();
+
+        Task<User> GetUserByPersonalCode(string PersonalCode);
+        Task DeleteUser(string personalCode);
     }
 }

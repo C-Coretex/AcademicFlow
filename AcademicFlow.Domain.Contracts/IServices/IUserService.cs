@@ -6,5 +6,7 @@ namespace AcademicFlow.Domain.Contracts.IServices
     {
         IQueryable<User> GetUsers();
         Task AddUser(User user);
+        Task<User> GetUserByPersonalCode(string personalCode);
+        void DeleteUser(string personalCode);
     }
 }

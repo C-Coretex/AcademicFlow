@@ -27,5 +27,21 @@ namespace AcademicFlow.Domain.Services
         {
             return _userRepository.GetAll().AsNoTracking();
         }
+
+        public async Task<User> GetUserByPersonalCode(string personalCode)
+        {
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.PersonalCode == personalCode);
+            return user;
+        }
+        public void DeleteUser(string personalCode)
+        {
+            var user = _userRepository.GetAll().FirstOrDefault(u => u.PersonalCode == personalCode);
+
+            if (user == null)
+                throw new ValidationException($"User with personal code {personalCode} does not exist.");
+
+            _userRepository.DeleteAsync(user);
+        }
+
     }
 }

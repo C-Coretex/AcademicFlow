@@ -25,5 +25,16 @@ namespace AcademicFlow.Managers.Managers
         {
             return _userService.GetUsers().ProjectTo<UserWebModel>(MapperConfig).AsAsyncEnumerable();
         }
+
+        public async Task<User> GetUserByPersonalCode(string personalCode)
+        {
+           return  await _userService.GetUserByPersonalCode(personalCode);
+            
+        }
+
+        public async Task DeleteUser(string personalCode)
+        {
+             _userService.DeleteUser(personalCode);
+        }
     }
 }

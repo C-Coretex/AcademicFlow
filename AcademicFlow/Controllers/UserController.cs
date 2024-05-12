@@ -50,5 +50,39 @@ namespace AcademicFlow.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [AuthorizeUser]
+        [HttpGet("GetUserByPersonalCode")]
+        public async Task<IActionResult> GetUserByPersonalCode([FromForm] string personalCode)
+        {
+            try
+            {
+                var user = await _userManager.GetUserByPersonalCode(personalCode);
+
+                return Ok(user);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error while getting user by personal code");
+                return BadRequest(e.Message);
+            }
+        }
+
+        [AuthorizeUser]
+        [HttpGet("DeleteUser")]
+        public async Task<IActionResult> DeleteUser([FromForm] string personalCode)
+        {
+            try
+            {
+                var user = _userManager.GetUserByPersonalCode(personalCode);
+                return Ok();
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error while deleting users");
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

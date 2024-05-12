@@ -58,7 +58,7 @@ namespace AcademicFlow.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Error while registering user");
+                _logger.LogError(e, "Error while logging in");
                 return BadRequest(e.Message);
             }
         }
@@ -73,7 +73,7 @@ namespace AcademicFlow.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Error while registering user");
+                _logger.LogError(e, "Error while logging out");
                 return BadRequest(e.Message);
             }
         }
