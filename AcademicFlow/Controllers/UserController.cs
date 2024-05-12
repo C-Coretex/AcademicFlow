@@ -2,6 +2,7 @@
 using AcademicFlow.Filters;
 using AcademicFlow.Managers.Contracts.IManagers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AcademicFlow.Controllers
 {
@@ -42,7 +43,8 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                var data = await _userManager.GetUsers().ToListAsync();
+                var userRegistrationEndpoint = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/Home/UserRegistration?secretKey=";
+                var data = await _userManager.GetUsers(userRegistrationEndpoint).ToListAsync();
 
                 return Ok(data);
             }

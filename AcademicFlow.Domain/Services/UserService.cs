@@ -30,7 +30,7 @@ namespace AcademicFlow.Domain.Services
 
         public IQueryable<User> GetUsers()
         {
-            return _userRepository.GetAll().AsNoTracking();
+            return _userRepository.GetAll().Include(x => x.UserCredentials).AsNoTracking();
         }
 
         public async Task UpdateUser(User user)

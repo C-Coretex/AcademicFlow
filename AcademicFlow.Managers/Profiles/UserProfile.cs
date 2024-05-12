@@ -13,7 +13,8 @@ namespace AcademicFlow.Managers.Profiles
     {
         public UserProfile()
         {
-            CreateMap<User, UserWebModel>();
+            CreateMap<User, UserWebModel>()
+                .ForMember(x => x.UserRegistrationData, opt => opt.MapFrom(x => new UserRegistrationData(x.UserCredentials)));
         }
     }
 }

@@ -7,6 +7,6 @@ namespace AcademicFlow.Managers.Contracts.IManagers
     {
         /// <returns>Security key of the user</returns>
         Task<string> AddUser(User user);
-        IAsyncEnumerable<UserWebModel> GetUsers();
+        IAsyncEnumerable<UserWebModel> GetUsers(string controllerUrl);
     }
 }

@@ -35,9 +35,16 @@ namespace AcademicFlow.Managers.Managers
             return securityKey;
         }
 
-        public IAsyncEnumerable<UserWebModel> GetUsers()
+        public async IAsyncEnumerable<UserWebModel> GetUsers(string controllerUrl)
         {
-            return _userService.GetUsers().ProjectTo<UserWebModel>(MapperConfig).AsAsyncEnumerable();
+            var users = _userService.GetUsers().ProjectTo<UserWebModel>(MapperConfig).AsAsyncEnumerable();
+            await foreach(var user in users)
+            {
+                if(!user.UserRegistrationData.IsRegistered)
+                    user.UserRegistrationData.RegistrationUrl = controllerUrl + user.UserRegistrationData.RegistrationUrl;
+
+                yield return user;
+            }
         }
     }
 }
