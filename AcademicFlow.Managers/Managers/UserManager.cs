@@ -40,7 +40,7 @@ namespace AcademicFlow.Managers.Managers
             var users = _userService.GetUsers().ProjectTo<UserWebModel>(MapperConfig).AsAsyncEnumerable();
             await foreach(var user in users)
             {
-                if(!user.UserRegistrationData.IsRegistered)
+                if(!user.UserRegistrationData.IsRegistered && !string.IsNullOrEmpty(user.UserRegistrationData.RegistrationUrl))
                     user.UserRegistrationData.RegistrationUrl = controllerUrl + user.UserRegistrationData.RegistrationUrl;
 
                 yield return user;
