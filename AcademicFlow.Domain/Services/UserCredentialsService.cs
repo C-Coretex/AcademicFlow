@@ -1,6 +1,4 @@
-﻿
-
-using AcademicFlow.Domain.Contracts.Entities;
+﻿using AcademicFlow.Domain.Contracts.Entities;
 using AcademicFlow.Domain.Contracts.IRepositories;
 using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Entities;
@@ -19,17 +17,18 @@ namespace AcademicFlow.Domain.Services
 
         public async Task AddUserCredentials(int userId, string username, string password)
         {
+            var existingCredentials = await _userCredentialsRepository.GetByIdAsync(userId);
+            if (existingCredentials == null)
+                throw new Exception("UserId does not exist");
+
             var (hash, salt) = CryptographyHelper.GetHash(password);
 
-            var user = new UserCredentials()
-            {
-                Id = userId,
-                Username = username,
-                PasswordHash = hash,
-                Salt = salt
-            };
+            existingCredentials.Username = username;
+            existingCredentials.PasswordHash = hash;
+            existingCredentials.Salt = salt;
+            existingCredentials.SecurityKey = null;
 
-            await _userCredentialsRepository.AddAsync(user);
+            await _userCredentialsRepository.UpdateAsync(existingCredentials);
         }
 
         public async Task<bool> IsUserCredentialsValid(string username, string password)
@@ -62,6 +61,23 @@ namespace AcademicFlow.Domain.Services
                 return false;
 
             return CryptographyHelper.IsHashSame(userCredentials.PasswordHash, password, userCredentials.Salt);
+        }
+
+        public async Task<User?> GetUserBySecretKey(string secretKey)
+        {
+            var userCredentials = await _userCredentialsRepository.GetAll()
+                                                       .Include(x => x.User)
+                                                       .FirstOrDefaultAsync(x => x.SecurityKey == secretKey);
+
+            return userCredentials?.User;
+        }
+
+        public async Task<UserCredentials?> GetBySecretKey(string secretKey)
+        {
+            var userCredentials = await _userCredentialsRepository.GetAll()
+                                                       .FirstOrDefaultAsync(x => x.SecurityKey == secretKey);
+
+            return userCredentials;
         }
     }
 }

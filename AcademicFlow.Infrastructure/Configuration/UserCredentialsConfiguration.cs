@@ -14,11 +14,6 @@ namespace AcademicFlow.Infrastructure.Configuration
                    .WithOne(x => x.UserCredentials)
                    .HasForeignKey<UserCredentials>(x => x.Id)
                    .HasPrincipalKey<User>(x => x.Id);
-
-            builder.Property(x => x.Username).IsRequired();
-            builder.HasIndex(x => x.Username).IsUnique();
-            builder.Property(x => x.PasswordHash).IsRequired();
-            builder.Property(x => x.Salt).IsRequired();
         }
     }
 }

@@ -16,11 +16,11 @@ function toggleCard(state) {
 };
 
 async function registerUser() {
-    const userId = document.getElementById("userId").value;
+    const secretKey = document.getElementById("secretKey").value;
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     const userData = {
-        id: userId,
+        secretKey: secretKey,
         username: username,
         password: password
     };

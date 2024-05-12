@@ -4,6 +4,7 @@ using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Models;
 using AcademicFlow.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Authentication;
 
@@ -11,7 +12,7 @@ namespace AcademicFlow.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class AuthorizationController : ControllerBase
+    public class AuthorizationController : Controller
     {
         private readonly IUserCredentialsManager _userCredentialsManager;
         private readonly ILogger<AuthorizationController> _logger;
@@ -26,8 +27,8 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                await _userCredentialsManager.RegisterUser(userModel.Id, userModel.Username, userModel.Password);
-                AuthorizationHelpers.LoginUser(HttpContext.Session, userModel.Id);
+                var user = await _userCredentialsManager.RegisterUser(userModel.SecretKey, userModel.Username, userModel.Password);
+                AuthorizationHelpers.LoginUser(HttpContext.Session, user.Id);
 
                 return Ok();
             }

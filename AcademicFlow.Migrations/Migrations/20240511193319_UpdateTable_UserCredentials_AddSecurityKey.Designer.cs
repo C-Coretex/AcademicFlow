@@ -4,6 +4,7 @@ using AcademicFlow.Migrations.Factory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AcademicFlow.Migrations.Migrations
 {
     [DbContext(typeof(MigrationsDbContext))]
-    partial class MigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240511193319_UpdateTable_UserCredentials_AddSecurityKey")]
+    partial class UpdateTable_UserCredentials_AddSecurityKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,31 +50,6 @@ namespace AcademicFlow.Migrations.Migrations
                     b.ToTable("UserCredentials");
                 });
 
-            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.UserRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Active")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("UserRole");
-                });
-
             modelBuilder.Entity("AcademicFlow.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -85,10 +63,6 @@ namespace AcademicFlow.Migrations.Migrations
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("IsDeleted")
-                        .IsRequired()
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -124,23 +98,10 @@ namespace AcademicFlow.Migrations.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.UserRole", b =>
-                {
-                    b.HasOne("AcademicFlow.Domain.Entities.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("AcademicFlow.Domain.Entities.User", b =>
                 {
                     b.Navigation("UserCredentials")
                         .IsRequired();
-
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

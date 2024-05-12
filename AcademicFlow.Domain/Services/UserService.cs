@@ -14,18 +14,28 @@ namespace AcademicFlow.Domain.Services
             _userRepository = userRepository;
         }
 
-        public async Task AddUser(User user)
+        public async Task<User> AddUser(User user)
         {
             var existingUser = _userRepository.GetAll().FirstOrDefault(u => u.PersonalCode == user.PersonalCode);
             if (existingUser != null)
                 throw new ValidationException($"User with personal code {user.PersonalCode} already exists. His id is {existingUser.Id}");
 
-            await _userRepository.AddAsync(user);
+            return await _userRepository.AddAsync(user);
+        }
+
+        public async Task<User?> GetById(int id)
+        {
+            return await _userRepository.GetByIdAsync(id);
         }
 
         public IQueryable<User> GetUsers()
         {
-            return _userRepository.GetAll().AsNoTracking();
+            return _userRepository.GetAll().Include(x => x.UserCredentials).AsNoTracking();
+        }
+
+        public async Task UpdateUser(User user)
+        {
+            await _userRepository.UpdateAsync(user);
         }
 
         public async Task<User> GetUserByPersonalCode(string personalCode)

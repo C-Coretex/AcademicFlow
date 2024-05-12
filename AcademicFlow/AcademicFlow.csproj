@@ -20,4 +20,9 @@
     <ProjectReference Include="..\AcademicFlow.Managers\AcademicFlow.Managers.csproj" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec WorkingDirectory="wwwroot" Command="npm i" />
+    <Exec WorkingDirectory="wwwroot" Command="npm run build" />
+  </Target>
+
 </Project>
