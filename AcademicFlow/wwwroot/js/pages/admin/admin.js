@@ -1,5 +1,8 @@
 import { toggleObjectVisibility } from "./../../components/utils.js";
+import { Table } from "./../../components/table.js";
 
+
+//functions
 function hideAllObjects(containers) {
     for (const containerName in containers) {
         toggleObjectVisibility(containers[containerName], false);
@@ -17,9 +20,9 @@ async function getUsersData() {
 }
 
 function populateTable(users) {
-    const tableBody = document.getElementById("userData");
+    //TODO delete after tests
+    /*const tableBody = document.getElementById("userData");
     tableBody.innerHTML = "";
-    console.log('a');
     users.forEach(user => {
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -30,9 +33,99 @@ function populateTable(users) {
                             <td>${user.email ? user.email : ""}</td>
                             <td>${user.phoneNumber ? user.phoneNumber : ""}</td>
                             <td>${user.age ? user.age : ""}</td>
+                            <td>${user.userRegistrationData.isRegistered ? "" : user.userRegistrationData.registrationUrl}</td>                            
                         `;
         tableBody.appendChild(row);
-    });
+    });*/
+
+    if ($.fn.DataTable.isDataTable('#userTable')) {
+        $('#userTable').DataTable().destroy();
+    }
+
+    const columns = [
+        {
+            targets: 0,
+            title: 'ID',
+            name: 'id',
+            data: 'id',
+            //width: 150,
+            /*data: function (data) {
+                return data['id'] ? `<div>${data.id}</div>` : '';
+            }*/
+        },
+        {
+            targets: 1,
+            title: 'Name',
+            name: 'name',
+            data: 'name',
+            //width: 150,
+            /*data: function (data) {
+                return data['id'] ? `<div>${data.id}</div>` : '';
+            }*/
+        },
+        {
+            targets: 2,
+            title: 'Surname',
+            name: 'surname',
+            data: 'surname',
+            //width: 150,
+            /*data: function (data) {
+                return data['id'] ? `<div>${data.id}</div>` : '';
+            }*/
+        },
+        {
+            targets: 3,
+            title: 'Personal Code',
+            name: 'personalCode',
+            data: 'personalCode'
+        },
+        {
+            targets: 4,
+            title: 'Email',
+            name: 'email',
+            data: 'email'
+        },
+        {
+            targets: 5,
+            title: 'Phone Number',
+            name: 'phoneNumber',
+            data: 'phoneNumber'
+        },
+        {
+            targets: 6,
+            title: 'Age',
+            name: 'age',
+            data: 'age'
+        },
+        {
+            targets: 7,
+            title: 'Registration Link',
+            name: 'registrationLink',
+            data: 'registrationLink',
+            data: function (data) {
+
+                return data.userRegistrationData.isRegistered ? "" : data.userRegistrationData.registrationUrl ;
+            }
+        }
+    ];
+    const options = {
+        ordering: true,
+        order: [[0, 'asc']],
+        select: true,
+        initComplete: function () {
+            let table = $('#userTable').DataTable();
+            table.rows().every(function () {
+                $(this.node()).css('cursor', 'pointer');
+            });
+            $('#userTable tbody').on('click', 'tr', function (data) {
+                table.$('tr').removeClass('selected');
+                $(this).addClass('selected');
+                console.log('Selected Data', table.row(this).data())
+            });
+        }
+    };
+
+    const userTable = new Table('#userTable', users, columns, options);
 };
 
 function refreshUsersTable() {
