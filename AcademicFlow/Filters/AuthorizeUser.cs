@@ -10,8 +10,6 @@ namespace AcademicFlow.Filters
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class AuthorizeUser : Attribute, IAuthorizationFilter
     {
-        //public static Func<IUserManager> UserManagerFactory; 
-       // private IUserManager _userManager { get; set; }
         private readonly RolesEnum[] _roles;
         public static Func<IServiceScope> ServiceScopeFactory { get; set; }
         public AuthorizeUser(params RolesEnum[] roles)

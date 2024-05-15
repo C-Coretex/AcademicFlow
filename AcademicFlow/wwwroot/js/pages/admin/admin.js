@@ -175,29 +175,6 @@ $(document).ready(function () {
         }
   
     });
-
-    /*$(".js-delete-user").on("click", function (e) {
-        e.preventDefault();
-        let t = $("#deleteUserForm");
-        t.find("#userId").val();
-        console.log(t[0]);
-        {
-            let e = new FormData(t[0]);
-            console.log(e), $.ajax({
-                type: 'Delete',
-                url: '/api/User/DeleteUser',
-                processData: !1,
-                contentType: !1,
-                data: e,
-                success: function (e) {
-                    console.log("User deleted successfully")
-                },
-                error: function (e, t, r) {
-                    console.error("Error deleting user:", r)
-                }
-            })
-        }
-    });*/
     $('.js-delete-user').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#deleteUserForm');

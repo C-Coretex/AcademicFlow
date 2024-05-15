@@ -11,7 +11,7 @@ using AcademicFlow.Domain.Entities;
 
 namespace AcademicFlow.Infrastructure.Configuration
 {
-    internal class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
+    public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
     {
         public void Configure(EntityTypeBuilder<UserRole> builder)
         {
