@@ -1,6 +1,9 @@
 using AcademicFlow.Domain.Extensions;
+using AcademicFlow.Filters;
 using AcademicFlow.Infrastructure.Extensions;
+using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Extensions;
+using AcademicFlow.Managers.Managers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +33,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//add session and authentication filter
+AuthorizeUser.ServiceScopeFactory = app.Services.CreateScope;
+
+//add session and authentication filter 
 app.UseSession();
 
 app.UseHttpsRedirection();

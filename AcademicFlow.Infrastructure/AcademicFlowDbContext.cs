@@ -13,7 +13,7 @@ namespace AcademicFlow.Infrastructure
 
         public DbSet<User> User { get; set; }
         public DbSet<UserCredentials> UserCredentials { get; set; }
-
+        public DbSet<UserRole> UserRole { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

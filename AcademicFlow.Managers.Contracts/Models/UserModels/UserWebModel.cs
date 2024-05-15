@@ -1,4 +1,5 @@
 ﻿using AcademicFlow.Domain.Contracts.Entities;
+using AcademicFlow.Domain.Contracts.Enums;
 
 namespace AcademicFlow.Managers.Contracts.Models.UserModels
 {
@@ -11,7 +12,7 @@ namespace AcademicFlow.Managers.Contracts.Models.UserModels
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public int? Age { get; set; }
-
+        public IEnumerable<string> Roles { get; set; }
         public UserRegistrationData UserRegistrationData { get; set; }
     }
 

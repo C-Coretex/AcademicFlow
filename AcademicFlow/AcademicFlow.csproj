@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\js\dist\pages\admin\" />
     <Folder Include="wwwroot\js\pages\mainPage\" />
     <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>

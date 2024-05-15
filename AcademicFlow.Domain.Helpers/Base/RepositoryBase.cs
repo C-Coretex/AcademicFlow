@@ -15,19 +15,22 @@ namespace AcademicFlow.Domain.Helpers.Base
             this.dbSet = dbSet;
         }
 
-        public virtual IQueryable<TModel> GetAll()
+        public virtual IQueryable<TModel> GetAll(bool asNoTracking = true)
         {
-            return dbSet.AsNoTracking();
+            var query = dbSet.AsQueryable();
+            if (asNoTracking)
+                query = query.AsNoTracking();
+            return query;
         }
 
-        public virtual TModel? GetById(int id)
+        public virtual TModel? GetById(int id, bool asNoTracking = true)
         {
-            return dbSet.AsNoTracking().FirstOrDefault(x => x.Id.Equals(id));
+            return GetAll(asNoTracking).FirstOrDefault(x => x.Id.Equals(id));
         }
 
-        public virtual async Task<TModel?> GetByIdAsync(int id)
+        public virtual async Task<TModel?> GetByIdAsync(int id, bool asNoTracking = true)
         {
-            return await dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(id));
+            return await GetAll(asNoTracking).FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
 
         public virtual TModel Add(TModel model, bool saveChanges = true)

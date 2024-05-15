@@ -4,9 +4,9 @@ namespace AcademicFlow.Domain.Helpers.Interfaces
 {
     public interface IRepositoryBase<TModel> where TModel : class, IModel, new()
     {
-        IQueryable<TModel> GetAll();
-        TModel? GetById(int id);
-        Task<TModel?> GetByIdAsync(int id);
+        IQueryable<TModel> GetAll(bool asNoTracking = true);
+        TModel? GetById(int id, bool asNoTracking = true);
+        Task<TModel?> GetByIdAsync(int id, bool asNoTracking = true);
         TModel Add(TModel model, bool saveChanges = true);
         Task<TModel> AddAsync(TModel model, bool saveChanges = true);
         IEnumerable<TModel> AddRange(IEnumerable<TModel> models, bool saveChanges = true);

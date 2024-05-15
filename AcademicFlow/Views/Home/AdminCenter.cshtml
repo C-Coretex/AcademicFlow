@@ -74,8 +74,44 @@
                 </div>
                 <button type="button" class="btn btn-primary btn-lg w-100 js-add-user"><i class="fa-solid fa-plus"></i><span> Add User</span></button>
                 <div class="error-message"></div>
+                
             </form>
+            
+            <form id="deleteUserForm" class="">
+                <div class="mb-3">
+                    <label for="userId" class="form__input form-control">User ID</label>
+                    <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
+                </div>
+                <button type="submit" class="btn btn-danger js-delete-user">Delete User</button>
+            </form>
+            
+            <form id="changeRolesForm" class="">
+                <div class="mb-3">
+                    <label for="userId" class="form-label">User ID</label>
+                    <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Select Roles</label>
+                    <div>
+                        <input type="checkbox" id="Admin" name="roles" value="admin">
+                        <label for="admin">admin</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="Student" name="roles" value="student">
+                        <label for="student">student</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="Professor" name="roles" value="proffessor">
+                        <label for="proffessor">Professor</label>
+                    </div>
+                    <!-- Add more checkboxes for each role -->
+                </div>
+                <button type="submit" class="btn btn-primary js-change-role">Change Roles</button>
+            </form>
+
         </div>
+
+        
         <div class="user-table col">
             <h2>User Data</h2>
             <table class="table table-striped" id="userTable">
