@@ -13,65 +13,37 @@ async function getUsersData() {
     try {
         const response = await fetch("/api/User/GetAllUsers");
         const data = await response.json();
-        populateTable(data);
+        initTable(data);
+        
     } catch (error) {
         console.error("Error fetching data:", error);
     }
 }
 
-function populateTable(users) {
-    //TODO delete after tests
-    /*const tableBody = document.getElementById("userData");
-    tableBody.innerHTML = "";
-    users.forEach(user => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-                            <td>${user.id}</td>
-                            <td>${user.name}</td>
-                            <td>${user.surname}</td>
-                            <td>${user.personalCode}</td>
-                            <td>${user.email ? user.email : ""}</td>
-                            <td>${user.phoneNumber ? user.phoneNumber : ""}</td>
-                            <td>${user.age ? user.age : ""}</td>
-                            <td>${user.userRegistrationData.isRegistered ? "" : user.userRegistrationData.registrationUrl}</td>                            
-                        `;
-        tableBody.appendChild(row);
-    });*/
+function initTable(users) {
 
     if ($.fn.DataTable.isDataTable('#userTable')) {
-        $('#userTable').DataTable().destroy();
+        let table = $('#userTable').DataTable();
+        table.destroy();
     }
-
     const columns = [
         {
             targets: 0,
             title: 'ID',
             name: 'id',
-            data: 'id',
-            //width: 150,
-            /*data: function (data) {
-                return data['id'] ? `<div>${data.id}</div>` : '';
-            }*/
+            data: 'id'
         },
         {
             targets: 1,
             title: 'Name',
             name: 'name',
-            data: 'name',
-            //width: 150,
-            /*data: function (data) {
-                return data['id'] ? `<div>${data.id}</div>` : '';
-            }*/
+            data: 'name'
         },
         {
             targets: 2,
             title: 'Surname',
             name: 'surname',
-            data: 'surname',
-            //width: 150,
-            /*data: function (data) {
-                return data['id'] ? `<div>${data.id}</div>` : '';
-            }*/
+            data: 'surname'
         },
         {
             targets: 3,
@@ -188,10 +160,14 @@ $(document).ready(function () {
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function (response) {
+                    $('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is added.</div>`);
+                    console.error('Error:', textStatus, errorThrown);
                     console.log('User added successfully');
                 },
-                error: function (xhr, status, error) {
-                    console.error('Error adding user:', error);
+                error: function (xhr, response, status, error) {
+                    const errorMessage = xhr.responseText;
+                    $('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not added. ${errorMessage}</div>`);
+                    console.error('Error adding user:', errorMessage);
                 }
             })
         } else {
