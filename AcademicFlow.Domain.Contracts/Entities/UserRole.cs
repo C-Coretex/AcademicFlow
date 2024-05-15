@@ -15,8 +15,6 @@ namespace AcademicFlow.Domain.Contracts.Entities
         public int Id { get; set; }
         public int UserId { get; set; }
         public RolesEnum Role { get; set; }
-        public int Active { get; set; }
-
         public User User { get; set; }
 
         public UserRole()
@@ -26,8 +24,6 @@ namespace AcademicFlow.Domain.Contracts.Entities
         {
             UserId = userId;
             Role = role;
-            Active = 1;
         }
-
     }
 }

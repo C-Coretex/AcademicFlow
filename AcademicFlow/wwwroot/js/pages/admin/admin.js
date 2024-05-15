@@ -197,7 +197,81 @@ $(document).ready(function () {
         } else {
             //TODO add form validation errors
         }
-        
+  
     });
+
+    /*$(".js-delete-user").on("click", function (e) {
+        e.preventDefault();
+        let t = $("#deleteUserForm");
+        t.find("#userId").val();
+        console.log(t[0]);
+        {
+            let e = new FormData(t[0]);
+            console.log(e), $.ajax({
+                type: 'Delete',
+                url: '/api/User/DeleteUser',
+                processData: !1,
+                contentType: !1,
+                data: e,
+                success: function (e) {
+                    console.log("User deleted successfully")
+                },
+                error: function (e, t, r) {
+                    console.error("Error deleting user:", r)
+                }
+            })
+        }
+    });*/
+    $('.js-delete-user').on('click', function (ev) {
+        ev.preventDefault();
+        const $form = $('#deleteUserForm');
+        console.log($form);
+        const formData = {
+            userId: $form.find('#userId').val(),
+        };
+        if (true) {  //TODO add form validation
+            const formData = new FormData($form[0]);
+            console.log(formData);
+            $.ajax({
+                type: 'Delete',
+                url: '/api/User/DeleteUser',
+                processData: false, // Prevent jQuery from processing data (handled by FormData)
+                contentType: false, // Don't set content type header (FormData sets it)
+                data: formData,
+                success: function (response) {
+                    console.log('User deleted successfully');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error deleting user:', error);
+                }
+            })
+        } else {
+            //TODO add form validation errors
+        }
+    });
+
+    $(".js-change-role").on("click", function (e) {
+        e.preventDefault();
+        let t = $("#changeRolesForm");
+        t.find("#userId").val();
+        t.find("roleValues").val()
+        {
+            let e = new FormData(t[0]);
+            console.log(e), $.ajax({
+                type: "POST",
+                url: "/api/User/ChangeRoles",
+                processData: !1,
+                contentType: !1,
+                data: e,
+                success: function (e) {
+                    console.log("Role changed successfully")
+                },
+                error: function (e, t, r) {
+                    console.error("Error changing role:", r)
+                }
+            })
+        }
+    });
+    
 
 });

@@ -1,4 +1,5 @@
-﻿using AcademicFlow.Domain.Entities;
+﻿using AcademicFlow.Domain.Contracts.Enums;
+using AcademicFlow.Domain.Entities;
 using AcademicFlow.Filters;
 using AcademicFlow.Managers.Contracts.IManagers;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,7 @@ namespace AcademicFlow.Controllers
             }
         }
 
-        [AuthorizeUser]
+        [AuthorizeUser(RolesEnum.Admin,RolesEnum.Student)]
         [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -56,35 +57,56 @@ namespace AcademicFlow.Controllers
         }
 
         [AuthorizeUser]
-        [HttpGet("GetUserByPersonalCode")]
-        public async Task<IActionResult> GetUserByPersonalCode([FromForm] string personalCode)
+        [HttpGet("GetUserById")]
+        public async Task<IActionResult> GetUserByUserId([FromForm] int userId)
         {
             try
             {
-                var user = await _userManager.GetUserByPersonalCode(personalCode);
+                var user = await _userManager.GetUserById(userId);
 
                 return Ok(user);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Error while getting user by personal code");
+                _logger.LogError(e, "Error while getting user by user id");
                 return BadRequest(e.Message);
             }
         }
 
         [AuthorizeUser]
-        [HttpGet("DeleteUser")]
-        public async Task<IActionResult> DeleteUser([FromForm] string personalCode)
+        [HttpDelete("DeleteUser")]
+        public async Task<IActionResult> DeleteUser([FromForm] int userId)
         {
             try
             {
-                var user = _userManager.GetUserByPersonalCode(personalCode);
+                var user = _userManager.GetUserById(userId);
+                await _userManager.DeleteUser(userId);
                 return Ok();
 
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while deleting users");
+                return BadRequest(e.Message);
+            }
+        }
+
+        [AuthorizeUser]
+        [HttpPost("ChangeRoles")]
+
+        public async Task<IActionResult> ChangeRole([FromForm] int userId, [FromForm] RolesEnum[] roles)
+        {
+            try
+            {
+                var user = await _userManager.GetUserById(userId);
+
+                await _userManager.UpdateRoles(userId, roles);
+                return Ok();
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error while changing role");
                 return BadRequest(e.Message);
             }
         }

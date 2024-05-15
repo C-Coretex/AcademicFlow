@@ -12,8 +12,7 @@ namespace AcademicFlow.Domain.Entities
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public int? Age { get; set; }
-        public int? IsDeleted { get; set; }
-        // public bool IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
 
         public UserCredentials UserCredentials { get; set; }
         public List<UserRole> UserRoles { get; set; }
@@ -29,7 +28,7 @@ namespace AcademicFlow.Domain.Entities
             Email = email;
             PhoneNumber = phoneNumber;
             Age = age;
-            IsDeleted = 0;
+            IsDeleted = false;
         }
     }
 }

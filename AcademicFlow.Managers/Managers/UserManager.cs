@@ -1,5 +1,6 @@
 ﻿using AcademicFlow.Domain.Contracts.Constants;
 using AcademicFlow.Domain.Contracts.Entities;
+using AcademicFlow.Domain.Contracts.Enums;
 using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Entities;
 using AcademicFlow.Domain.Helpers.Helpers;
@@ -47,15 +48,20 @@ namespace AcademicFlow.Managers.Managers
             }
         }
 
-        public async Task<User> GetUserByPersonalCode(string personalCode)
+        public async Task<User> GetUserById(int userId)
         {
-           return  await _userService.GetUserByPersonalCode(personalCode);
+           return  await _userService.GetUserById(userId);
             
         }
 
-        public async Task DeleteUser(string personalCode)
+        public async Task DeleteUser(int userId)
         {
-             _userService.DeleteUser(personalCode);
+             await _userService.DeleteUser(userId);
+        }
+
+        public async Task UpdateRoles(int userId, IEnumerable<RolesEnum> roles)
+        {
+            await _userService.UpdateRoles(userId, roles);
         }
     }
 }

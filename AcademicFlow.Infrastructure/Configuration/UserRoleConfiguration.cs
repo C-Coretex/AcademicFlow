@@ -21,11 +21,7 @@ namespace AcademicFlow.Infrastructure.Configuration
                   .HasForeignKey(u => u.UserId)
                   .HasPrincipalKey(u => u.Id);
             builder.Property(u => u.UserId).IsRequired();
-            builder.HasIndex(u => u.UserId).IsUnique();
-            builder.Property(u => u.Active).IsRequired();
             builder.Property(u => u.Role).IsRequired();
-
-
         }
     }
 }

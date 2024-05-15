@@ -14,6 +14,7 @@ namespace AcademicFlow.Infrastructure.Configuration
             builder.Property(u => u.PersonalCode).IsRequired();
             builder.HasIndex(u => u.PersonalCode).IsUnique();
             builder.Property(u => u.IsDeleted).IsRequired();
+            builder.HasIndex(u => u.IsDeleted);
         }
     }
 }
