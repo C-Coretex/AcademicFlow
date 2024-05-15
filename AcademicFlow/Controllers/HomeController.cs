@@ -26,6 +26,10 @@ namespace AcademicFlow.Controllers
         {
             return View();
         }
+        public IActionResult MainPage()
+        {
+            return View();
+        }
 
         public IActionResult UserRegistration()
         {

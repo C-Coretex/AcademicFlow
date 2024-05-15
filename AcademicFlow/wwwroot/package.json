@@ -18,6 +18,10 @@
       "source": "js/pages/authentification/auth.js",
       "distDir": "js/dist"
     },
+    "registration": {
+      "source": "js/pages/registration/registration.js",
+      "distDir": "js/dist"
+    },
     "admin": {
       "source": "js/pages/admin/admin.js",
       "distDir": "js/dist"
