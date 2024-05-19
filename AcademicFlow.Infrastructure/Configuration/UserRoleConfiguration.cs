@@ -1,13 +1,6 @@
-﻿using AcademicFlow.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using AcademicFlow.Domain.Contracts.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AcademicFlow.Domain.Contracts.Entities;
-using AcademicFlow.Domain.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AcademicFlow.Infrastructure.Configuration
 {
@@ -21,7 +14,19 @@ namespace AcademicFlow.Infrastructure.Configuration
                   .HasForeignKey(u => u.UserId)
                   .HasPrincipalKey(u => u.Id);
             builder.Property(u => u.UserId).IsRequired();
-            builder.Property(u => u.Role).IsRequired();
+            builder.Property(u => u.Role).IsRequired(); builder.HasData(GetSeeds());
+        }
+        private static UserRole[] GetSeeds()
+        {
+            return
+            [
+                new UserRole
+                {
+                    Id = 1,
+                    UserId = 1,
+                    Role = 0
+                }
+            ];
         }
     }
 }

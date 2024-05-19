@@ -36,6 +36,11 @@ namespace AcademicFlow.Managers.Managers
             return securityKey;
         }
 
+        public async Task UpdateUser(User user)
+        {
+            await _userService.UpdateUser(user);
+        }
+
         public async IAsyncEnumerable<UserWebModel> GetUsers(string controllerUrl)
         {
             var users = _userService.GetUsers().ProjectTo<UserWebModel>(MapperConfig).AsAsyncEnumerable();

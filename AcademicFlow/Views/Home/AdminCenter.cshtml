@@ -48,33 +48,9 @@
             <h1 class="authentication-page__heading">Add new user</h1>
             <h5 class="authentication-page__message"></h5>
             <form id="registerForm" class="">
-                <div class="form__input-container mb-2">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" class="form__input form-control form-outline" placeholder="Name" aria-label="name" required>
-                </div>
-                <div class="form__input-container mb-2">
-                    <label for="surname">Surname</label>
-                    <input type="text" id="surname" name="surname" class="form__input form-control" placeholder="Surname" aria-label="surname" required>
-                </div>
-                <div class="form__input-container mb-2">
-                    <label for="personalCode">Personal Code</label>
-                    <input type="text" id="personalCode" name="personalCode" class="form__input form-control" placeholder="Personal Code" aria-label="personalCode" required>
-                </div>
-                <div class="form__input-container mb-2">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" class="form__input form-control" placeholder="Email" aria-label="email">
-                </div>
-                <div class="form__input-container mb-2">
-                    <label for="phoneNumber">Phone Number</label>
-                    <input type="tel" id="phoneNumber" name="phoneNumber" class="form__input form-control" placeholder="Phone number" aria-label="phoneNumber">
-                </div>
-                <div class="form__input-container mb-2">
-                    <label for="age">Age</label>
-                    <input type="number" id="age" name="age" class="form__input form-control" placeholder="Age" aria-label="age">
-                </div>
+                <partial name="Partials/_UserEditForm"></partial>
                 <button type="button" class="btn btn-primary btn-lg w-100 js-add-user"><i class="fa-solid fa-plus"></i><span> Add User</span></button>
                 <div class="error-message"></div>
-                
             </form>
             
             <form id="deleteUserForm" class="">
@@ -107,6 +83,16 @@
                     <!-- Add more checkboxes for each role -->
                 </div>
                 <button type="submit" class="btn btn-primary js-change-role">Change Roles</button>
+            </form>
+
+            <form id="editUserForm" class="my-2">
+                <div class="form__input-container mb-2">
+                    <label for="id">Phone Number</label>
+                    <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter user id">
+                </div>
+                <partial name="Partials/_UserEditForm"></partial>
+                <button type="button" class="btn btn-primary w-100 js-edit-user">Edit User</button>
+                <div class="error-message"></div>
             </form>
 
         </div>

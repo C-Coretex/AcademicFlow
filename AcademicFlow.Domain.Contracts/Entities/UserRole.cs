@@ -1,11 +1,6 @@
 ﻿using AcademicFlow.Domain.Contracts.Enums;
 using AcademicFlow.Domain.Entities;
 using AcademicFlow.Domain.Helpers.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace AcademicFlow.Domain.Contracts.Entities
