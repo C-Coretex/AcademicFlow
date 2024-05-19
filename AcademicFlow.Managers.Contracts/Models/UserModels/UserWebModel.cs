@@ -1,5 +1,4 @@
 ﻿using AcademicFlow.Domain.Contracts.Entities;
-using AcademicFlow.Domain.Contracts.Enums;
 
 namespace AcademicFlow.Managers.Contracts.Models.UserModels
 {

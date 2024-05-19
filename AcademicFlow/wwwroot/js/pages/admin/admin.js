@@ -175,6 +175,43 @@ $(document).ready(function () {
         }
   
     });
+    $('.js-edit-user').on('click', function (ev) {
+        ev.preventDefault();
+        const $form = $('#editUserForm');
+
+        const formData = {
+            id: $form.find('#id').val().trim(),
+            name: $form.find('#name').val().trim(),
+            surname: $form.find('#surname').val().trim(),
+            personalCode: $form.find('#personalCode').val().trim(),
+            email: $form.find('#email').val().trim(), // Optional (can be null)
+            phoneNumber: $form.find('#phoneNumber').val().trim(), // Optional (can be null)
+        };
+        if (true) {  //TODO add form validation
+            const formData = new FormData($form[0]);
+            console.log(formData);
+            $.ajax({
+                type: "POST",
+                url: '/api/User/EditUser',
+                processData: false, // Prevent jQuery from processing data (handled by FormData)
+                contentType: false, // Don't set content type header (FormData sets it)
+                data: formData,
+                success: function (response) {
+                    $('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is added.</div>`);
+                    console.error('Error:', textStatus, errorThrown);
+                    console.log('User edited successfully');
+                },
+                error: function (xhr, response, status, error) {
+                    const errorMessage = xhr.responseText;
+                    $('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not added. ${errorMessage}</div>`);
+                    console.error('Error editing user:', errorMessage);
+                }
+            })
+        } else {
+            //TODO add form validation errors
+        }
+
+    });
     $('.js-delete-user').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#deleteUserForm');
