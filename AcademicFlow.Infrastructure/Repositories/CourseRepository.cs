@@ -4,7 +4,8 @@ using AcademicFlow.Domain.Helpers.Base;
 
 namespace AcademicFlow.Infrastructure.Repositories
 {
-    public class UserRoleRepository(AcademicFlowDbContext dbContext) : RepositoryBase<AcademicFlowDbContext, UserRole>(dbContext, dbContext.UserRole), IUserRoleRepository 
+    public class CourseRepository(AcademicFlowDbContext dbContext) 
+        : RepositoryBase<AcademicFlowDbContext, Course>(dbContext, dbContext.Course), ICourseRepository
     {
     }
 }

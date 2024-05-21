@@ -1,4 +1,5 @@
-﻿using AcademicFlow.Domain.Contracts.IServices;
+﻿using AcademicFlow.Domain.Contracts.IRepositories;
+using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,9 @@ namespace AcademicFlow.Domain.Extensions
         {
             serviceCollection.AddScoped<IUserService, UserService>();
             serviceCollection.AddScoped<IUserCredentialsService, UserCredentialsService>();
+            serviceCollection.AddScoped<ICourseProgramService, CourseProgramService>();
+            serviceCollection.AddScoped<ICourseService, CourseService>();
+            serviceCollection.AddScoped<IProgramService, ProgramService>();
 
             return serviceCollection;
         }

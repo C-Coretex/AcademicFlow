@@ -12,6 +12,9 @@ namespace AcademicFlow.Domain.Contracts.Entities
         public RolesEnum Role { get; set; }
         public User User { get; set; }
 
+        public virtual ICollection<CourseUserRole>? Courses { get; set; }
+        public virtual ICollection<ProgramUserRole>? Programs { get; set; }
+
         public UserRole()
         { }
 

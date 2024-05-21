@@ -3,7 +3,7 @@ using AcademicFlow.Domain.Helpers.Interfaces;
 
 namespace AcademicFlow.Domain.Contracts.IRepositories
 {
-    public interface IUserRoleRepository : IRepositoryBase<UserRole>
+    public interface IProgramRepository : IRepositoryBase<Program>
     {
     }
 }
