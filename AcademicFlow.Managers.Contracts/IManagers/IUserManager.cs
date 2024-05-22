@@ -7,6 +7,7 @@ namespace AcademicFlow.Managers.Contracts.IManagers
     public interface IUserManager
     {
         Task<User> GetUserById(int userId);
+        Task<UserWebModel> GetUserModelById(int userId);
 
         Task DeleteUser(int userId);
 

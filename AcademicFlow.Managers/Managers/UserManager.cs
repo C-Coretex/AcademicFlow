@@ -59,6 +59,11 @@ namespace AcademicFlow.Managers.Managers
             
         }
 
+        public async Task<UserWebModel> GetUserModelById(int userId)
+        {
+            return Mapper.Map<UserWebModel>(await GetUserById(userId));
+        }
+
         public async Task DeleteUser(int userId)
         {
              await _userService.DeleteUser(userId);

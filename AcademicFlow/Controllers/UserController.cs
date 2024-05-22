@@ -1,6 +1,7 @@
 ﻿using AcademicFlow.Domain.Contracts.Enums;
 using AcademicFlow.Domain.Entities;
 using AcademicFlow.Filters;
+using AcademicFlow.Helpers;
 using AcademicFlow.Managers.Contracts.IManagers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,23 +40,25 @@ namespace AcademicFlow.Controllers
             }
         }
 
+        [AuthorizeUser]
         [HttpPost("EditUser")]
-        public async Task<IActionResult> EditUser([FromForm] int id, [FromForm] string name, [FromForm] string surname, [FromForm] string personalCode, [FromForm] string? email, [FromForm] string? phoneNumber, [FromForm] int? age)
+        public async Task<IActionResult> EditUser([FromForm] int? id, [FromForm] string name, [FromForm] string surname, [FromForm] string personalCode, [FromForm] string? email, [FromForm] string? phoneNumber, [FromForm] int? age)
         {
             try
             {
-                /// ToDO: add check for id. 
-                /// If id == CurrentUser.Id --> okay. User can edit himself.
-                /// If CurrentUser has admin role --> okay. Admin can edit any user.
-                /// Otherwise reject.
-                
-                var user = await _userManager.GetUserById(id);
+                var currentUserID = AuthorizationHelpers.GetUserIdIfAuthorized(HttpContext.Session);
+                id ??= currentUserID;
+                var user = await _userManager.GetUserById(id!.Value);
                 if (user == null)
                 {
                     var message = $"User {id} do not exist";
                     _logger.LogError(message);
                     return BadRequest(message);
                 }
+
+                if (id != currentUserID && !AuthorizationHelpers.HasRole([RolesEnum.Admin], user))
+                    throw new UnauthorizedAccessException("Non admin cannot change different user");
+
                 user.Name = name;
                 user.Surname = surname;
                 user.PhoneNumber = phoneNumber;
