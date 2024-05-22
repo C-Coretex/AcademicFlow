@@ -1,5 +1,8 @@
-﻿using AcademicFlow.Domain.Contracts.IServices;
+﻿using AcademicFlow.Domain.Contracts.Constants;
+using AcademicFlow.Domain.Contracts.Entities;
+using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Entities;
+using AcademicFlow.Domain.Helpers.Helpers;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models.UserModels;
 using AutoMapper;
@@ -52,6 +55,21 @@ namespace AcademicFlow.Managers.Managers
                 throw new AuthenticationException("Username or password incorrect");
 
             return Mapper.Map<UserWebModel>(user);
+        }
+
+        public async Task<UserCredentialsManager> AddUserCredentials(int userId)
+        {
+
+            var securityKey = CryptographyHelper.GetRandomString(UserConstants.SecurityKeySize);
+            var userCredentials = new UserCredentials()
+            {
+                Id = userId,
+                SecurityKey = securityKey
+            };
+            await _userCredentialsService.AddUserCredentials(userCredentials);
+         //   user.UserCredentials = userCredentials;
+
+           // await _userService.UpdateUser(user);
         }
     }
 }

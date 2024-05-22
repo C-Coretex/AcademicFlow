@@ -31,6 +31,12 @@ namespace AcademicFlow.Domain.Services
             await _userCredentialsRepository.UpdateAsync(existingCredentials);
         }
 
+        public async Task SaveUserCredentials(UserCredentials userCredentials)
+        {
+            
+                await _userCredentialsRepository.UpdateAsync(userCredentials);
+        }
+
         public async Task<bool> IsUserCredentialsValid(string username, string password)
         {
             var userCredentials = await _userCredentialsRepository.GetAll().FirstOrDefaultAsync(x => x.Username == username);

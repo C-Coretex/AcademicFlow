@@ -10,3 +10,4 @@ namespace AcademicFlow.Managers.Contracts.IManagers
         IAsyncEnumerable<UserWebModel> GetUsers(string controllerUrl);
     }
 }
+
