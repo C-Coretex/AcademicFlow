@@ -13,65 +13,37 @@ async function getUsersData() {
     try {
         const response = await fetch("/api/User/GetAllUsers");
         const data = await response.json();
-        populateTable(data);
+        initTable(data);
+        
     } catch (error) {
         console.error("Error fetching data:", error);
     }
 }
 
-function populateTable(users) {
-    //TODO delete after tests
-    /*const tableBody = document.getElementById("userData");
-    tableBody.innerHTML = "";
-    users.forEach(user => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-                            <td>${user.id}</td>
-                            <td>${user.name}</td>
-                            <td>${user.surname}</td>
-                            <td>${user.personalCode}</td>
-                            <td>${user.email ? user.email : ""}</td>
-                            <td>${user.phoneNumber ? user.phoneNumber : ""}</td>
-                            <td>${user.age ? user.age : ""}</td>
-                            <td>${user.userRegistrationData.isRegistered ? "" : user.userRegistrationData.registrationUrl}</td>                            
-                        `;
-        tableBody.appendChild(row);
-    });*/
+function initTable(users) {
 
     if ($.fn.DataTable.isDataTable('#userTable')) {
-        $('#userTable').DataTable().destroy();
+        let table = $('#userTable').DataTable();
+        table.destroy();
     }
-
     const columns = [
         {
             targets: 0,
             title: 'ID',
             name: 'id',
-            data: 'id',
-            //width: 150,
-            /*data: function (data) {
-                return data['id'] ? `<div>${data.id}</div>` : '';
-            }*/
+            data: 'id'
         },
         {
             targets: 1,
             title: 'Name',
             name: 'name',
-            data: 'name',
-            //width: 150,
-            /*data: function (data) {
-                return data['id'] ? `<div>${data.id}</div>` : '';
-            }*/
+            data: 'name'
         },
         {
             targets: 2,
             title: 'Surname',
             name: 'surname',
-            data: 'surname',
-            //width: 150,
-            /*data: function (data) {
-                return data['id'] ? `<div>${data.id}</div>` : '';
-            }*/
+            data: 'surname'
         },
         {
             targets: 3,
@@ -188,16 +160,108 @@ $(document).ready(function () {
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function (response) {
+                    $('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is added.</div>`);
+                    console.error('Error:', textStatus, errorThrown);
                     console.log('User added successfully');
                 },
-                error: function (xhr, status, error) {
-                    console.error('Error adding user:', error);
+                error: function (xhr, response, status, error) {
+                    const errorMessage = xhr.responseText;
+                    $('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not added. ${errorMessage}</div>`);
+                    console.error('Error adding user:', errorMessage);
                 }
             })
         } else {
             //TODO add form validation errors
         }
-        
+  
     });
+    $('.js-edit-user').on('click', function (ev) {
+        ev.preventDefault();
+        const $form = $('#editUserForm');
+
+        const formData = {
+            id: $form.find('#id').val().trim(),
+            name: $form.find('#name').val().trim(),
+            surname: $form.find('#surname').val().trim(),
+            personalCode: $form.find('#personalCode').val().trim(),
+            email: $form.find('#email').val().trim(), // Optional (can be null)
+            phoneNumber: $form.find('#phoneNumber').val().trim(), // Optional (can be null)
+        };
+        if (true) {  //TODO add form validation
+            const formData = new FormData($form[0]);
+            console.log(formData);
+            $.ajax({
+                type: "POST",
+                url: '/api/User/EditUser',
+                processData: false, // Prevent jQuery from processing data (handled by FormData)
+                contentType: false, // Don't set content type header (FormData sets it)
+                data: formData,
+                success: function (response) {
+                    $('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is added.</div>`);
+                    console.error('Error:', textStatus, errorThrown);
+                    console.log('User edited successfully');
+                },
+                error: function (xhr, response, status, error) {
+                    const errorMessage = xhr.responseText;
+                    $('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not added. ${errorMessage}</div>`);
+                    console.error('Error editing user:', errorMessage);
+                }
+            })
+        } else {
+            //TODO add form validation errors
+        }
+
+    });
+    $('.js-delete-user').on('click', function (ev) {
+        ev.preventDefault();
+        const $form = $('#deleteUserForm');
+        console.log($form);
+        const formData = {
+            userId: $form.find('#userId').val(),
+        };
+        if (true) {  //TODO add form validation
+            const formData = new FormData($form[0]);
+            console.log(formData);
+            $.ajax({
+                type: 'Delete',
+                url: '/api/User/DeleteUser',
+                processData: false, // Prevent jQuery from processing data (handled by FormData)
+                contentType: false, // Don't set content type header (FormData sets it)
+                data: formData,
+                success: function (response) {
+                    console.log('User deleted successfully');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error deleting user:', error);
+                }
+            })
+        } else {
+            //TODO add form validation errors
+        }
+    });
+
+    $(".js-change-role").on("click", function (e) {
+        e.preventDefault();
+        let t = $("#changeRolesForm");
+        t.find("#userId").val();
+        t.find("roleValues").val()
+        {
+            let e = new FormData(t[0]);
+            console.log(e), $.ajax({
+                type: "POST",
+                url: "/api/User/ChangeRoles",
+                processData: !1,
+                contentType: !1,
+                data: e,
+                success: function (e) {
+                    console.log("Role changed successfully")
+                },
+                error: function (e, t, r) {
+                    console.error("Error changing role:", r)
+                }
+            })
+        }
+    });
+    
 
 });

@@ -1,0 +1,21 @@
+.input-wrapper {
+    position: relative;
+
+    input {
+        padding-right: 30px;
+    }
+
+    i {
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        transform: translate(-50%, -45%);
+        cursor: pointer;
+        color: var(--color3);
+        background-color: #ffffff;
+        font-size: 16px;
+        z-index: 1;
+        transition: .15s;
+    }
+}

@@ -1,4 +1,6 @@
-﻿using AcademicFlow.Domain.Contracts.IRepositories;
+﻿using AcademicFlow.Domain.Contracts.Entities;
+using AcademicFlow.Domain.Contracts.Enums;
+using AcademicFlow.Domain.Contracts.IRepositories;
 using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +11,7 @@ namespace AcademicFlow.Domain.Services
     public class UserService: IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IUserRoleRepository _userRoleRepository;
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -30,11 +33,45 @@ namespace AcademicFlow.Domain.Services
 
         public IQueryable<User> GetUsers()
         {
-            return _userRepository.GetAll().Include(x => x.UserCredentials).AsNoTracking();
+            return _userRepository.GetAll().Include(x => x.UserCredentials).Where(x => !x.IsDeleted).AsNoTracking();
         }
 
         public async Task UpdateUser(User user)
         {
+            await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task<User> GetUserById(int userId)
+        {
+            var user = await GetUsers().FirstOrDefaultAsync(u => u.Id == userId);
+            return user;
+        }
+        public async Task DeleteUser(int userId)
+        {
+            var user = await GetUsers().FirstOrDefaultAsync(u => u.Id == userId);
+            
+            if (user == null)
+                throw new ValidationException($"User with personal code {userId} does not exist.");
+            user.IsDeleted = true;
+            await _userRepository.UpdateAsync(user);
+        }
+        public async Task UpdateRoles(int userId, IEnumerable<RolesEnum> roles)
+        {
+            var user = _userRepository.GetAll(false).Include(u => u.UserRoles).FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+                throw new ValidationException($"User with id {userId} does not exist.");
+
+            var rolesToDelete = user.UserRoles.ExceptBy(roles,x => x.Role).ToList();
+            var rolesToAdd = roles.Except(user.UserRoles.Select(x => x.Role)).ToList();
+            //Add roles
+
+            user.UserRoles.AddRange(rolesToAdd.Select(x => new UserRole(user.Id,x)));
+
+            //Delete roles
+            foreach (var roleDel in rolesToDelete)
+            {   
+                user.UserRoles.Remove(roleDel);
+            }
             await _userRepository.UpdateAsync(user);
         }
     }

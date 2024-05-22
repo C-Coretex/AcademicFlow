@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Main Page";
+}
+<div class="main d-flex">
+    <div class="row">
+        @*TODO: add as Razor page element *@
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light min-vh-100" style="width: 280px;">
+            <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <i class="fa-solid fa-graduation-cap me-2"></i>
+                <span class="fs-4"> @ViewData["Title"]</span>
+            </a>
+            <hr>
+            <ul class="nav navigation-pane nav-pills flex-column mb-auto">
+                <li class="nav-item" data-nav-el="showCourses">
+                    <a class="nav-link active">
+                        <i class="fa-solid fa-users me-2"></i>
+                        Courses
+                    </a>
+                </li>
+                <li class="nav-item" data-nav-el="showProfile">
+                    <a class="nav-link link-dark">
+                        <i class="fa-solid fa-user-plus me-2"></i>
+                        Profile
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="dropdown">
+                <a class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle cursor-pointer" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-circle-user me-2"></i>
+                    <div class="js-user-name"></div>
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><button class="dropdown-item js-logout-user"><i class="fa-solid fa-arrow-right-from-bracket"></i><span> Sign out</span></button></li>
+                </ul>
+            </div>
+        </div>
+
+       
+        <div class="user-table col">
+            <h2>Courses</h2>
+            <table class="table table-striped" id="coursesTable">
+            </table>
+        </div>
+    </div>
+   
+    
+</div>
+
+<script type="module" src="~/js/dist/site.js" asp-append-version="true"></script>
+<script type="module" src="~/js/dist/pages/mainPage/mainPage.js" asp-append-version="true"></script>
+

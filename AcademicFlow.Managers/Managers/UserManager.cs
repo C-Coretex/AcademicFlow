@@ -1,5 +1,6 @@
 ﻿using AcademicFlow.Domain.Contracts.Constants;
 using AcademicFlow.Domain.Contracts.Entities;
+using AcademicFlow.Domain.Contracts.Enums;
 using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Entities;
 using AcademicFlow.Domain.Helpers.Helpers;
@@ -30,6 +31,11 @@ namespace AcademicFlow.Managers.Managers
             return securityKey;
         }
 
+        public async Task UpdateUser(User user)
+        {
+            await _userService.UpdateUser(user);
+        }
+
         public async IAsyncEnumerable<UserWebModel> GetUsers(string controllerUrl)
         {
             var users = _userService.GetUsers().ProjectTo<UserWebModel>(MapperConfig).AsAsyncEnumerable();
@@ -40,6 +46,22 @@ namespace AcademicFlow.Managers.Managers
 
                 yield return user;
             }
+        }
+
+        public async Task<User> GetUserById(int userId)
+        {
+           return  await _userService.GetUserById(userId);
+            
+        }
+
+        public async Task DeleteUser(int userId)
+        {
+             await _userService.DeleteUser(userId);
+        }
+
+        public async Task UpdateRoles(int userId, IEnumerable<RolesEnum> roles)
+        {
+            await _userService.UpdateRoles(userId, roles);
         }
     }
 }

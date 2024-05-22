@@ -4,6 +4,7 @@ using AcademicFlow.Migrations.Factory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AcademicFlow.Migrations.Migrations
 {
     [DbContext(typeof(MigrationsDbContext))]
-    partial class MigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240514172650_UpdateTable_DeletedProperty_added")]
+    partial class UpdateTable_DeletedProperty_added
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,16 +44,7 @@ namespace AcademicFlow.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserCredentials", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            PasswordHash = "9D5224C863CDFF320DF4CA0A4FC4450EF3CAAE32C7683FB7D91EAA1E0ECDF5A7",
-                            Salt = "jqh08bf8",
-                            Username = "admin"
-                        });
+                    b.ToTable("UserCredentials");
                 });
 
             modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.UserRole", b =>
@@ -71,15 +65,7 @@ namespace AcademicFlow.Migrations.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRole", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Role = 0,
-                            UserId = 1
-                        });
+                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("AcademicFlow.Domain.Entities.User", b =>
@@ -121,20 +107,7 @@ namespace AcademicFlow.Migrations.Migrations
                     b.HasIndex("PersonalCode")
                         .IsUnique();
 
-                    b.ToTable("User", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Age = -1,
-                            Email = "adm@adm.adm",
-                            IsDeleted = false,
-                            Name = "Admin",
-                            PersonalCode = "000000-00000",
-                            PhoneNumber = "0000000",
-                            Surname = "Admin"
-                        });
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.UserCredentials", b =>

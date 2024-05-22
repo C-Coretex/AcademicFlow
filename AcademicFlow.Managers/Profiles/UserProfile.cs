@@ -14,7 +14,8 @@ namespace AcademicFlow.Managers.Profiles
         public UserProfile()
         {
             CreateMap<User, UserWebModel>()
-                .ForMember(x => x.UserRegistrationData, opt => opt.MapFrom(x => new UserRegistrationData(x.UserCredentials)));
+                .ForMember(x => x.UserRegistrationData, opt => opt.MapFrom(x => new UserRegistrationData(x.UserCredentials)))
+                .ForMember(x => x.Roles, opt => opt.MapFrom(x => x.UserRoles.Select(x => x.Role.ToString())));
         }
     }
 }
