@@ -9,3 +9,5 @@ Features:
 - Class/lectures diary
 - Assignment submitting and grading
 - Management of all the data and relations
+
+![image](https://github.com/C-Coretex/AcademicFlow/assets/44605873/5a918857-c054-4487-9ba6-2d3b86b2bc37)
