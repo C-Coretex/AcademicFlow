@@ -9,5 +9,13 @@ namespace AcademicFlow.Domain.Contracts.IServices
         Course? GetCourseById(int id);
 
         void UpdateCourse(Course course);
+
+        void DeleteCourse(int id);
+
+        IQueryable<Course> GetAll();
+        
+        void DeleteCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles);
+        
+        void AddCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles);
     }
 }

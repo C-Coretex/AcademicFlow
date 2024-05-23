@@ -23,6 +23,26 @@ namespace AcademicFlow.Domain.Services
         {
             _courseRepository.Update(course);
         }
+
+        public IQueryable<Course> GetAll()
+        {
+            return _courseRepository.GetAll();
+        }
+
+        public void DeleteCourse(int id)
+        {
+            _courseRepository.Delete(id);
+        }
+
+        public void DeleteCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles)
+        {
+            _courseUserRoleRepository.DeleteRange(userRoles);
+        }
+
+        public void AddCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles)
+        {
+            _courseUserRoleRepository.AddRange(userRoles);
+        }
     }
 }
 

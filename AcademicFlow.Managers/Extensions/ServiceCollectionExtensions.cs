@@ -12,6 +12,7 @@ namespace AcademicFlow.Managers.Extensions
             serviceCollection.AddScoped<IUserManager, UserManager>();
             serviceCollection.AddScoped<IUserCredentialsManager, UserCredentialsManager>();
             serviceCollection.AddScoped<ICourseManager, CourseManager>();
+            serviceCollection.AddScoped<IProgramManager, ProgramManager>();
 
             var mapper = GetMapperConfiguration().CreateMapper();
             serviceCollection.AddSingleton(mapper);

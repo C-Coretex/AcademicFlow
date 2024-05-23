@@ -2,7 +2,6 @@
 using AcademicFlow.Domain.Entities;
 using AcademicFlow.Filters;
 using AcademicFlow.Managers.Contracts.IManagers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademicFlow.Controllers

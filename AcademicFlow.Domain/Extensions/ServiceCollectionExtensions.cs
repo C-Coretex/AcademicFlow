@@ -1,5 +1,4 @@
-﻿using AcademicFlow.Domain.Contracts.IRepositories;
-using AcademicFlow.Domain.Contracts.IServices;
+﻿using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 

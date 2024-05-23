@@ -10,5 +10,12 @@ namespace AcademicFlow.Domain.Contracts.Entities
 
         public virtual ICollection<CourseProgram>? Courses { get; set; }
         public virtual ICollection<ProgramUserRole>? Users { get; set; }
+
+        public Program() { }
+        public Program(string name, int semesterNr)
+        {
+            Name = name;
+            SemesterNr = semesterNr;
+        }
     }
 }
