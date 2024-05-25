@@ -10,5 +10,6 @@ namespace AcademicFlow.Managers.Contracts.IManagers
         Program? GetProgramById(int id);
         void UpdateProgram(Program program);
         IEnumerable<ProgramTableItem> GetProgramTableItemList(int? userId);
+        void EditProgramUserRoles(int programId, int[] usersIds);
     }
 }

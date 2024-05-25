@@ -59,6 +59,34 @@ namespace AcademicFlow.Managers.Managers
             _courseProgramService.AddRange(toInsertPrograms);
         }
 
-        
+        public void EditCourseUserRoles(int courseId, int[] usersIds, RolesEnum role)
+        {
+            var users = _userService.GetUsers();
+            var oldUsers = users
+                .Where(x => x.UserRoles.Any(y => y.Courses != null && y.Courses.Any(z => z.Course.Id == courseId)))
+                .ToList();
+
+            var toDeleteCourseUsers = oldUsers
+                .Where(x => !usersIds.Contains(x.Id))
+                .Select(x => x.UserRoles.Where(x => x.Role == role).FirstOrDefault())
+                .Where(x => x != null) 
+                .Select(x => new CourseUserRole()
+                {
+                    CourseId = courseId,
+                    UserRoleId = x.Id
+                });
+            _courseService.DeleteCourseUserRolesRange(toDeleteCourseUsers);
+
+            var toInsertCourseUsers = users
+                .Where(x => usersIds.Contains(x.Id))
+                .Select(x => x.UserRoles.Where(x => x.Role == role).FirstOrDefault())
+                .Where(x => x != null) 
+                .Select(x => new CourseUserRole()
+                {
+                    CourseId = courseId,
+                    UserRoleId = x.Id
+                });
+            _courseService.AddCourseUserRolesRange(toInsertCourseUsers);
+        }
     }
 }

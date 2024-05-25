@@ -104,23 +104,14 @@ namespace AcademicFlow.Controllers
                 return BadRequest(e.Message);
             }
         }
+
         [AuthorizeUser(RolesEnum.Admin)]
-        [HttpPost("EditCourseMembers")]
-        public IActionResult EditCourseMembers([FromForm] int id, [FromForm] int[] progamIds)
+        [HttpPost("EditCoursePrograms")]
+        public IActionResult EditCoursePrograms([FromForm] int id, [FromForm] int[] progamIds)
         {
             try
             {
-                var course = _courseManager.GetCourseById(id);
-                if (course == null)
-                {
-                    var message = $"Course {id} do not exist";
-                    _logger.LogError(message);
-                    return BadRequest(message);
-                }
-                course.Name = name;
-                course.Description = description;
-                course.CreditPoints = creditPoints;
-                _courseManager.UpdateCourse(course);
+                _courseManager.EditCoursePrograms(id, progamIds);
                 return Ok();
             }
             catch (Exception e)
@@ -130,7 +121,22 @@ namespace AcademicFlow.Controllers
             }
         }
 
-
+        /// <param name="role">Assing user as professor or as student</param>
+        [AuthorizeUser(RolesEnum.Admin)]
+        [HttpPost("EditCoursePrograms")]
+        public IActionResult EditCoursePrograms([FromForm] int id, [FromForm] int[] userIds, [FromForm] RolesEnum role)
+        {
+            try
+            {
+                _courseManager.EditCourseUserRoles(id, userIds, role);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Course editing error");
+                return BadRequest(e.Message);
+            }
+        }
 
     }
 }

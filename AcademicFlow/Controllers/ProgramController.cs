@@ -98,7 +98,24 @@ namespace AcademicFlow.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Course delete error");
+                _logger.LogError(e, "Program delete error");
+                return BadRequest(e.Message);
+            }
+        }
+
+        /// <param name="role">Assing user as professor or as student</param>
+        [AuthorizeUser(RolesEnum.Admin)]
+        [HttpPost("EditProgramUserRoles")]
+        public IActionResult EditProgramUserRoles([FromForm] int id, [FromForm] int[] userIds)
+        {
+            try
+            {
+                _programManager.EditProgramUserRoles(id, userIds);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Program editing error");
                 return BadRequest(e.Message);
             }
         }

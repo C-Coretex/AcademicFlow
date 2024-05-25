@@ -1,4 +1,5 @@
 ﻿using AcademicFlow.Domain.Contracts.Entities;
+using AcademicFlow.Domain.Contracts.Enums;
 using AcademicFlow.Managers.Contracts.Models.CourseModels;
 
 namespace AcademicFlow.Managers.Contracts.IManagers
@@ -16,5 +17,6 @@ namespace AcademicFlow.Managers.Contracts.IManagers
         IEnumerable<CourseTableItem> GetCourseTableItemList(int? userId);
 
         void EditCoursePrograms(int courseId, int[] programIds);
+        void EditCourseUserRoles(int courseId, int[] usersIds, RolesEnum role);
     }
 }

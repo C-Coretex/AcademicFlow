@@ -32,5 +32,15 @@ namespace AcademicFlow.Domain.Services
         {
             _programRepository.Delete(id);
         }
+
+        public void DeleteProgramUserRolesRange(IEnumerable<ProgramUserRole> userRoles)
+        {
+            _programUserRoleRepository.DeleteRange(userRoles);
+        }
+
+        public void AddProgramUserRolesRange(IEnumerable<ProgramUserRole> userRoles)
+        {
+            _programUserRoleRepository.AddRange(userRoles);
+        }
     }
 }
