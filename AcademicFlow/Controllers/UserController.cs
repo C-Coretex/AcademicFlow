@@ -151,8 +151,13 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                //var user = await _userManager.GetUserById(userId);
-                var userCredential = await _userCredentialsManager.GetUserCredentialsById(userId);
+                var user = await _userManager.GetUserById(userId);
+                if (user == null)
+                {
+                    var message = $"User do not exist";
+                    _logger.LogError(message);
+                    return BadRequest(message);
+                }
                 var securityKey = await _userCredentialsManager.ResetUserCredentials(userId);
                 var resetPasswordEndpoint = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/Home/UserPasswordReset?secretKey={securityKey}";
                 

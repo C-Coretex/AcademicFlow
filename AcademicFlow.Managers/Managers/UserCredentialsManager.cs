@@ -77,16 +77,17 @@ namespace AcademicFlow.Managers.Managers
 
         public async Task<UserCredentials> GetUserCredentialsById(int userId)
         {
-
-            return await _userCredentialsService.GetUserCredentialsById(userId);
+            var userCredentials = await _userCredentialsService.GetUserCredentialsById(userId);
+            if (userCredentials == null)
+                throw new ValidationException("User credentials not found");
+                
+            return userCredentials;
         }
 
         public async Task<string?> ResetUserCredentials(int userId)
         {
-
             var securityKey = CryptographyHelper.GetRandomString(UserConstants.SecurityKeySize);
             var userCredentials = await GetUserCredentialsById(userId);
-
             if (userCredentials == null)
                 throw new ValidationException("User credentials not found");
 
@@ -100,7 +101,6 @@ namespace AcademicFlow.Managers.Managers
         public async Task<UserCredentials> UpdateUserCredentials(string securityKey, string password)
         {
             var userCredentials = await GetUserCredentialsBySecretKey(securityKey);
-
             if (userCredentials == null)
                 throw new ValidationException("User credentials not found");
 
