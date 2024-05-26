@@ -80,6 +80,19 @@ namespace AcademicFlow.Controllers
             }
         }
 
+        [HttpGet("PasswordReset")]
+        public async Task<IActionResult> PasswordReset([FromBody] UserModel userModel)
+        {
+            try
+            {
+                var userCredentials = await _userCredentialsManager.UpdateUserCredentials(userModel.SecretKey, userModel.Password);
+                AuthorizationHelpers.LoginUser(HttpContext.Session, userCredentials.Id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error while entering new password");
+                
         [HttpGet("GetCurrentUser")]
         public async Task<IActionResult> GetCurrentUser() 
         {

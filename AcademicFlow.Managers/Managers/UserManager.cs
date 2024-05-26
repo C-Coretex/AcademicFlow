@@ -15,25 +15,18 @@ namespace AcademicFlow.Managers.Managers
     public class UserManager : BaseManager, IUserManager
     {
         private readonly IUserService _userService;
-        public UserManager(IMapper mapper, IUserService userService): base(mapper)
+        private readonly IUserCredentialsManager _userCredentialsManager;
+        public UserManager(IMapper mapper, IUserService userService, IUserCredentialsManager userCredentialsManager): base(mapper)
         {
             _userService = userService;
+            _userCredentialsManager = userCredentialsManager;
         }
 
         public async Task<string> AddUser(User user)
         {
             user = await _userService.AddUser(user);
-
-            var securityKey = CryptographyHelper.GetRandomString(UserConstants.SecurityKeySize);
-            var userCredentials = new UserCredentials()
-            {
-                SecurityKey = securityKey
-            };
-            user.UserCredentials = userCredentials;
-
-            await _userService.UpdateUser(user);
-
-            return securityKey;
+            
+            return user.UserCredentials.SecurityKey;
         }
 
         public async Task UpdateUser(User user)

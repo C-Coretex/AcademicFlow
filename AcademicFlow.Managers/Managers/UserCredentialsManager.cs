@@ -1,5 +1,8 @@
-﻿using AcademicFlow.Domain.Contracts.IServices;
+﻿using AcademicFlow.Domain.Contracts.Constants;
+using AcademicFlow.Domain.Contracts.Entities;
+using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Entities;
+using AcademicFlow.Domain.Helpers.Helpers;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models.UserModels;
 using AutoMapper;
@@ -45,6 +48,24 @@ namespace AcademicFlow.Managers.Managers
             return Mapper.Map<UserWebModel>(user);
         }
 
+        public async Task<UserCredentials> GetUserCredentialsBySecretKey(string secretKey)
+        {
+            var userCredentials = await _userCredentialsService.GetUserCredentialsBySecretKey(secretKey);
+            if (userCredentials == null)
+                throw new AuthenticationException("Username or password incorrect");
+
+            return userCredentials;
+        }
+
+        public async Task<UserWebModel> GetUserWebModelBySecretKey(string secretKey)
+        {
+            var user = await _userCredentialsService.GetUserBySecretKey(secretKey);
+            if (user == null)
+                throw new AuthenticationException("Username or password incorrect");
+
+            return Mapper.Map<UserWebModel>(user);
+        }
+
         public async Task<UserWebModel> GetUserBySecretKey(string secretKey)
         {
             var user = await _userCredentialsService.GetUserBySecretKey(secretKey);
@@ -52,6 +73,43 @@ namespace AcademicFlow.Managers.Managers
                 throw new AuthenticationException("Username or password incorrect");
 
             return Mapper.Map<UserWebModel>(user);
+        }
+
+        public async Task<UserCredentials> GetUserCredentialsById(int userId)
+        {
+            var userCredentials = await _userCredentialsService.GetUserCredentialsById(userId);
+            if (userCredentials == null)
+                throw new ValidationException("User credentials not found");
+                
+            return userCredentials;
+        }
+
+        public async Task<string?> ResetUserCredentials(int userId)
+        {
+            var securityKey = CryptographyHelper.GetRandomString(UserConstants.SecurityKeySize);
+            var userCredentials = await GetUserCredentialsById(userId);
+            if (userCredentials == null)
+                throw new ValidationException("User credentials not found");
+
+            userCredentials.SecurityKey = securityKey;
+            await _userCredentialsService.SaveUserCredentials(userCredentials);
+            if (userCredentials != null)
+                return securityKey;
+            return null;
+         }
+
+        public async Task<UserCredentials> UpdateUserCredentials(string securityKey, string password)
+        {
+            var userCredentials = await GetUserCredentialsBySecretKey(securityKey);
+            if (userCredentials == null)
+                throw new ValidationException("User credentials not found");
+
+            var (hash, salt) = CryptographyHelper.GetHash(password);
+            userCredentials.PasswordHash = hash;
+            userCredentials.Salt = salt;
+            await _userCredentialsService.SaveUserCredentials(userCredentials);
+
+            return userCredentials;
         }
     }
 }

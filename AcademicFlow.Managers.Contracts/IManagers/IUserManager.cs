@@ -21,3 +21,4 @@ namespace AcademicFlow.Managers.Contracts.IManagers
         Task UpdateUser(User user);
     }
 }
+
