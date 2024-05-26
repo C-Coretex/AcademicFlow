@@ -73,11 +73,11 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin, RolesEnum.Proffesor, RolesEnum.Student)]
         [HttpGet("GetProgramTable")]
-        public IActionResult GetProgramTable(int? assignedUserId)
+        public IActionResult GetProgramTable(int? assignedUserId = null, RolesEnum? role = null)
         {
             try
             {
-                var programs = _programManager.GetProgramTableItemList(assignedUserId);
+                var programs = _programManager.GetProgramTableItemList(assignedUserId, role);
                 return PartialView("Partials/_ProgramTable", programs); /// return html content
             }
             catch (Exception e)
@@ -116,6 +116,23 @@ namespace AcademicFlow.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, "Program editing error");
+                return BadRequest(e.Message);
+            }
+        }
+
+        [AuthorizeUser]
+        [HttpGet("GetProgramUsers")]
+        public IActionResult GetProgramUsers(int programId)
+        {
+            try
+            {
+                var programs = _programManager.GetProgramUsers(programId);
+                return Ok(programs);
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Get Program Users Error");
                 return BadRequest(e.Message);
             }
         }

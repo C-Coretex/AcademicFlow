@@ -17,5 +17,7 @@ namespace AcademicFlow.Domain.Contracts.IServices
         void DeleteCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles);
         
         void AddCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles);
+
+        IEnumerable<CourseUserRole> GetUserRoles();
     }
 }

@@ -42,5 +42,10 @@ namespace AcademicFlow.Domain.Services
         {
             _programUserRoleRepository.AddRange(userRoles);
         }
+
+        public IEnumerable<ProgramUserRole> GetAllUserRoles()
+        {
+            return _programUserRoleRepository.GetAll();
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AcademicFlow.Domain.Contracts.Entities;
 using AcademicFlow.Domain.Contracts.Enums;
 using AcademicFlow.Domain.Contracts.IServices;
+using AcademicFlow.Domain.Entities;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models.ProgramModels;
 using AutoMapper;
@@ -8,10 +9,9 @@ using AutoMapper.QueryableExtensions;
 
 namespace AcademicFlow.Managers.Managers
 {
-    public class ProgramManager(IMapper mapper, ICourseProgramService courseProgramService, IProgramService programService, IUserService userService)
+    public class ProgramManager(IMapper mapper, IProgramService programService, IUserService userService)
         : BaseManager(mapper), IProgramManager
     {
-        private readonly ICourseProgramService _courseProgramService = courseProgramService;
         private readonly IProgramService _programService = programService;
         private readonly IUserService _userService = userService;
 
@@ -35,12 +35,12 @@ namespace AcademicFlow.Managers.Managers
             _programService.UpdateProgram(program);
         }
 
-        public IEnumerable<ProgramTableItem> GetProgramTableItemList(int? userId)
+        public IEnumerable<ProgramTableItem> GetProgramTableItemList(int? userId, RolesEnum? role)
         {
             var programs = _programService.GetAll();
-            if (userId.HasValue)
+            if (userId.HasValue && role.HasValue)
             {
-                programs = programs.Where(x => x.Users != null && x.Users.Any(x => x.User.User.Id == userId));
+                programs = programs.Where(x => x.UserRoles != null && x.UserRoles.Any(x => x.UserRole.Id == userId && x.UserRole.Role == role));
             }
             return programs.ProjectTo<ProgramTableItem>(MapperConfig).AsEnumerable();
         }
@@ -66,13 +66,21 @@ namespace AcademicFlow.Managers.Managers
             var toInsertCourseUsers = users
                 .Where(x => usersIds.Contains(x.Id))
                 .Select(x => x.UserRoles.Where(x => x.Role == RolesEnum.Student).FirstOrDefault())
-                .Where(x => x != null) 
+                .Where(x => x != null)
                 .Select(x => new ProgramUserRole()
                 {
                     ProgramId = programId,
                     UserRoleId = x.Id
                 });
             _programService.AddProgramUserRolesRange(toInsertCourseUsers);
+        }
+
+        public IEnumerable<User> GetProgramUsers(int programId)
+        {
+            return _programService
+                .GetAllUserRoles()
+                .Where(x => x.ProgramId == programId)
+                .Select(x => x.UserRole.User);
         }
     }
 }

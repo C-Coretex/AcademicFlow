@@ -7,7 +7,7 @@ namespace AcademicFlow.Domain.Contracts.Entities
         public int Id { get; set; }
 
         public int UserRoleId { get; set; }
-        public virtual UserRole User { get; set; }
+        public virtual UserRole UserRole { get; set; }
 
         public int ProgramId { get; set; }
         public virtual Program Program { get; set; }

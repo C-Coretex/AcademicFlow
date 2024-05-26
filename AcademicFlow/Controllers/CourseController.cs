@@ -15,12 +15,12 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin)]
         [HttpPut("AddCourse")]
-        public IActionResult AddCourse([FromForm] string name, [FromForm] string description, [FromForm] int creditPoints)
+        public IActionResult AddCourse([FromForm] string name, [FromForm] string description, [FromForm] int creditPoints, [FromForm] string publicId, [FromForm] string? imageUrl)
         {
             try
             {
-                var course = new Course(name, description, creditPoints);
-                var courseId =  _courseManager.AddCourse(course);
+                var course = new Course(name, description, creditPoints, publicId, imageUrl);
+                var courseId = _courseManager.AddCourse(course);
 
                 return Ok(courseId);
             }
@@ -33,11 +33,12 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin, RolesEnum.Proffesor)]
         [HttpPost("EditCourse")]
-        public IActionResult EditCourse([FromForm] int id, [FromForm] string name, [FromForm] string description, [FromForm] int creditPoints)
+        public IActionResult EditCourse([FromForm] int id, [FromForm] string name, [FromForm] string description, [FromForm] int creditPoints, [FromForm] string publicId,
+            [FromForm] string? imageUrl)
         {
             try
             {
-                var course =  _courseManager.GetCourseById(id);
+                var course = _courseManager.GetCourseById(id);
                 if (course == null)
                 {
                     var message = $"Course {id} do not exist";
@@ -47,6 +48,8 @@ namespace AcademicFlow.Controllers
                 course.Name = name;
                 course.Description = description;
                 course.CreditPoints = creditPoints;
+                course.PublicId = publicId;
+                course.ImageUrl = imageUrl;
                 _courseManager.UpdateCourse(course);
                 return Ok();
             }
@@ -56,7 +59,7 @@ namespace AcademicFlow.Controllers
                 return BadRequest(e.Message);
             }
         }
-        
+
         [AuthorizeUser(RolesEnum.Admin, RolesEnum.Proffesor, RolesEnum.Student)]
         [HttpGet("GetCourse")]
         public IActionResult GetCourse(int id)
@@ -75,11 +78,11 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin, RolesEnum.Proffesor, RolesEnum.Student)]
         [HttpGet("GetCourseTable")]
-        public IActionResult GetCourseTable(int? assignedUserId)
+        public IActionResult GetCourseTable(int? assignedUserId = null, int? assingedProgramId = null, RolesEnum? role = null)
         {
             try
             {
-                var courses = _courseManager.GetCourseTableItemList(assignedUserId);
+                var courses = _courseManager.GetCourseTableItemList(assignedUserId, role, assingedProgramId);
                 return PartialView("Partials/_CourseTable", courses); /// return html content
             }
             catch (Exception e)
@@ -123,8 +126,8 @@ namespace AcademicFlow.Controllers
 
         /// <param name="role">Assing user as professor or as student</param>
         [AuthorizeUser(RolesEnum.Admin)]
-        [HttpPost("EditCoursePrograms")]
-        public IActionResult EditCoursePrograms([FromForm] int id, [FromForm] int[] userIds, [FromForm] RolesEnum role)
+        [HttpPost("EditCourseUserRoles")]
+        public IActionResult EditCourseUserRoles([FromForm] int id, [FromForm] int[] userIds, [FromForm] RolesEnum role)
         {
             try
             {
@@ -138,5 +141,38 @@ namespace AcademicFlow.Controllers
             }
         }
 
+        [AuthorizeUser]
+        [HttpGet("GetCourseUsers")]
+        public IActionResult GetCourseUsers(int courseId, RolesEnum role)
+        {
+            try
+            {
+                var users =  _courseManager.GetCourseUsers(courseId, role);
+                return Ok(users);
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Get Course Users Error");
+                return BadRequest(e.Message);
+            }
+        }
+
+        [AuthorizeUser]
+        [HttpGet("GetCoursePrograms")]
+        public IActionResult GetCoursePrograms(int courseId)
+        {
+            try
+            {
+                var programs = _courseManager.GetCoursePrograms(courseId);
+                return Ok(programs);
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Get Program Users Error");
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

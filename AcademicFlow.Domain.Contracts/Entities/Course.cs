@@ -8,6 +8,8 @@ namespace AcademicFlow.Domain.Contracts.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public int CreditPoints { get; set; }
+        public string PublicId { get; set; }
+        public string? ImageUrl { get; set; }
 
         /// <summary>
         /// Assigned propgrams
@@ -20,11 +22,13 @@ namespace AcademicFlow.Domain.Contracts.Entities
         public virtual ICollection<CourseUserRole>? Users { get; set; }
 
         public Course() { }
-        public Course(string name, string description, int creditPoints)
+        public Course(string name, string description, int creditPoints, string publicId, string? imageUrl)
         {
             Name = name;
             Description = description;
             CreditPoints = creditPoints;
+            PublicId = publicId;
+            ImageUrl = imageUrl;
         }
     }
 }

@@ -8,9 +8,7 @@ namespace AcademicFlow.Managers.Profiles
     {
         public ProgramProfile()
         {
-            CreateMap<Program, ProgramTableItem>()
-                .ForMember(dst => dst.CourseNames, opt => opt
-                    .MapFrom(src => src.Courses != null ? src.Courses.Where(x => x.ProgramId == src.Id && x.Course != null).Select(x => x.Course.Name) : null));
+            CreateMap<Program, ProgramTableItem>();
         }
     }
 }

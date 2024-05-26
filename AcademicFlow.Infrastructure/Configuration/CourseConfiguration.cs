@@ -9,6 +9,7 @@ namespace AcademicFlow.Infrastructure.Configuration
         public void Configure(EntityTypeBuilder<Course> builder)
         {
             builder.HasKey(u => u.Id);
+            builder.HasAlternateKey(x => x.PublicId);
         }
     }
 }

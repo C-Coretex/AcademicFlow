@@ -11,6 +11,7 @@ namespace AcademicFlow.Domain.Contracts.IServices
         void DeleteProgram(int id);
         void DeleteProgramUserRolesRange(IEnumerable<ProgramUserRole> userRoles);
         void AddProgramUserRolesRange(IEnumerable<ProgramUserRole> userRoles);
+        IEnumerable<ProgramUserRole> GetAllUserRoles();
 
     }
 }

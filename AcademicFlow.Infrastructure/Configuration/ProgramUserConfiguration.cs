@@ -9,8 +9,8 @@ namespace AcademicFlow.Infrastructure.Configuration
         public void Configure(EntityTypeBuilder<ProgramUserRole> builder)
         {
             builder.HasKey(u => u.Id);
-            builder.HasOne(x => x.User).WithMany(x => x.Programs);
-            builder.HasOne(x => x.Program).WithMany(x => x.Users);
+            builder.HasOne(x => x.UserRole).WithMany(x => x.Programs);
+            builder.HasOne(x => x.Program).WithMany(x => x.UserRoles);
         }
     }
 }
