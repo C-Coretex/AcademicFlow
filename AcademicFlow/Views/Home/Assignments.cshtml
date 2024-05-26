@@ -50,74 +50,82 @@
                 <hr class="my-4">
                 <p class="lead">List of all assignments</p>
 
-                <div class="assignments d-flex flex-column gap-3 my-5">
-                    <div class="course-assignments">
-                        <p class="display-6">Algoritmu teorija</p>
+                @if (assignments != null && assignments.Count > 0)
+                {
 
-                        <table class="table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Grade</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var assignment in assignments)
-                                {
+                    <div class="assignments d-flex flex-column gap-3 my-5">
+                        <div class="course-assignments">
+                            <p class="display-6">Algoritmu teorija</p>
+
+                            <table class="table">
+                                <thead class="thead-dark">
                                     <tr>
-                                        <th scope="row">@assignment.Id</th>
-                                        <td><a href="Assignment/@assignment.Id" class="text-success">@assignment.Title</a></td>
-                                        <td class="text-muted">@TruncateDescription(assignment.Description, 70)</td>
-
-                                        @if (@assignment.Grade != null) {
-                                            <td>@assignment.Grade/@assignment.TotalGrade</td>
-                                        }
-                                        else
-                                        {
-                                            <td>-</td>
-                                        }
-                                        
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Grade</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="course-assignments">
-                        <p class="display-6">OOP</p>
+                                </thead>
+                                <tbody>
+                                    @foreach (var assignment in assignments)
+                                    {
+                                        <tr>
+                                            <th scope="row">@assignment.Id</th>
+                                            <td><a href="Assignment/@assignment.Id" class="text-success">@assignment.Title</a></td>
+                                            <td class="text-muted">@TruncateDescription(assignment.Description, 70)</td>
 
-                        <table class="table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Grade</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var assignment in assignments)
-                                {
+                                            @if (@assignment.Grade != null) {
+                                                <td>@assignment.Grade/@assignment.TotalGrade</td>
+                                            }
+                                            else
+                                            {
+                                                <td>-</td>
+                                            }
+                                            
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="course-assignments">
+                            <p class="display-6">OOP</p>
+
+                            <table class="table">
+                                <thead class="thead-dark">
                                     <tr>
-                                        <th scope="row">@assignment.Id</th>
-                                        <td><a href="Assignment/@assignment.Id" class="text-success">@assignment.Title</a></td>
-                                        <td class="text-muted">@TruncateDescription(assignment.Description, 70)</td>
-
-                                        @if (@assignment.Grade != null) {
-                                            <td>@assignment.Grade/@assignment.TotalGrade</td>
-                                        }
-                                        else
-                                        {
-                                            <td>-</td>
-                                        }
-                                        
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Grade</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var assignment in assignments)
+                                    {
+                                        <tr>
+                                            <th scope="row">@assignment.Id</th>
+                                            <td><a href="Assignment/@assignment.Id" class="text-success">@assignment.Title</a></td>
+                                            <td class="text-muted">@TruncateDescription(assignment.Description, 70)</td>
+
+                                            @if (@assignment.Grade != null) {
+                                                <td>@assignment.Grade/@assignment.TotalGrade</td>
+                                            }
+                                            else
+                                            {
+                                                <td>-</td>
+                                            }
+                                            
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <p>No assignments available.</p>
+                }
             </div>
         </div>
     </div>
