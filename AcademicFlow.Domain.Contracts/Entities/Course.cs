@@ -17,7 +17,7 @@ namespace AcademicFlow.Domain.Contracts.Entities
         public ICollection<CourseProgram>? Programs { get; set; }
 
         /// <summary>
-        /// Assigned users (as a Proffesor or as a Student)
+        /// Assigned users (as a Professor or as a Student)
         /// </summary>
         public ICollection<CourseUserRole>? Users { get; set; }
 

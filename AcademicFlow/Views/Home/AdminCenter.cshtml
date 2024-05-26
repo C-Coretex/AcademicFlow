@@ -83,8 +83,8 @@
                         <label for="student">student</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="Professor" name="roles" value="proffessor">
-                        <label for="proffessor">Professor</label>
+                        <input type="checkbox" id="Professor" name="roles" value="professor">
+                        <label for="professor">Professor</label>
                     </div>
                     <!-- Add more checkboxes for each role -->
                 </div>
@@ -101,9 +101,15 @@
                 <div class="error-message"></div>
             </form>
 
+            <form id="resetPasswordForm" class="">
+                <div class="mb-3">
+                    <label for="userId" class="form-label">User ID</label>
+                    <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
+                </div>
+                <button type="submit" class="btn btn-primary js-reset-pass">Reset password!</button>
+            </form>
         </div>
-
-
+        
         <div class="user-table col">
             <h2>User Data</h2>
             <table class="table table-striped" id="userTable">

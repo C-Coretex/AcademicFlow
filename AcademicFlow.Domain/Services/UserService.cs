@@ -37,12 +37,13 @@ namespace AcademicFlow.Domain.Services
 
         public async Task<User> GetUserById(int userId)
         {
-            return await GetUsers().FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Id == userId);
+            return user;
         }
 
         public async Task DeleteUser(int userId)
         {
-            var user = await GetUsers().FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Id == userId);
             
             if (user == null)
                 throw new ValidationException($"User with personal code {userId} does not exist.");

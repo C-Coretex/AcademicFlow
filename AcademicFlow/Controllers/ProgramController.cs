@@ -1,7 +1,6 @@
 ﻿using AcademicFlow.Domain.Contracts.Enums;
 using AcademicFlow.Filters;
 using AcademicFlow.Managers.Contracts.IManagers;
-using AcademicFlow.Managers.Managers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademicFlow.Controllers
@@ -56,7 +55,7 @@ namespace AcademicFlow.Controllers
             }
         }
 
-        [AuthorizeUser(RolesEnum.Admin, RolesEnum.Proffesor, RolesEnum.Student)]
+        [AuthorizeUser(RolesEnum.Admin, RolesEnum.Professor, RolesEnum.Student)]
         [HttpGet("GetProgram")]
         public async Task<IActionResult> GetProgram(int id)
         {
@@ -72,7 +71,7 @@ namespace AcademicFlow.Controllers
             }
         }
 
-        [AuthorizeUser(RolesEnum.Admin, RolesEnum.Proffesor, RolesEnum.Student)]
+        [AuthorizeUser(RolesEnum.Admin, RolesEnum.Professor, RolesEnum.Student)]
         [HttpGet("GetProgramTable")]
         public IActionResult GetProgramTable(int? assignedUserId = null, RolesEnum? role = null)
         {

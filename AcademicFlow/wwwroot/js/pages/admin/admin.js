@@ -333,5 +333,22 @@ $(document).ready(function () {
             //TODO add form validation errors
         }
 
+    $(".js-reset-pass").on("click", function (e) {
+        e.preventDefault();
+        let t = $("#resetPasswordForm");
+        let formData = t.serialize(); 
+        $.ajax({
+            type: "POST",  
+            url: "/api/User/ResetPassword",
+            data: formData,  
+            success: function (response) {
+                console.log("Got it:", response);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    });
+
     });
 });

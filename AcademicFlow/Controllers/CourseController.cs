@@ -31,7 +31,7 @@ namespace AcademicFlow.Controllers
             }
         }
 
-        [AuthorizeUser(RolesEnum.Admin, RolesEnum.Proffesor)]
+        [AuthorizeUser(RolesEnum.Admin, RolesEnum.Professor)]
         [HttpPost("EditCourse")]
         public async Task<IActionResult> EditCourse([FromForm] int id, [FromForm] string name, [FromForm] string description, [FromForm] int creditPoints, [FromForm] string publicId,
             [FromForm] string? imageUrl)
@@ -60,7 +60,7 @@ namespace AcademicFlow.Controllers
             }
         }
 
-        [AuthorizeUser(RolesEnum.Admin, RolesEnum.Proffesor, RolesEnum.Student)]
+        [AuthorizeUser(RolesEnum.Admin, RolesEnum.Professor, RolesEnum.Student)]
         [HttpGet("GetCourse")]
         public async Task<IActionResult> GetCourse(int id)
         {
@@ -76,7 +76,7 @@ namespace AcademicFlow.Controllers
             }
         }
 
-        [AuthorizeUser(RolesEnum.Admin, RolesEnum.Proffesor, RolesEnum.Student)]
+        [AuthorizeUser(RolesEnum.Admin, RolesEnum.Professor, RolesEnum.Student)]
         [HttpGet("GetCourseTable")]
         public IActionResult GetCourseTable(int? assignedUserId = null, int? assingedProgramId = null, RolesEnum? role = null)
         {
