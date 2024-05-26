@@ -7,6 +7,33 @@ button {
     border-color: var(--color3) !important;
 }
 
+.course-name {
+    font-size: 2.5rem;
+    line-height: 1.5;
+    overflow: hidden; /* Hide overflow to truncate if needed */
+    text-overflow: ellipsis; /* Add ellipsis if truncated */
+
+    @media (min-width: 992px) {
+        font-size: 1.5rem;
+    }
+
+    @media (min-width: 1200px) {
+        &.course-name-lg {
+            font-size: 2.5rem;
+        }
+    }
+}
+
+.hero-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+
+    @media (min-width: 768px) {
+        height: 250px;
+    }
+}
+
 .footer{
     bottom: auto !important;
 }
