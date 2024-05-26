@@ -10,7 +10,8 @@ namespace AcademicFlow.Domain.Contracts.IServices
         Task<bool> IsUserCredentialsValid(string username, string password);
         Task<bool> IsUsernameTaken(string username);
         Task<User?> GetUserByCredentials(string username, string password);
-        Task<UserCredentials?> GetBySecretKey(string secretKey);
         Task<User?> GetUserBySecretKey(string secretKey);
+        Task<UserCredentials?> GetUserCredentialsById(int userId);
+        Task<UserCredentials?> GetUserCredentialsBySecretKey(string secretKey);
     }
 }

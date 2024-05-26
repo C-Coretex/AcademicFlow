@@ -1,4 +1,5 @@
-﻿using AcademicFlow.Helpers;
+﻿using AcademicFlow.Domain.Entities;
+using AcademicFlow.Helpers;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -72,6 +73,22 @@ namespace AcademicFlow.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while logging out");
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("PasswordReset")]
+        public async Task<IActionResult> PasswordReset([FromBody] UserModel userModel)
+        {
+            try
+            {
+                var userCredentials = await _userCredentialsManager.UpdateUserCredentials(userModel.SecretKey, userModel.Password);
+                AuthorizationHelpers.LoginUser(HttpContext.Session, userCredentials.Id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error while entering new password");
                 return BadRequest(e.Message);
             }
         }

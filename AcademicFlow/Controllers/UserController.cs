@@ -13,10 +13,13 @@ namespace AcademicFlow.Controllers
     {
         private readonly IUserManager _userManager;
         private readonly ILogger<UserController> _logger;
-        public UserController(IUserManager userManager, ILogger<UserController> logger)
+        private readonly IUserCredentialsManager _userCredentialsManager;
+        public UserController(IUserManager userManager, ILogger<UserController> logger, IUserCredentialsManager userCredentialsManager)
         {
             _userManager = userManager;
+
             _logger = logger;
+            _userCredentialsManager = userCredentialsManager;
         }
 
         [AuthorizeUser(RolesEnum.Admin)]
@@ -116,7 +119,6 @@ namespace AcademicFlow.Controllers
                 var user = _userManager.GetUserById(userId);
                 await _userManager.DeleteUser(userId);
                 return Ok();
-
             }
             catch (Exception e)
             {
@@ -127,7 +129,6 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser]
         [HttpPost("ChangeRoles")]
-
         public async Task<IActionResult> ChangeRole([FromForm] int userId, [FromForm] RolesEnum[] roles)
         {
             try
@@ -136,11 +137,30 @@ namespace AcademicFlow.Controllers
 
                 await _userManager.UpdateRoles(userId, roles);
                 return Ok();
-
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while changing role");
+                return BadRequest(e.Message);
+            }
+        }
+
+        [AuthorizeUser(RolesEnum.Admin)]
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromForm] int userId)
+        {
+            try
+            {
+                //var user = await _userManager.GetUserById(userId);
+                var userCredential = await _userCredentialsManager.GetUserCredentialsById(userId);
+                var securityKey = await _userCredentialsManager.ResetUserCredentials(userId);
+                var resetPasswordEndpoint = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/Home/UserPasswordReset?secretKey={securityKey}";
+                
+                return Ok(resetPasswordEndpoint);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error while resetting password");
                 return BadRequest(e.Message);
             }
         }

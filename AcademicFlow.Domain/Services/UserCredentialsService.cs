@@ -33,8 +33,7 @@ namespace AcademicFlow.Domain.Services
 
         public async Task SaveUserCredentials(UserCredentials userCredentials)
         {
-            
-                await _userCredentialsRepository.UpdateAsync(userCredentials);
+            await _userCredentialsRepository.UpdateAsync(userCredentials);
         }
 
         public async Task<bool> IsUserCredentialsValid(string username, string password)
@@ -78,10 +77,18 @@ namespace AcademicFlow.Domain.Services
             return userCredentials?.User;
         }
 
-        public async Task<UserCredentials?> GetBySecretKey(string secretKey)
+        public async Task<UserCredentials?> GetUserCredentialsBySecretKey(string secretKey)
         {
             var userCredentials = await _userCredentialsRepository.GetAll()
                                                        .FirstOrDefaultAsync(x => x.SecurityKey == secretKey);
+
+            return userCredentials;
+        }
+
+        public async Task<UserCredentials?> GetUserCredentialsById(int userId)
+        {
+            var userCredentials = await _userCredentialsRepository.GetAll()
+                                                       .FirstOrDefaultAsync(x => x.Id == userId);
 
             return userCredentials;
         }

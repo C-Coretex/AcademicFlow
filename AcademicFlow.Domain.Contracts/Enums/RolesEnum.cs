@@ -10,6 +10,6 @@ namespace AcademicFlow.Domain.Contracts.Enums
     {   
         Admin = 0,
         Student = 1,
-        Proffesor = 2,
+        Professor = 2,
     }
 }

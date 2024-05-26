@@ -25,10 +25,8 @@ namespace AcademicFlow.Managers.Managers
         public async Task<string> AddUser(User user)
         {
             user = await _userService.AddUser(user);
-
             
-
-            return securityKey;
+            return user.UserCredentials.SecurityKey;
         }
 
         public async Task UpdateUser(User user)

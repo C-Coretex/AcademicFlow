@@ -9,7 +9,8 @@ namespace AcademicFlow.Managers.Contracts.IManagers
         Task<User> RegisterUser(string secretKey, string username, string password);
         Task<UserWebModel> LoginUser(string username, string password);
         Task<UserWebModel> GetUserBySecretKey(string secretKey);
-        Task<UserCredentials> AddUserCredential(int userId);
-        Task DeleteUserCredential(int userId);
+        Task<UserCredentials?> GetUserCredentialsById(int userId);
+        Task<string?> ResetUserCredentials(int userId);
+        Task<UserCredentials> UpdateUserCredentials(string securityKey, string password);
     }
 }

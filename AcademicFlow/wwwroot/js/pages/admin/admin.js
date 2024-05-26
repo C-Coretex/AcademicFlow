@@ -262,6 +262,45 @@ $(document).ready(function () {
             })
         }
     });
-    
+
+  /*  $(".js-reset-pass").on("click", function (e) {
+        e.preventDefault();
+        let t = $("#resetPasswordForm");
+        t.find("#userId").val();
+        {
+            console.log(t[0]);
+            let e = new FormData(t[0]);
+            console.log(e), $.ajax({
+                type: "POST",
+                url: "/api/User/ResetPassword",
+                processData: !1,
+                contentType: !1,
+                data: e,
+                success: function (e) {
+                    console.log("Got it")
+                },
+                error: function (e, t, r) {
+                    console.error("Error:", r)
+                }
+            })
+        }
+    }); */
+
+    $(".js-reset-pass").on("click", function (e) {
+        e.preventDefault();
+        let t = $("#resetPasswordForm");
+        let formData = t.serialize();  // Serialize form data
+        $.ajax({
+            type: "POST",  // Use POST method
+            url: "/api/User/ResetPassword",
+            data: formData,  // Send the serialized data
+            success: function (response) {
+                console.log("Got it:", response);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    });
 
 });
