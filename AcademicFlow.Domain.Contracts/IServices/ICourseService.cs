@@ -4,19 +4,19 @@ namespace AcademicFlow.Domain.Contracts.IServices
 {
     public interface ICourseService
     {
-        int? AddCourse(Course course);
+        Task<int?> AddCourse(Course course);
 
-        Course? GetCourseById(int id);
+        Task<Course?> GetCourseById(int id);
 
-        void UpdateCourse(Course course);
-
-        void DeleteCourse(int id);
+        Task UpdateCourse(Course course);
 
         IQueryable<Course> GetAll();
-        
-        void DeleteCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles);
-        
-        void AddCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles);
+
+        Task DeleteCourse(int id);
+
+        Task DeleteCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles);
+
+        Task AddCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles);
 
         IEnumerable<CourseUserRole> GetUserRoles();
     }

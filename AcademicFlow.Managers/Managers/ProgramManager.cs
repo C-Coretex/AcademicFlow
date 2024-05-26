@@ -15,24 +15,24 @@ namespace AcademicFlow.Managers.Managers
         private readonly IProgramService _programService = programService;
         private readonly IUserService _userService = userService;
 
-        public int? AddProgram(Program program)
+        public async Task<int?> AddProgramAsync(Program program)
         {
-            return _programService.AddProgram(program);
+            return await _programService.AddProgramAsync(program);
         }
 
-        public void DeleteProgram(int id)
+        public async Task DeleteProgramAsync(int id)
         {
-            _programService.DeleteProgram(id);
+            await _programService.DeleteProgramAsync(id);
         }
 
-        public Program? GetProgramById(int id)
+        public async Task<Program?> GetProgramByIdAsync(int id)
         {
-            return _programService.GetProgramById(id);
+            return await _programService.GetProgramByIdAsync(id);
         }
 
-        public void UpdateProgram(Program program)
+        public async Task UpdateProgramAsync(Program program)
         {
-            _programService.UpdateProgram(program);
+            await _programService.UpdateProgramAsync(program);
         }
 
         public IEnumerable<ProgramTableItem> GetProgramTableItemList(int? userId, RolesEnum? role)
@@ -45,7 +45,7 @@ namespace AcademicFlow.Managers.Managers
             return programs.ProjectTo<ProgramTableItem>(MapperConfig).AsEnumerable();
         }
 
-        public void EditProgramUserRoles(int programId, int[] usersIds)
+        public async Task EditProgramUserRolesAsync(int programId, int[] usersIds)
         {
             var users = _userService.GetUsers();
             var oldUsers = users
@@ -61,7 +61,7 @@ namespace AcademicFlow.Managers.Managers
                     ProgramId = programId,
                     UserRoleId = x.Id
                 });
-            _programService.DeleteProgramUserRolesRange(toDeleteCourseUsers);
+            await _programService.DeleteProgramUserRolesRangeAsync(toDeleteCourseUsers);
 
             var toInsertCourseUsers = users
                 .Where(x => usersIds.Contains(x.Id))
@@ -72,7 +72,7 @@ namespace AcademicFlow.Managers.Managers
                     ProgramId = programId,
                     UserRoleId = x.Id
                 });
-            _programService.AddProgramUserRolesRange(toInsertCourseUsers);
+            await _programService.AddProgramUserRolesRangeAsync(toInsertCourseUsers);
         }
 
         public IEnumerable<User> GetProgramUsers(int programId)

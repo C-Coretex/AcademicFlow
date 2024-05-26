@@ -3,6 +3,7 @@ using AcademicFlow.Filters;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Managers;
 using Microsoft.AspNetCore.Mvc;
+
 namespace AcademicFlow.Controllers
 {
     [ApiController]
@@ -14,12 +15,12 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin)]
         [HttpPut("AddProgram")]
-        public IActionResult AddProgramm([FromForm] string name, [FromForm] int semesterNr)
+        public async Task<IActionResult> AddProgram([FromForm] string name, [FromForm] int semesterNr)
         {
             try
             {
                 var program = new Domain.Contracts.Entities.Program(name, semesterNr);
-                var programId = _programManager.AddProgram(program);
+                var programId = await _programManager.AddProgramAsync(program);
 
                 return Ok(programId);
             }
@@ -32,11 +33,11 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin)]
         [HttpPost("EditProgram")]
-        public IActionResult EditProgram([FromForm] int id, [FromForm] string name, [FromForm] int semesterNr)
+        public async Task<IActionResult> EditProgram([FromForm] int id, [FromForm] string name, [FromForm] int semesterNr)
         {
             try
             {
-                var program = _programManager.GetProgramById(id);
+                var program = await _programManager.GetProgramByIdAsync(id);
                 if (program == null)
                 {
                     var message = $"Program {id} do not exist";
@@ -45,7 +46,7 @@ namespace AcademicFlow.Controllers
                 }
                 program.Name = name;
                 program.SemesterNr = semesterNr;
-                _programManager.UpdateProgram(program);
+                await _programManager.UpdateProgramAsync(program);
                 return Ok();
             }
             catch (Exception e)
@@ -57,11 +58,11 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin, RolesEnum.Proffesor, RolesEnum.Student)]
         [HttpGet("GetProgram")]
-        public IActionResult GetProgram(int id)
+        public async Task<IActionResult> GetProgram(int id)
         {
             try
             {
-                var program = _programManager.GetProgramById(id);
+                var program = await _programManager.GetProgramByIdAsync(id);
                 return Ok(program);
             }
             catch (Exception e)
@@ -89,11 +90,11 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin)]
         [HttpDelete("DeleteProgram")]
-        public IActionResult DeleteProgram([FromForm] int id)
+        public async Task<IActionResult> DeleteProgram([FromForm] int id)
         {
             try
             {
-                _programManager.DeleteProgram(id);
+                await _programManager.DeleteProgramAsync(id);
                 return Ok();
             }
             catch (Exception e)
@@ -106,11 +107,11 @@ namespace AcademicFlow.Controllers
         /// <param name="role">Assing user as professor or as student</param>
         [AuthorizeUser(RolesEnum.Admin)]
         [HttpPost("EditProgramUserRoles")]
-        public IActionResult EditProgramUserRoles([FromForm] int id, [FromForm] int[] userIds)
+        public async Task<IActionResult> EditProgramUserRoles([FromForm] int id, [FromForm] int[] userIds)
         {
             try
             {
-                _programManager.EditProgramUserRoles(id, userIds);
+                await _programManager.EditProgramUserRolesAsync(id, userIds);
                 return Ok();
             }
             catch (Exception e)

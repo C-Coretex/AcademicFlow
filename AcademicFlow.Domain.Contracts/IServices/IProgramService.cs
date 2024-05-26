@@ -4,13 +4,13 @@ namespace AcademicFlow.Domain.Contracts.IServices
 {
     public interface IProgramService
     {
-        int? AddProgram(Program entity);
-        Program? GetProgramById(int id);
-        void UpdateProgram(Program entity);
+        Task<int?> AddProgramAsync(Program entity);
+        Task<Program?> GetProgramByIdAsync(int id);
+        Task UpdateProgramAsync(Program entity);
         IQueryable<Program> GetAll();
-        void DeleteProgram(int id);
-        void DeleteProgramUserRolesRange(IEnumerable<ProgramUserRole> userRoles);
-        void AddProgramUserRolesRange(IEnumerable<ProgramUserRole> userRoles);
+        Task DeleteProgramAsync(int id);
+        Task DeleteProgramUserRolesRangeAsync(IEnumerable<ProgramUserRole> userRoles);
+        Task AddProgramUserRolesRangeAsync(IEnumerable<ProgramUserRole> userRoles);
         IEnumerable<ProgramUserRole> GetAllUserRoles();
 
     }

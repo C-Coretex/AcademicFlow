@@ -16,24 +16,24 @@ namespace AcademicFlow.Managers.Managers
         private readonly ICourseProgramService _courseProgramService = courseProgramService;
         private readonly IUserService _userService = userService;
 
-        public int? AddCourse(Course course)
+        public async Task<int?> AddCourseAsync(Course course)
         {
-            return _courseService.AddCourse(course);
+            return await _courseService.AddCourse(course);
         }
 
-        public void DeleteCourse(int id)
+        public async Task DeleteCourseAsync(int id)
         {
-            _courseService.DeleteCourse(id);
+            await _courseService.DeleteCourse(id);
         }
 
-        public Course? GetCourseById(int id)
+        public async Task<Course?> GetCourseByIdAsync(int id)
         {
-            return _courseService.GetCourseById(id);
+            return await _courseService.GetCourseById(id);
         }
 
-        public void UpdateCourse(Course course)
+        public async Task UpdateCourseAsync(Course course)
         {
-            _courseService.UpdateCourse(course);
+            await _courseService.UpdateCourse(course);
         }
         /// <summary>
         /// Gets Course Table;
@@ -61,19 +61,19 @@ namespace AcademicFlow.Managers.Managers
             return courses.ProjectTo<CourseTableItem>(MapperConfig).AsEnumerable();
         }
 
-        public void EditCoursePrograms(int courseId, int[] programIds)
+        public async Task EditCourseProgramsAsync(int courseId, int[] programIds)
         {
             var oldPrograms = _courseProgramService.GetAll().Where(x => x.CourseId == courseId).ToList();
 
             var toDeletePrograms = oldPrograms.Where(x => !programIds.Contains(x.ProgramId));
-            _courseProgramService.DeleteRange(toDeletePrograms);
+            await _courseProgramService.DeleteRangeAsync(toDeletePrograms);
 
             var oldIds = oldPrograms.Select(x => x.ProgramId);
             var toInsertPrograms = programIds.Where(x => !oldIds.Contains(x)).Select(x => new CourseProgram() { CourseId = courseId, ProgramId = x });
-            _courseProgramService.AddRange(toInsertPrograms);
+            await _courseProgramService.AddRangeAsync(toInsertPrograms);
         }
 
-        public void EditCourseUserRoles(int courseId, int[] usersIds, RolesEnum role)
+        public async Task EditCourseUserRoles(int courseId, int[] usersIds, RolesEnum role)
         {
             var users = _userService.GetUsers();
             var oldUsers = users
@@ -89,7 +89,7 @@ namespace AcademicFlow.Managers.Managers
                     CourseId = courseId,
                     UserRoleId = x.Id
                 });
-            _courseService.DeleteCourseUserRolesRange(toDeleteCourseUsers);
+            await _courseService.DeleteCourseUserRolesRange(toDeleteCourseUsers);
 
             var toInsertCourseUsers = users
                 .Where(x => usersIds.Contains(x.Id))
@@ -100,7 +100,7 @@ namespace AcademicFlow.Managers.Managers
                     CourseId = courseId,
                     UserRoleId = x.Id
                 });
-            _courseService.AddCourseUserRolesRange(toInsertCourseUsers);
+            await _courseService.AddCourseUserRolesRange(toInsertCourseUsers);
         }
 
         public IEnumerable<User> GetCourseUsers(int courseId, RolesEnum role)

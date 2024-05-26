@@ -15,12 +15,12 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin)]
         [HttpPut("AddCourse")]
-        public IActionResult AddCourse([FromForm] string name, [FromForm] string description, [FromForm] int creditPoints, [FromForm] string publicId, [FromForm] string? imageUrl)
+        public async Task<IActionResult> AddCourse([FromForm] string name, [FromForm] string description, [FromForm] int creditPoints, [FromForm] string publicId, [FromForm] string? imageUrl)
         {
             try
             {
                 var course = new Course(name, description, creditPoints, publicId, imageUrl);
-                var courseId = _courseManager.AddCourse(course);
+                var courseId = await _courseManager.AddCourseAsync(course);
 
                 return Ok(courseId);
             }
@@ -33,12 +33,12 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin, RolesEnum.Proffesor)]
         [HttpPost("EditCourse")]
-        public IActionResult EditCourse([FromForm] int id, [FromForm] string name, [FromForm] string description, [FromForm] int creditPoints, [FromForm] string publicId,
+        public async Task<IActionResult> EditCourse([FromForm] int id, [FromForm] string name, [FromForm] string description, [FromForm] int creditPoints, [FromForm] string publicId,
             [FromForm] string? imageUrl)
         {
             try
             {
-                var course = _courseManager.GetCourseById(id);
+                var course = await _courseManager.GetCourseByIdAsync(id);
                 if (course == null)
                 {
                     var message = $"Course {id} do not exist";
@@ -50,7 +50,7 @@ namespace AcademicFlow.Controllers
                 course.CreditPoints = creditPoints;
                 course.PublicId = publicId;
                 course.ImageUrl = imageUrl;
-                _courseManager.UpdateCourse(course);
+                await _courseManager.UpdateCourseAsync(course);
                 return Ok();
             }
             catch (Exception e)
@@ -62,11 +62,11 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin, RolesEnum.Proffesor, RolesEnum.Student)]
         [HttpGet("GetCourse")]
-        public IActionResult GetCourse(int id)
+        public async Task<IActionResult> GetCourse(int id)
         {
             try
             {
-                var course = _courseManager.GetCourseById(id);
+                var course = await _courseManager.GetCourseByIdAsync(id);
                 return PartialView("Partials/_CourseItem", course);  /// return html content
             }
             catch (Exception e)
@@ -94,11 +94,11 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin)]
         [HttpDelete("DeleteCourse")]
-        public IActionResult DeleteCourse([FromForm] int id)
+        public async Task<IActionResult> DeleteCourse([FromForm] int id)
         {
             try
             {
-                _courseManager.DeleteCourse(id);
+                await _courseManager.DeleteCourseAsync(id);
                 return Ok();
             }
             catch (Exception e)
@@ -110,11 +110,11 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin)]
         [HttpPost("EditCoursePrograms")]
-        public IActionResult EditCoursePrograms([FromForm] int id, [FromForm] int[] progamIds)
+        public async Task<IActionResult> EditCoursePrograms([FromForm] int id, [FromForm] int[] progamIds)
         {
             try
             {
-                _courseManager.EditCoursePrograms(id, progamIds);
+                await _courseManager.EditCourseProgramsAsync(id, progamIds);
                 return Ok();
             }
             catch (Exception e)
@@ -127,11 +127,11 @@ namespace AcademicFlow.Controllers
         /// <param name="role">Assing user as professor or as student</param>
         [AuthorizeUser(RolesEnum.Admin)]
         [HttpPost("EditCourseUserRoles")]
-        public IActionResult EditCourseUserRoles([FromForm] int id, [FromForm] int[] userIds, [FromForm] RolesEnum role)
+        public async Task<IActionResult> EditCourseUserRoles([FromForm] int id, [FromForm] int[] userIds, [FromForm] RolesEnum role)
         {
             try
             {
-                _courseManager.EditCourseUserRoles(id, userIds, role);
+                await _courseManager.EditCourseUserRoles(id, userIds, role);
                 return Ok();
             }
             catch (Exception e)

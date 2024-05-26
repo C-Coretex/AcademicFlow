@@ -9,19 +9,19 @@ namespace AcademicFlow.Domain.Services
         private readonly ICourseRepository _courseRepository = courseRepository;
         private readonly ICourseUserRoleRepository _courseUserRoleRepository = courseUserRoleRepository;
 
-        public int? AddCourse(Course course)
+        public async Task<int?> AddCourse(Course course)
         {
-            return _courseRepository.Add(course)?.Id;
+            return (await _courseRepository.AddAsync(course))?.Id;
         }
 
-        public Course? GetCourseById(int id)
+        public async Task<Course?> GetCourseById(int id)
         {
-            return _courseRepository.GetById(id);
+            return await _courseRepository.GetByIdAsync(id);
         }
 
-        public void UpdateCourse(Course course)
+        public async Task UpdateCourse(Course course)
         {
-            _courseRepository.Update(course);
+            await _courseRepository.UpdateAsync(course);
         }
 
         public IQueryable<Course> GetAll()
@@ -29,19 +29,19 @@ namespace AcademicFlow.Domain.Services
             return _courseRepository.GetAll();
         }
 
-        public void DeleteCourse(int id)
+        public async Task DeleteCourse(int id)
         {
-            _courseRepository.Delete(id);
+            await _courseRepository.DeleteAsync(id);
         }
 
-        public void DeleteCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles)
+        public async Task DeleteCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles)
         {
-            _courseUserRoleRepository.DeleteRange(userRoles);
+            await _courseUserRoleRepository.DeleteRangeAsync(userRoles);
         }
 
-        public void AddCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles)
+        public async Task AddCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles)
         {
-            _courseUserRoleRepository.AddRange(userRoles);
+            await _courseUserRoleRepository.AddRangeAsync(userRoles);
         }
 
         public IEnumerable<CourseUserRole> GetUserRoles()

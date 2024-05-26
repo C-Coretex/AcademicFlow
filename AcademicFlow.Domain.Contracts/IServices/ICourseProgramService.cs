@@ -5,7 +5,7 @@ namespace AcademicFlow.Domain.Contracts.IServices
     public interface ICourseProgramService
     {
         IQueryable<CourseProgram> GetAll();
-        void DeleteRange(IEnumerable<CourseProgram> coursePrograms);
-        void AddRange(IEnumerable<CourseProgram> coursePrograms);
+        Task DeleteRangeAsync(IEnumerable<CourseProgram> coursePrograms);
+        Task AddRangeAsync(IEnumerable<CourseProgram> coursePrograms);
     }
 }

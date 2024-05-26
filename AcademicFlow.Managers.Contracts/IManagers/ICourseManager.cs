@@ -7,13 +7,12 @@ namespace AcademicFlow.Managers.Contracts.IManagers
 {
     public interface ICourseManager
     {
-        int? AddCourse(Course course);
-        
-        void DeleteCourse(int id);
-        
-        Course? GetCourseById(int id);
+        Task<int?> AddCourseAsync(Course course); 
+        Task DeleteCourseAsync(int id);
 
-        void UpdateCourse(Course course);
+        Task<Course?> GetCourseByIdAsync(int id);
+
+        Task UpdateCourseAsync(Course course);
 
         /// <summary>
         /// Gets Course Table;
@@ -27,8 +26,8 @@ namespace AcademicFlow.Managers.Contracts.IManagers
         /// <returns></returns>
         IEnumerable<CourseTableItem> GetCourseTableItemList(int? userId, RolesEnum? role, int? assingedProgramId);
 
-        void EditCoursePrograms(int courseId, int[] programIds);
-        void EditCourseUserRoles(int courseId, int[] usersIds, RolesEnum role);
+        Task EditCourseProgramsAsync(int courseId, int[] programIds);
+        Task EditCourseUserRoles(int courseId, int[] usersIds, RolesEnum role);
 
         IEnumerable<User> GetCourseUsers(int courseId, RolesEnum role);
 

@@ -8,19 +8,19 @@ namespace AcademicFlow.Domain.Services
     {
         private readonly IProgramRepository _programRepository = programRepository;
         private readonly IProgramUserRoleRepository _programUserRoleRepository = programUserRoleRepository;
-        public int? AddProgram(Program entity)
+        public async Task<int?> AddProgramAsync(Program entity)
         {
-            return _programRepository.Add(entity)?.Id;
+            return (await _programRepository.AddAsync(entity))?.Id;
         }
 
-        public Program? GetProgramById(int id)
+        public async Task<Program?> GetProgramByIdAsync(int id)
         {
-            return _programRepository.GetById(id);
+            return await _programRepository.GetByIdAsync(id);
         }
 
-        public void UpdateProgram(Program entity)
+        public async Task UpdateProgramAsync(Program entity)
         {
-            _programRepository.Update(entity);
+            await _programRepository.UpdateAsync(entity);
         }
 
         public IQueryable<Program> GetAll()
@@ -28,19 +28,19 @@ namespace AcademicFlow.Domain.Services
             return _programRepository.GetAll();
         }
 
-        public void DeleteProgram(int id)
+        public async Task DeleteProgramAsync(int id)
         {
-            _programRepository.Delete(id);
+            await _programRepository.DeleteAsync(id);
         }
 
-        public void DeleteProgramUserRolesRange(IEnumerable<ProgramUserRole> userRoles)
+        public async Task DeleteProgramUserRolesRangeAsync(IEnumerable<ProgramUserRole> userRoles)
         {
-            _programUserRoleRepository.DeleteRange(userRoles);
+            await _programUserRoleRepository.DeleteRangeAsync(userRoles);
         }
 
-        public void AddProgramUserRolesRange(IEnumerable<ProgramUserRole> userRoles)
+        public async Task AddProgramUserRolesRangeAsync(IEnumerable<ProgramUserRole> userRoles)
         {
-            _programUserRoleRepository.AddRange(userRoles);
+            await _programUserRoleRepository.AddRangeAsync(userRoles);
         }
 
         public IEnumerable<ProgramUserRole> GetAllUserRoles()

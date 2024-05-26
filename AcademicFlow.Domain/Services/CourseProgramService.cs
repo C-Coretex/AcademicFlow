@@ -13,14 +13,14 @@ namespace AcademicFlow.Domain.Services
             return _courseProgramRepository.GetAll();
         }
 
-        public void DeleteRange(IEnumerable<CourseProgram> coursePrograms)
+        public async Task DeleteRangeAsync(IEnumerable<CourseProgram> coursePrograms)
         {
-            _courseProgramRepository.DeleteRange(coursePrograms);
+            await _courseProgramRepository.DeleteRangeAsync(coursePrograms);
         }
 
-        public void AddRange(IEnumerable<CourseProgram> coursePrograms)
+        public async Task AddRangeAsync(IEnumerable<CourseProgram> coursePrograms)
         {
-            _courseProgramRepository.AddRange(coursePrograms);
+            await _courseProgramRepository.AddRangeAsync(coursePrograms);
         }
     }
 }
