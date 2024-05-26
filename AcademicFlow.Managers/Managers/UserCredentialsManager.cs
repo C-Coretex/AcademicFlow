@@ -27,6 +27,7 @@ namespace AcademicFlow.Managers.Managers
                 throw new ValidationException("Username is already taken");
 
             await _userCredentialsService.AddUserCredentials(user.Id, username, password);
+            
 
             return user;
         }
