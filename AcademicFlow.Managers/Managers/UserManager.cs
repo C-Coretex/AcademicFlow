@@ -37,9 +37,9 @@ namespace AcademicFlow.Managers.Managers
         public async IAsyncEnumerable<UserWebModel> GetUsers(string controllerUrl)
         {
             var users = _userService.GetUsers().ProjectTo<UserWebModel>(MapperConfig).AsAsyncEnumerable();
-            await foreach(var user in users)
+            await foreach (var user in users)
             {
-                if(!user.UserRegistrationData.IsRegistered && !string.IsNullOrEmpty(user.UserRegistrationData.RegistrationUrl))
+                if (!user.UserRegistrationData.IsRegistered && !string.IsNullOrEmpty(user.UserRegistrationData.RegistrationUrl))
                     user.UserRegistrationData.RegistrationUrl = controllerUrl + user.UserRegistrationData.RegistrationUrl;
 
                 yield return user;
@@ -59,7 +59,7 @@ namespace AcademicFlow.Managers.Managers
 
         public async Task DeleteUser(int userId)
         {
-             await _userService.DeleteUser(userId);
+            await _userService.DeleteUser(userId);
         }
 
         public async Task UpdateRoles(int userId, IEnumerable<RolesEnum> roles)

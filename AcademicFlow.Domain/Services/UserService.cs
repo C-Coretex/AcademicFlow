@@ -8,15 +8,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AcademicFlow.Domain.Services
 {
-    public class UserService: IUserService
+    public class UserService(IUserRepository userRepository) : IUserService
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IUserRoleRepository _userRoleRepository;
-        public UserService(IUserRepository userRepository)
-        {
-            _userRepository = userRepository;
-        }
-
+        private readonly IUserRepository _userRepository = userRepository;
         public async Task<User> AddUser(User user)
         {
             var existingUser = _userRepository.GetAll().FirstOrDefault(u => u.PersonalCode == user.PersonalCode);
@@ -46,6 +40,7 @@ namespace AcademicFlow.Domain.Services
             var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Id == userId);
             return user;
         }
+
         public async Task DeleteUser(int userId)
         {
             var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Id == userId);
@@ -55,6 +50,7 @@ namespace AcademicFlow.Domain.Services
             user.IsDeleted = true;
             await _userRepository.UpdateAsync(user);
         }
+
         public async Task UpdateRoles(int userId, IEnumerable<RolesEnum> roles)
         {
             var user = _userRepository.GetAll(false).Include(u => u.UserRoles).FirstOrDefault(u => u.Id == userId);

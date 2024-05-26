@@ -104,14 +104,23 @@ function refreshUsersTable() {
     getUsersData();
 };
 
+function refreshCoursesTable() {
+    $('#all-courses-table').load('/api/Course/GetCourseTable');
+}
+function refreshProgramTable() {
+    $('#all-programs-table').load('/api/Program/GetProgramTable');
+}
+
 $(document).ready(function () {
 
     $('.js-user-name').html(`<strong>Name</strong>`);
 
-    const containers = { $addUser: $('.add-user-container'), $allUsers: $('.user-table') };
+    const containers = { $addUser: $('.add-user-container'), $allUsers: $('.user-table'), $addCourse: $('.course-manager'), $allCourses: $('.all-courses-tab') };
 
     refreshUsersTable();
-    
+    refreshCoursesTable();
+    refreshProgramTable();
+
     //Event Listeners
     $('.nav-item').on('click', function () {
         const self = this;
@@ -131,6 +140,12 @@ $(document).ready(function () {
                 break;
             case 'addUser':
                 toggleObjectVisibility($(containers.$addUser), true);
+                break;
+            case 'addCourse':
+                toggleObjectVisibility($(containers.$addCourse), true);
+                break;
+            case 'allCourses':
+                toggleObjectVisibility($(containers.$allCourses), true);
                 break;
             default:
                 hideAllObjects(containers);
@@ -175,6 +190,7 @@ $(document).ready(function () {
         }
   
     });
+
     $('.js-edit-user').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#editUserForm');
@@ -212,6 +228,8 @@ $(document).ready(function () {
         }
 
     });
+
+
     $('.js-delete-user').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#deleteUserForm');
@@ -263,6 +281,58 @@ $(document).ready(function () {
         }
     });
 
+
+    $('.js-add-course').on('click', function (ev) {
+        ev.preventDefault();
+        const $form = $('#createCourse');
+
+        if (true) {  //TODO add form validation
+            const formData = new FormData($form[0]);
+            console.log(formData);
+            $.ajax({
+                type: 'PUT',
+                url: '/api/Course/AddCourse',
+                processData: false, // Prevent jQuery from processing data (handled by FormData)
+                contentType: false, // Don't set content type header (FormData sets it)
+                data: formData,
+                success: function () {
+                    $('#createCourse .error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is added.</div>`);
+                },
+                error: function (xhr, response, status, error) {
+                    const errorMessage = xhr.responseText;
+                    $('#createCourse .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not added. ${errorMessage}</div>`);
+                    console.error('Error adding user:', errorMessage);
+                }
+            })
+        } else {
+            //TODO add form validation errors
+        }
+
+    });
+    $('.js-edit-course').on('click', function (ev) {
+        ev.preventDefault();
+        const $form = $('#editCourse');
+        if (true) {  //TODO add form validation
+            const formData = new FormData($form[0]);
+            console.log(formData);
+            $.ajax({
+                type: "POST",
+                url: '/api/Course/EditCourse',
+                processData: false, // Prevent jQuery from processing data (handled by FormData)
+                contentType: false, // Don't set content type header (FormData sets it)
+                data: formData,
+                success: function (_) {
+                    $('#editCourse .error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is edited.</div>`);
+                },
+                error: function (xhr, response, status, error) {
+                    const errorMessage = xhr.responseText;
+                    $('#editCourse .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not edited. ${errorMessage}</div>`);
+                }
+            })
+        } else {
+            //TODO add form validation errors
+        }
+
     $(".js-reset-pass").on("click", function (e) {
         e.preventDefault();
         let t = $("#resetPasswordForm");
@@ -280,4 +350,5 @@ $(document).ready(function () {
         });
     });
 
+    });
 });

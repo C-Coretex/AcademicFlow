@@ -6,11 +6,14 @@ using AcademicFlow.Domain.Helpers.Interfaces;
 namespace AcademicFlow.Domain.Contracts.Entities
 {
     public class UserRole : IModel
-    {   
+    {
         public int Id { get; set; }
         public int UserId { get; set; }
         public RolesEnum Role { get; set; }
         public User User { get; set; }
+
+        public ICollection<CourseUserRole>? Courses { get; set; }
+        public ICollection<ProgramUserRole>? Programs { get; set; }
 
         public UserRole()
         { }
