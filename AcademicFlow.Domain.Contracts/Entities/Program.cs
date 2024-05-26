@@ -8,8 +8,8 @@ namespace AcademicFlow.Domain.Contracts.Entities
         public string Name { get; set; } 
         public int SemesterNr {  get; set; }
 
-        public virtual ICollection<CourseProgram>? Courses { get; set; }
-        public virtual ICollection<ProgramUserRole>? UserRoles { get; set; }
+        public ICollection<CourseProgram>? Courses { get; set; }
+        public ICollection<ProgramUserRole>? UserRoles { get; set; }
 
         public Program() { }
         public Program(string name, int semesterNr)

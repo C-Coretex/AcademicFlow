@@ -7,9 +7,9 @@ namespace AcademicFlow.Domain.Contracts.Entities
         public int Id { get; set; }
 
         public int CourseId { get; set; }
-        public virtual Course Course { get; set; }
+        public Course Course { get; set; }
 
         public int UserRoleId { get; set; }
-        public virtual UserRole UserRole { get; set; }
+        public UserRole UserRole { get; set; }
     }
 }

@@ -14,12 +14,12 @@ namespace AcademicFlow.Domain.Contracts.Entities
         /// <summary>
         /// Assigned propgrams
         /// </summary>
-        public virtual ICollection<CourseProgram>? Programs { get; set; }
+        public ICollection<CourseProgram>? Programs { get; set; }
 
         /// <summary>
         /// Assigned users (as a Proffesor or as a Student)
         /// </summary>
-        public virtual ICollection<CourseUserRole>? Users { get; set; }
+        public ICollection<CourseUserRole>? Users { get; set; }
 
         public Course() { }
         public Course(string name, string description, int creditPoints, string publicId, string? imageUrl)

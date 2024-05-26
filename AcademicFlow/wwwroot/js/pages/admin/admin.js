@@ -286,11 +286,6 @@ $(document).ready(function () {
         ev.preventDefault();
         const $form = $('#createCourse');
 
-        const formData = {
-            name: $form.find('#name').val().trim(),
-            description: $form.find('#description').val().trim(),
-            creditPoints: $form.find('#creditPoints').val().trim(),
-        };
         if (true) {  //TODO add form validation
             const formData = new FormData($form[0]);
             console.log(formData);
@@ -300,15 +295,38 @@ $(document).ready(function () {
                 processData: false, // Prevent jQuery from processing data (handled by FormData)
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
-                success: function (response) {
-                    $('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is added.</div>`);
-                    console.error('Error:', textStatus, errorThrown);
-                    console.log('User added successfully');
+                success: function () {
+                    $('#createCourse .error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is added.</div>`);
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
-                    $('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not added. ${errorMessage}</div>`);
+                    $('#createCourse .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not added. ${errorMessage}</div>`);
                     console.error('Error adding user:', errorMessage);
+                }
+            })
+        } else {
+            //TODO add form validation errors
+        }
+
+    });
+    $('.js-edit-course').on('click', function (ev) {
+        ev.preventDefault();
+        const $form = $('#editCourse');
+        if (true) {  //TODO add form validation
+            const formData = new FormData($form[0]);
+            console.log(formData);
+            $.ajax({
+                type: "POST",
+                url: '/api/Course/EditCourse',
+                processData: false, // Prevent jQuery from processing data (handled by FormData)
+                contentType: false, // Don't set content type header (FormData sets it)
+                data: formData,
+                success: function (_) {
+                    $('#editCourse .error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is edited.</div>`);
+                },
+                error: function (xhr, response, status, error) {
+                    const errorMessage = xhr.responseText;
+                    $('#editCourse .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not edited. ${errorMessage}</div>`);
                 }
             })
         } else {

@@ -1,6 +1,7 @@
 ﻿using AcademicFlow.Domain.Contracts.Entities;
 using AcademicFlow.Domain.Contracts.IRepositories;
 using AcademicFlow.Domain.Contracts.IServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace AcademicFlow.Domain.Services
 {
@@ -26,7 +27,7 @@ namespace AcademicFlow.Domain.Services
 
         public IQueryable<Course> GetAll()
         {
-            return _courseRepository.GetAll();
+            return _courseRepository.GetAll().Include(x => x.Programs).Include(x => x.Users);
         }
 
         public async Task DeleteCourse(int id)
@@ -46,7 +47,7 @@ namespace AcademicFlow.Domain.Services
 
         public IEnumerable<CourseUserRole> GetUserRoles()
         {
-            return _courseUserRoleRepository.GetAll();
+            return _courseUserRoleRepository.GetAll().Include(x => x.UserRole).Include(x => x.Course);
         }
     }
 }
