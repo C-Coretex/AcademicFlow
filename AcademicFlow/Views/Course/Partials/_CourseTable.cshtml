@@ -1,0 +1,25 @@
+﻿@using AcademicFlow.Managers.Contracts.Models.CourseModels;
+@model IEnumerable<CourseTableItem>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Public Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Credit Point</th>
+            <th scope="col">Description</th>
+            <th scope="col">Image Url</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.PublicId</th>
+                <td>@item.Name</td>
+                <td>@item.CreditPoints</td>
+                <td>@item.Description</td>
+                <td>@item.ImageUrl</td>
+            </tr>
+        }  
+    </tbody>
+</table>

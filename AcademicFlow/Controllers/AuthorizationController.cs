@@ -1,5 +1,4 @@
-﻿using AcademicFlow.Domain.Entities;
-using AcademicFlow.Helpers;
+﻿using AcademicFlow.Helpers;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models.UserModels;
 using AcademicFlow.Models;
@@ -54,7 +53,7 @@ namespace AcademicFlow.Controllers
 
                 return Ok(user);
             }
-            catch(AuthenticationException e)
+            catch (AuthenticationException e)
             {
                 return BadRequest(e.Message);
             }
@@ -94,9 +93,10 @@ namespace AcademicFlow.Controllers
                 _logger.LogError(e, "Error while entering new password");
                 return BadRequest(e.Message);
             }
-        } 
+        }
+
         [HttpGet("GetCurrentUser")]
-        public async Task<IActionResult> GetCurrentUser() 
+        public async Task<IActionResult> GetCurrentUser()
         {
             try
             {
