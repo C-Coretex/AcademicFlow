@@ -10,20 +10,51 @@ function hideAllObjects(containers) {
 }
 
 async function getUsersData() {
-    try {
-        const response = await fetch("/api/User/GetAllUsers");
-        const data = await response.json();
-        initTable(data);
-        
-    } catch (error) {
-        console.error("Error fetching data:", error);
-    }
+    $.ajax({
+        url: "/api/User/GetAllUsers",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+             initUsersTable(data);
+        },
+        error: function (error) {
+            console.error("Error fetching data:", error);
+        }
+    });
 }
 
-function initTable(users) {
+async function getCoursesData() {
+    $.ajax({
+        url: "/api/Course/GetCourseTable",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+             initCoursesTable(data);
+        },
+        error: function (error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
 
-    if ($.fn.DataTable.isDataTable('#userTable')) {
-        let table = $('#userTable').DataTable();
+async function getProgramData() {
+    $.ajax({
+        url: "/api/Program/GetProgramTable",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            initProgramsTable(data);
+        },
+        error: function (error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+
+function initUsersTable(users) {
+
+    if ($.fn.DataTable.isDataTable('#usersTable')) {
+        let table = $('#usersTable').DataTable();
         table.destroy();
     }
     const columns = [
@@ -85,11 +116,11 @@ function initTable(users) {
         order: [[0, 'asc']],
         select: true,
         initComplete: function () {
-            let table = $('#userTable').DataTable();
+            let table = $('#usersTable').DataTable();
             table.rows().every(function () {
                 $(this.node()).css('cursor', 'pointer');
             });
-            $('#userTable tbody').on('click', 'tr', function (data) {
+            $('#usersTable tbody').on('click', 'tr', function (data) {
                 table.$('tr').removeClass('selected');
                 $(this).addClass('selected');
                 console.log('Selected Data', table.row(this).data())
@@ -97,7 +128,105 @@ function initTable(users) {
         }
     };
 
-    const userTable = new Table('#userTable', users, columns, options);
+    const usersTable = new Table('#usersTable', users, columns, options);
+};
+
+function initCoursesTable(courses) {
+
+    if ($.fn.DataTable.isDataTable('#coursesTable')) {
+        let table = $('#coursesTable').DataTable();
+        table.destroy();
+    }
+    const columns = [
+        {
+            targets: 0,
+            title: 'ID',
+            name: 'id',
+            data: 'id'
+        },
+        {
+            targets: 1,
+            title: 'Course Title',
+            name: 'name',
+            data: 'name'
+        },
+        {
+            targets: 2,
+            title: 'CP',
+            name: 'creditPoints',
+            data: 'creditPoints'
+        },
+        {
+            targets: 3,
+            title: 'Course ID',
+            name: 'publicId',
+            data: 'publicId'
+        },
+        {
+            targets: 4,
+            title: 'Course Description',
+            name: 'description',
+            data: 'description'
+        },
+        {
+            targets: 5,
+            title: 'Image',
+            name: 'imageUrl',
+            data: 'imageUrl'
+        }
+    ];
+    const options = {
+        ordering: true,
+        order: [[0, 'asc']],
+        select: true,
+        initComplete: function () {
+            let table = $('#coursesTable').DataTable();
+            table.rows().every(function () {
+                $(this.node()).css('cursor', 'pointer');
+            });
+            $('#coursesTable tbody').on('click', 'tr', function (data) {
+                table.$('tr').removeClass('selected');
+                $(this).addClass('selected');
+                console.log('Selected Data', table.row(this).data())
+            });
+        }
+    };
+
+    const coursesTable = new Table('#coursesTable', courses, columns, options);
+};
+
+function initProgramsTable(programs) {
+
+    if ($.fn.DataTable.isDataTable('#programsTable')) {
+        let table = $('#programsTable').DataTable();
+        table.destroy();
+    }
+    const columns = [
+        {
+            targets: 0,
+            title: 'ID',
+            name: 'id',
+            data: 'id'
+        }
+    ];
+    const options = {
+        ordering: true,
+        order: [[0, 'asc']],
+        select: true,
+        initComplete: function () {
+            let table = $('#programsTable').DataTable();
+            table.rows().every(function () {
+                $(this.node()).css('cursor', 'pointer');
+            });
+            $('#programsTable tbody').on('click', 'tr', function (data) {
+                table.$('tr').removeClass('selected');
+                $(this).addClass('selected');
+                console.log('Selected Data', table.row(this).data())
+            });
+        }
+    };
+
+    const programsTable = new Table('#programsTable', programs, columns, options);
 };
 
 function refreshUsersTable() {
@@ -105,21 +234,29 @@ function refreshUsersTable() {
 };
 
 function refreshCoursesTable() {
+    getCoursesData();
+};
+
+function refreshProgramsTable() {
+    getProgramData();
+};
+
+/*function refreshCoursesTable() {
     $('#all-courses-table').load('/api/Course/GetCourseTable');
-}
-function refreshProgramTable() {
+}*/
+/*function refreshProgramTable() {
     $('#all-programs-table').load('/api/Program/GetProgramTable');
-}
+}*/
 
 $(document).ready(function () {
 
     $('.js-user-name').html(`<strong>Name</strong>`);
 
-    const containers = { $addUser: $('.add-user-container'), $allUsers: $('.user-table'), $addCourse: $('.course-manager'), $allCourses: $('.all-courses-tab') };
+    const containers = { $addUser: $('.add-user-container'), $allUsers: $('.user-table'), $addCourse: $('.course-manager'), $allCourses: $('.all-courses-tab'), $allPrograms: $('.all-programs-tab'), $addProgram: $('.program-manager') };
 
     refreshUsersTable();
     refreshCoursesTable();
-    refreshProgramTable();
+    refreshProgramsTable();
 
     //Event Listeners
     $('.nav-item').on('click', function () {
@@ -146,6 +283,14 @@ $(document).ready(function () {
                 break;
             case 'allCourses':
                 toggleObjectVisibility($(containers.$allCourses), true);
+                refreshCoursesTable();
+                break;
+            case 'allPrograms':
+                toggleObjectVisibility($(containers.$allPrograms), true);
+                refreshProgramsTable();
+                break;
+            case 'addProgram':
+                toggleObjectVisibility($(containers.$addProgram), true);
                 break;
             default:
                 hideAllObjects(containers);
@@ -301,7 +446,7 @@ $(document).ready(function () {
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
                     $('#createCourse .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not added. ${errorMessage}</div>`);
-                    console.error('Error adding user:', errorMessage);
+                    console.error('Error adding program:', errorMessage);
                 }
             })
         } else {
@@ -332,6 +477,59 @@ $(document).ready(function () {
         } else {
             //TODO add form validation errors
         }
+    });
+
+    $('.js-add-program').on('click', function (ev) {
+        ev.preventDefault();
+        const $form = $('#createProgram');
+
+        if (true) {  //TODO add form validation
+            const formData = new FormData($form[0]);
+            console.log(formData);
+            $.ajax({
+                type: 'PUT',
+                url: '/api/Program/AddPogram',
+                processData: false, // Prevent jQuery from processing data (handled by FormData)
+                contentType: false, // Don't set content type header (FormData sets it)
+                data: formData,
+                success: function () {
+                    $('#createProgram .error-message').html(`<div class="alert alert-success mt-2" role="alert">Program is added.</div>`);
+                },
+                error: function (xhr, response, status, error) {
+                    const errorMessage = xhr.responseText;
+                    $('#createProgram .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not added. ${errorMessage}</div>`);
+                    console.error('Error adding program:', errorMessage);
+                }
+            })
+        } else {
+            //TODO add form validation errors
+        }
+
+    });
+    $('.js-edit-program').on('click', function (ev) {
+        ev.preventDefault();
+        const $form = $('#editCourse');
+        if (true) {  //TODO add form validation
+            const formData = new FormData($form[0]);
+            console.log(formData);
+            $.ajax({
+                type: "POST",
+                url: '/api/Course/EditCourse',
+                processData: false, // Prevent jQuery from processing data (handled by FormData)
+                contentType: false, // Don't set content type header (FormData sets it)
+                data: formData,
+                success: function (_) {
+                    $('#editCourse .error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is edited.</div>`);
+                },
+                error: function (xhr, response, status, error) {
+                    const errorMessage = xhr.responseText;
+                    $('#editCourse .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not edited. ${errorMessage}</div>`);
+                }
+            })
+        } else {
+            //TODO add form validation errors
+        }
+    });
 
     $(".js-reset-pass").on("click", function (e) {
         e.preventDefault();
@@ -350,5 +548,4 @@ $(document).ready(function () {
         });
     });
 
-    });
 });

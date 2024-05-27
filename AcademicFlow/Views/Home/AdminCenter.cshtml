@@ -23,16 +23,28 @@
                         User manager
                     </a>
                 </li>
+                <li class="nav-item" data-nav-el="allCourses">
+                    <a class="nav-link link-dark">
+                        <i class="fa-solid fa-notes-medical me-2"></i>
+                        All Courses
+                    </a>
+                </li>
                 <li class="nav-item" data-nav-el="addCourse">
                     <a class="nav-link link-dark">
                         <i class="fa-solid fa-notes-medical me-2"></i>
                         Course manager
                     </a>
                 </li>
-                <li class="nav-item" data-nav-el="allCourses">
+                <li class="nav-item" data-nav-el="allPrograms">
                     <a class="nav-link link-dark">
                         <i class="fa-solid fa-notes-medical me-2"></i>
-                        All Courses
+                        All Programs
+                    </a>
+                </li>
+                <li class="nav-item" data-nav-el="addProgram">
+                    <a class="nav-link link-dark">
+                        <i class="fa-solid fa-notes-medical me-2"></i>
+                        Program manager
                     </a>
                 </li>
             </ul>
@@ -112,17 +124,20 @@
         
         <div class="user-table col">
             <h2>User Data</h2>
-            <table class="table table-striped" id="userTable">
-                </tbody>
+            <table class="table table-striped" id="usersTable">
             </table>
         </div>
 
         <div class="col all-courses-tab d-none">
             <h2>All Courses</h2>
-            <div id="all-courses-table"></div>
-            <hr />
+            <table class="table table-striped" id="coursesTable">
+            </table>
+        </div>
+
+        <div class="col all-programs-tab d-none">
             <h2>All Programs</h2>
-            <div id="all-programs-table"></div>
+            <table class="table table-striped" id="programsTable">
+            </table>
         </div>
 
         <div class="course-manager col d-none">
@@ -141,6 +156,26 @@
                 </div>
                 <partial name="Partials/_CourseForm" />
                 <button type="button" class="btn btn-primary w-100 js-edit-course">Edit Course</button>
+                <div class="error-message"></div>
+            </form>
+        </div>
+
+        <div class="program-manager col d-none">
+            <h1 class="authentication-page__heading">Program manager</h1>
+            <h5 class="authentication-page__message"></h5>
+            <form id="createProgram" class="my-2">
+                <partial name="Partials/_ProgramForm" />
+                <button type="button" class="btn btn-primary w-100 js-add-program">Add Program</button>
+                <div class="error-message"></div>
+            </form>
+            <hr />
+            <form id="editProgram" class="my-2">
+                <div class="form__input-container mb-2">
+                    <label for="id">Program Id</label>
+                    <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter program id">
+                </div>
+                <partial name="Partials/_ProgramForm" />
+                <button type="button" class="btn btn-primary w-100 js-edit-program">Edit Program</button>
                 <div class="error-message"></div>
             </form>
         </div>
