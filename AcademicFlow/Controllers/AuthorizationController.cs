@@ -92,7 +92,9 @@ namespace AcademicFlow.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while entering new password");
-                
+                return BadRequest(e.Message);
+            }
+        } 
         [HttpGet("GetCurrentUser")]
         public async Task<IActionResult> GetCurrentUser() 
         {
