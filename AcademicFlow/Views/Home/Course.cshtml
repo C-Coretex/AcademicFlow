@@ -1,7 +1,6 @@
 ﻿@{
-    var course = ViewData["Course"] as AcademicFlow.Controllers.Course;
-    var assignments = ViewData["Assignments"] as List<AcademicFlow.Controllers.Assignment>;
-    ViewData["Title"] = @course.Name;
+    var courseId = ViewData["CourseId"];
+    var assignments = ViewData["Assignments"] as List<AcademicFlow.Domain.Contracts.Entities.Assignment>;
 
     string TruncateDescription(string description, int maxLength)
     {
@@ -47,61 +46,44 @@
         </div>
         <div class="col-sm p-0 min-vh-100">
             <div class="container">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mt-4">
-                        <li class="breadcrumb-item">Home</li>
-                        <li class="breadcrumb-item">Course</li>
-                        <li class="breadcrumb-item active" aria-current="page">@course.PublicId</li>
-                    </ol>
-                </nav>
+                <div id="course-list-item" class="mb-5" courseId="@courseId"></div>
 
-                <img src="@Url.Content(course.ImgSrc)" alt="@course.Name" class="img-fluid hero-image">
+                <div id="course-assignments" class="my-3">
+                    <p class="display-6">Assignments (!!!TODO)</p>
 
-                <h1 class="display-4 my-4">@course.Name</h1>
-                <hr class="my-4">
-                <p class="lead">@course.Description</p>
-
-                <div class="course-content d-flex flex-column gap-3 my-5">
-                    <div class="course-data">
-                        <p><strong>Lecturer:</strong> !!!TODO</p>
-                        <p><strong>Grade:</strong> !!!TODO</p>
-                    </div>
-
-                    <div class="course-assignments">
-                        <p class="display-6">Assignments (!!!TODO)</p>
-
-                        <table class="table">
-                            <thead class="thead-dark">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var assignment in assignments)
+                            {
                                 <tr>
-                                    <th scope="col">Id</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Grade</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var assignment in assignments)
-                                {
-                                    <tr>
-                                        <th scope="row">@assignment.Id</th>
-                                        <td><a href="Assignment/@assignment.Id" class="text-success">@assignment.Title</a></td>
-                                        <td class="text-muted">@TruncateDescription(assignment.Description, 70)</td>
+                                    <th scope="row">@assignment.Id</th>
+                                    <td><a href="/Home/Assignment/@assignment.Id" class="text-success">@assignment.Title</a></td>
+                                    <td class="text-muted">@TruncateDescription(assignment.Description, 70)</td>
 
-                                        @if (@assignment.Grade != null) {
-                                            <td>@assignment.Grade/@assignment.TotalGrade</td>
-                                        }
-                                        else
-                                        {
-                                            <td>-</td>
-                                        }
-                                        
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                                    @if (@assignment.Grade != null) {
+                                        <td>@assignment.Grade/@assignment.TotalGrade</td>
+                                    }
+                                    else
+                                    {
+                                        <td>-</td>
+                                    }
+                                    
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="module" src="~/js/dist/pages/course/course.js" asp-append-version="true"></script>
