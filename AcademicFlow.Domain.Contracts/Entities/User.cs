@@ -29,7 +29,6 @@ namespace AcademicFlow.Domain.Entities
             PhoneNumber = phoneNumber;
             Age = age;
             IsDeleted = false;
-            UserCredentials = new UserCredentials();
         }
     }
 }
