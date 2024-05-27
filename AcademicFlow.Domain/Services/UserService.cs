@@ -13,7 +13,7 @@ namespace AcademicFlow.Domain.Services
         private readonly IUserRepository _userRepository = userRepository;
         public async Task<User> AddUser(User user)
         {
-            var existingUser = _userRepository.GetAll().FirstOrDefault(u => u.PersonalCode == user.PersonalCode);
+            var existingUser = _userRepository.GetAll().Include(u => u.UserCredentials).FirstOrDefault(u => u.PersonalCode == user.PersonalCode);
             if (existingUser != null)
                 throw new ValidationException($"User with personal code {user.PersonalCode} already exists. His id is {existingUser.Id}");
 
