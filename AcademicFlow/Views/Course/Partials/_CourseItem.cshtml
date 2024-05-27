@@ -1,0 +1,20 @@
+﻿@using AcademicFlow.Domain.Contracts.Entities
+@model Course
+
+<h2>@Model.Name</h2>
+<h4>Credit points: @Model.CreditPoints</h4>
+<hr />
+<div>
+    @Model.Description
+</div>
+<div>
+    Course for: 
+    @if (Model.Programs != null && Model.Programs.Any())
+    {
+        @foreach(var program in Model.Programs)
+        {
+            <div>@program</div>
+        }
+    }
+</div>
+

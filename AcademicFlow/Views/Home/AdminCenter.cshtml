@@ -20,13 +20,19 @@
                 <li class="nav-item" data-nav-el="addUser">
                     <a class="nav-link link-dark">
                         <i class="fa-solid fa-user-plus me-2"></i>
-                        Add User
+                        User manager
                     </a>
                 </li>
                 <li class="nav-item" data-nav-el="addCourse">
                     <a class="nav-link link-dark">
                         <i class="fa-solid fa-notes-medical me-2"></i>
-                        Add course
+                        Course manager
+                    </a>
+                </li>
+                <li class="nav-item" data-nav-el="allCourses">
+                    <a class="nav-link link-dark">
+                        <i class="fa-solid fa-notes-medical me-2"></i>
+                        All Courses
                     </a>
                 </li>
             </ul>
@@ -48,11 +54,11 @@
             <h1 class="authentication-page__heading">Add new user</h1>
             <h5 class="authentication-page__message"></h5>
             <form id="registerForm" class="">
-                <partial name="Partials/_UserEditForm"></partial>
+                <partial name="Partials/_UserForm"></partial>
                 <button type="button" class="btn btn-primary btn-lg w-100 js-add-user"><i class="fa-solid fa-plus"></i><span> Add User</span></button>
                 <div class="error-message"></div>
             </form>
-            
+
             <form id="deleteUserForm" class="">
                 <div class="mb-3">
                     <label for="userId" class="form__input form-control">User ID</label>
@@ -60,7 +66,7 @@
                 </div>
                 <button type="submit" class="btn btn-danger js-delete-user">Delete User</button>
             </form>
-            
+
             <form id="changeRolesForm" class="">
                 <div class="mb-3">
                     <label for="userId" class="form-label">User ID</label>
@@ -77,8 +83,8 @@
                         <label for="student">student</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="Professor" name="roles" value="proffessor">
-                        <label for="proffessor">Professor</label>
+                        <input type="checkbox" id="Professor" name="roles" value="professor">
+                        <label for="professor">Professor</label>
                     </div>
                     <!-- Add more checkboxes for each role -->
                 </div>
@@ -87,16 +93,22 @@
 
             <form id="editUserForm" class="my-2">
                 <div class="form__input-container mb-2">
-                    <label for="id">Phone Number</label>
+                    <label for="id">User Id</label>
                     <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter user id">
                 </div>
-                <partial name="Partials/_UserEditForm"></partial>
+                <partial name="Partials/_UserForm"></partial>
                 <button type="button" class="btn btn-primary w-100 js-edit-user">Edit User</button>
                 <div class="error-message"></div>
             </form>
 
+            <form id="resetPasswordForm" class="">
+                <div class="mb-3">
+                    <label for="userId" class="form-label">User ID</label>
+                    <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
+                </div>
+                <button type="submit" class="btn btn-primary js-reset-pass">Reset password!</button>
+            </form>
         </div>
-
         
         <div class="user-table col">
             <h2>User Data</h2>
@@ -104,9 +116,37 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="col all-courses-tab d-none">
+            <h2>All Courses</h2>
+            <div id="all-courses-table"></div>
+            <hr />
+            <h2>All Programs</h2>
+            <div id="all-programs-table"></div>
+        </div>
+
+        <div class="course-manager col d-none">
+            <h1 class="authentication-page__heading">Course manager</h1>
+            <h5 class="authentication-page__message"></h5>
+            <form id="createCourse" class="my-2">
+                <partial name="Partials/_CourseForm" />
+                <button type="button" class="btn btn-primary w-100 js-add-course">Add Course</button>
+                <div class="error-message"></div>
+            </form>
+            <hr />
+            <form id="editCourse" class="my-2">
+                <div class="form__input-container mb-2">
+                    <label for="id">Course Id</label>
+                    <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter course id">
+                </div>
+                <partial name="Partials/_CourseForm" />
+                <button type="button" class="btn btn-primary w-100 js-edit-course">Edit Course</button>
+                <div class="error-message"></div>
+            </form>
+        </div>
     </div>
-   
-    
+
+
 </div>
 
 <script type="module" src="~/js/dist/site.js" asp-append-version="true"></script>

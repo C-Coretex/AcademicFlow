@@ -33,4 +33,6 @@ namespace AcademicFlow.Managers.Contracts.Models.UserModels
                 RegistrationUrl = userCredentials?.SecurityKey ?? "";
         }
     }
+
+
 }

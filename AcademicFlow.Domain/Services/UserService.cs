@@ -8,18 +8,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AcademicFlow.Domain.Services
 {
-    public class UserService: IUserService
+    public class UserService(IUserRepository userRepository) : IUserService
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IUserRoleRepository _userRoleRepository;
-        public UserService(IUserRepository userRepository)
-        {
-            _userRepository = userRepository;
-        }
-
+        private readonly IUserRepository _userRepository = userRepository;
         public async Task<User> AddUser(User user)
         {
-            var existingUser = _userRepository.GetAll().FirstOrDefault(u => u.PersonalCode == user.PersonalCode);
+            var existingUser = _userRepository.GetAll().Include(u => u.UserCredentials).FirstOrDefault(u => u.PersonalCode == user.PersonalCode);
             if (existingUser != null)
                 throw new ValidationException($"User with personal code {user.PersonalCode} already exists. His id is {existingUser.Id}");
 
@@ -43,18 +37,20 @@ namespace AcademicFlow.Domain.Services
 
         public async Task<User> GetUserById(int userId)
         {
-            var user = await GetUsers().FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Id == userId);
             return user;
         }
+
         public async Task DeleteUser(int userId)
         {
-            var user = await GetUsers().FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Id == userId);
             
             if (user == null)
                 throw new ValidationException($"User with personal code {userId} does not exist.");
             user.IsDeleted = true;
             await _userRepository.UpdateAsync(user);
         }
+
         public async Task UpdateRoles(int userId, IEnumerable<RolesEnum> roles)
         {
             var user = _userRepository.GetAll(false).Include(u => u.UserRoles).FirstOrDefault(u => u.Id == userId);

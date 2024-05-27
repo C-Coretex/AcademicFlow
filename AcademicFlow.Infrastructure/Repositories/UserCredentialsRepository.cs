@@ -4,10 +4,8 @@ using AcademicFlow.Domain.Helpers.Base;
 
 namespace AcademicFlow.Infrastructure.Repositories
 {
-    public class UserCredentialsRepository : RepositoryBase<AcademicFlowDbContext, UserCredentials>, IUserCredentialsRepository
+    public class UserCredentialsRepository(AcademicFlowDbContext dbContext) 
+        : RepositoryBase<AcademicFlowDbContext, UserCredentials>(dbContext, dbContext.UserCredentials), IUserCredentialsRepository
     {
-        public UserCredentialsRepository(AcademicFlowDbContext dbContext) : base(dbContext, dbContext.UserCredentials)
-        {
-        }
     }
 }

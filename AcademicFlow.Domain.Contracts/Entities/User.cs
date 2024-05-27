@@ -3,7 +3,7 @@ using AcademicFlow.Domain.Helpers.Interfaces;
 
 namespace AcademicFlow.Domain.Entities
 {
-    public class User: IModel
+    public class User : IModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

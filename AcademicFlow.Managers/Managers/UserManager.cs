@@ -15,25 +15,21 @@ namespace AcademicFlow.Managers.Managers
     public class UserManager : BaseManager, IUserManager
     {
         private readonly IUserService _userService;
-        public UserManager(IMapper mapper, IUserService userService): base(mapper)
+        private readonly IUserCredentialsManager _userCredentialsManager;
+        public UserManager(IMapper mapper, IUserService userService, IUserCredentialsManager userCredentialsManager): base(mapper)
         {
             _userService = userService;
+            _userCredentialsManager = userCredentialsManager;
         }
 
         public async Task<string> AddUser(User user)
         {
             user = await _userService.AddUser(user);
-
             var securityKey = CryptographyHelper.GetRandomString(UserConstants.SecurityKeySize);
-            var userCredentials = new UserCredentials()
-            {
-                SecurityKey = securityKey
-            };
-            user.UserCredentials = userCredentials;
-
-            await _userService.UpdateUser(user);
-
-            return securityKey;
+            if (user.UserCredentials == null)
+                user.UserCredentials = new UserCredentials();
+                user.UserCredentials.SecurityKey = securityKey;
+            return user.UserCredentials.SecurityKey;
         }
 
         public async Task UpdateUser(User user)
@@ -44,9 +40,9 @@ namespace AcademicFlow.Managers.Managers
         public async IAsyncEnumerable<UserWebModel> GetUsers(string controllerUrl)
         {
             var users = _userService.GetUsers().ProjectTo<UserWebModel>(MapperConfig).AsAsyncEnumerable();
-            await foreach(var user in users)
+            await foreach (var user in users)
             {
-                if(!user.UserRegistrationData.IsRegistered && !string.IsNullOrEmpty(user.UserRegistrationData.RegistrationUrl))
+                if (!user.UserRegistrationData.IsRegistered && !string.IsNullOrEmpty(user.UserRegistrationData.RegistrationUrl))
                     user.UserRegistrationData.RegistrationUrl = controllerUrl + user.UserRegistrationData.RegistrationUrl;
 
                 yield return user;
@@ -66,7 +62,7 @@ namespace AcademicFlow.Managers.Managers
 
         public async Task DeleteUser(int userId)
         {
-             await _userService.DeleteUser(userId);
+            await _userService.DeleteUser(userId);
         }
 
         public async Task UpdateRoles(int userId, IEnumerable<RolesEnum> roles)

@@ -22,6 +22,128 @@ namespace AcademicFlow.Migrations.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreditPoints")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("PublicId");
+
+                    b.ToTable("Course");
+                });
+
+            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.CourseProgram", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProgramId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("ProgramId");
+
+                    b.ToTable("CourseProgram");
+                });
+
+            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.CourseUserRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserRoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("UserRoleId");
+
+                    b.ToTable("CourseUserRole");
+                });
+
+            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.Program", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SemesterNr")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Program");
+                });
+
+            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.ProgramUserRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProgramId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserRoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgramId");
+
+                    b.HasIndex("UserRoleId");
+
+                    b.ToTable("ProgramUserRole");
+                });
+
             modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.UserCredentials", b =>
                 {
                     b.Property<int>("Id")
@@ -41,7 +163,7 @@ namespace AcademicFlow.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserCredentials", (string)null);
+                    b.ToTable("UserCredentials");
 
                     b.HasData(
                         new
@@ -71,7 +193,7 @@ namespace AcademicFlow.Migrations.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRole", (string)null);
+                    b.ToTable("UserRole");
 
                     b.HasData(
                         new
@@ -121,7 +243,7 @@ namespace AcademicFlow.Migrations.Migrations
                     b.HasIndex("PersonalCode")
                         .IsUnique();
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("User");
 
                     b.HasData(
                         new
@@ -135,6 +257,63 @@ namespace AcademicFlow.Migrations.Migrations
                             PhoneNumber = "0000000",
                             Surname = "Admin"
                         });
+                });
+
+            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.CourseProgram", b =>
+                {
+                    b.HasOne("AcademicFlow.Domain.Contracts.Entities.Course", "Course")
+                        .WithMany("Programs")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AcademicFlow.Domain.Contracts.Entities.Program", "Program")
+                        .WithMany("Courses")
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Program");
+                });
+
+            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.CourseUserRole", b =>
+                {
+                    b.HasOne("AcademicFlow.Domain.Contracts.Entities.Course", "Course")
+                        .WithMany("Users")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AcademicFlow.Domain.Contracts.Entities.UserRole", "UserRole")
+                        .WithMany("Courses")
+                        .HasForeignKey("UserRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("UserRole");
+                });
+
+            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.ProgramUserRole", b =>
+                {
+                    b.HasOne("AcademicFlow.Domain.Contracts.Entities.Program", "Program")
+                        .WithMany("Users")
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AcademicFlow.Domain.Contracts.Entities.UserRole", "User")
+                        .WithMany("Programs")
+                        .HasForeignKey("UserRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Program");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.UserCredentials", b =>
@@ -157,6 +336,27 @@ namespace AcademicFlow.Migrations.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.Course", b =>
+                {
+                    b.Navigation("Programs");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.Program", b =>
+                {
+                    b.Navigation("Courses");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("AcademicFlow.Domain.Contracts.Entities.UserRole", b =>
+                {
+                    b.Navigation("Courses");
+
+                    b.Navigation("Programs");
                 });
 
             modelBuilder.Entity("AcademicFlow.Domain.Entities.User", b =>
