@@ -25,7 +25,10 @@ namespace AcademicFlow.Managers.Managers
         public async Task<string> AddUser(User user)
         {
             user = await _userService.AddUser(user);
-            
+            var securityKey = CryptographyHelper.GetRandomString(UserConstants.SecurityKeySize);
+            if (user.UserCredentials == null)
+                user.UserCredentials = new UserCredentials();
+                user.UserCredentials.SecurityKey = securityKey;
             return user.UserCredentials.SecurityKey;
         }
 

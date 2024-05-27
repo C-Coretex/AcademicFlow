@@ -24,7 +24,7 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin)]
         [HttpPut("AddUser")]
-        public async Task<IActionResult> AddUser([FromForm] string name, [FromForm] string surname, [FromForm]  string personalCode, [FromForm] string? email, [FromForm] string? phoneNumber, [FromForm]  int? age)
+        public async Task<IActionResult> AddUser([FromForm] string name, [FromForm] string surname, [FromForm] string personalCode, [FromForm] string? email, [FromForm] string? phoneNumber, [FromForm] int? age)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace AcademicFlow.Controllers
             }
         }
 
-        [AuthorizeUser(RolesEnum.Admin,RolesEnum.Student)]
+        [AuthorizeUser(RolesEnum.Admin, RolesEnum.Student)]
         [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -162,7 +162,7 @@ namespace AcademicFlow.Controllers
                 }
                 var securityKey = await _userCredentialsManager.ResetUserCredentials(userId);
                 var resetPasswordEndpoint = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/Home/UserPasswordReset?secretKey={securityKey}";
-                
+
                 return Ok(resetPasswordEndpoint);
             }
             catch (Exception e)
