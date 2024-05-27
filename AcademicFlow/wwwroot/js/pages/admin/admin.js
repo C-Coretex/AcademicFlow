@@ -109,6 +109,12 @@ function initUsersTable(users) {
 
                 return data.userRegistrationData.isRegistered ? "" : data.userRegistrationData.registrationUrl ;
             }
+        },
+        {
+            targets: 8,
+            title: 'Role',
+            name: 'roles',
+            data: 'roles'
         }
     ];
     const options = {
@@ -216,7 +222,7 @@ function initProgramsTable(programs) {
         },
         {
             targets: 2,
-            title: 'Semestr Number',
+            title: 'Semester Number',
             name: 'semesterNr',
             data: 'semesterNr'
         }
@@ -314,17 +320,9 @@ $(document).ready(function () {
     $('.js-add-user').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#registerForm');
-
-        const formData = {
-            name: $form.find('#name').val().trim(),
-            surname: $form.find('#surname').val().trim(),
-            personalCode: $form.find('#personalCode').val().trim(),
-            email: $form.find('#email').val().trim(), // Optional (can be null)
-            phoneNumber: $form.find('#phoneNumber').val().trim(), // Optional (can be null)
-        };
         if (true) {  //TODO add form validation
             const formData = new FormData($form[0]);
-            console.log(formData);
+            
             $.ajax({
                 type: 'PUT',
                 url: '/api/User/AddUser',
@@ -332,13 +330,13 @@ $(document).ready(function () {
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function (response) {
-                    $('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is added.</div>`);
+                    $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is added.</div>`);
                     console.error('Error:', textStatus, errorThrown);
                     console.log('User added successfully');
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
-                    $('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not added. ${errorMessage}</div>`);
+                    $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not added. </div>`);
                     console.error('Error adding user:', errorMessage);
                 }
             })
@@ -351,18 +349,9 @@ $(document).ready(function () {
     $('.js-edit-user').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#editUserForm');
-
-        const formData = {
-            id: $form.find('#id').val().trim(),
-            name: $form.find('#name').val().trim(),
-            surname: $form.find('#surname').val().trim(),
-            personalCode: $form.find('#personalCode').val().trim(),
-            email: $form.find('#email').val().trim(), // Optional (can be null)
-            phoneNumber: $form.find('#phoneNumber').val().trim(), // Optional (can be null)
-        };
         if (true) {  //TODO add form validation
             const formData = new FormData($form[0]);
-            console.log(formData);
+            
             $.ajax({
                 type: "POST",
                 url: '/api/User/EditUser',
@@ -370,13 +359,13 @@ $(document).ready(function () {
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function (response) {
-                    $('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is added.</div>`);
+                    $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is changed.</div>`);
                     console.error('Error:', textStatus, errorThrown);
                     console.log('User edited successfully');
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
-                    $('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not added. ${errorMessage}</div>`);
+                    $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not changed.</div>`);
                     console.error('Error editing user:', errorMessage);
                 }
             })
@@ -386,17 +375,11 @@ $(document).ready(function () {
 
     });
 
-
     $('.js-delete-user').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#deleteUserForm');
-        console.log($form);
-        const formData = {
-            userId: $form.find('#userId').val(),
-        };
         if (true) {  //TODO add form validation
             const formData = new FormData($form[0]);
-            console.log(formData);
             $.ajax({
                 type: 'Delete',
                 url: '/api/User/DeleteUser',
@@ -404,10 +387,13 @@ $(document).ready(function () {
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function (response) {
+                    $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is deleted.</div>`);
                     console.log('User deleted successfully');
                 },
                 error: function (xhr, status, error) {
-                    console.error('Error deleting user:', error);
+                    const errorMessage = xhr.responseText;
+                    $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not deleted.</div>`);
+                    console.error('Error deleting user:', errorMessage);
                 }
             })
         } else {
@@ -417,27 +403,31 @@ $(document).ready(function () {
 
     $(".js-change-role").on("click", function (e) {
         e.preventDefault();
+        const $form = $('#changeRolesForm');
         let t = $("#changeRolesForm");
         t.find("#userId").val();
         t.find("roleValues").val()
         {
             let e = new FormData(t[0]);
-            console.log(e), $.ajax({
+            $.ajax({
                 type: "POST",
                 url: "/api/User/ChangeRoles",
                 processData: !1,
                 contentType: !1,
                 data: e,
                 success: function (e) {
-                    console.log("Role changed successfully")
+                    console.log("Role changed successfully");
+                    $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Role is changed </div>`);
+
                 },
                 error: function (e, t, r) {
                     console.error("Error changing role:", r)
+                    $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Role is not changed</div>`);
+
                 }
             })
         }
     });
-
 
     $('.js-add-course').on('click', function (ev) {
         ev.preventDefault();
@@ -452,11 +442,11 @@ $(document).ready(function () {
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function () {
-                    $('#createCourse .error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is added.</div>`);
+                    $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is added.</div>`);
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
-                    $('#createCourse .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not added. ${errorMessage}</div>`);
+                    $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not added. </div>`);
                     console.error('Error adding program:', errorMessage);
                 }
             })
@@ -477,11 +467,35 @@ $(document).ready(function () {
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function (_) {
-                    $('#editCourse .error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is edited.</div>`);
+                    $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is edited.</div>`);
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
-                    $('#editCourse .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not edited. ${errorMessage}</div>`);
+                    $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not edited. </div>`);
+                }
+            })
+        } else {
+            //TODO add form validation errors
+        }
+    });
+
+    $('.js-delete-course').on('click', function (ev) {
+        ev.preventDefault();
+        const $form = $('#deleteCourse');
+        if (true) {  //TODO add form validation
+            const formData = new FormData($form[0]);
+            $.ajax({
+                type: 'Delete',
+                url: '/api/Course/DeleteCourse',
+                processData: false, // Prevent jQuery from processing data (handled by FormData)
+                contentType: false, // Don't set content type header (FormData sets it)
+                data: formData,
+                success: function (_) {
+                    $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is deleted.</div>`);
+                },
+                error: function (xhr, response, status, error) {
+                    const errorMessage = xhr.responseText;
+                    $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not deleted.</div>`);
                 }
             })
         } else {
@@ -502,11 +516,11 @@ $(document).ready(function () {
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function () {
-                    $('#createProgram .error-message').html(`<div class="alert alert-success mt-2" role="alert">Program is added.</div>`);
+                    $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Program is added.</div>`);
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
-                    $('#createProgram .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not added. ${errorMessage}</div>`);
+                    $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Program is not added. </div>`);
                     console.error('Error adding program:', errorMessage);
                 }
             })
@@ -520,7 +534,7 @@ $(document).ready(function () {
         const $form = $('#editProgram');
         if (true) {  //TODO add form validation
             const formData = new FormData($form[0]);
-            console.log(formData);
+            
             $.ajax({
                 type: "POST",
                 url: '/api/Program/EditProgram',
@@ -528,11 +542,36 @@ $(document).ready(function () {
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function (_) {
-                    $('#editProgram .error-message').html(`<div class="alert alert-success mt-2" role="alert">Program is edited.</div>`);
+                    $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Program is edited.</div>`);
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
-                    $('#editProgram .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Program is not edited. ${errorMessage}</div>`);
+                    $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Program is not edited. </div>`);
+                }
+            })
+        } else {
+            //TODO add form validation errors
+        }
+    });
+
+    $('.js-delete-program').on('click', function (ev) {
+        ev.preventDefault();
+        const $form = $('#deleteProgram');
+        if (true) {  //TODO add form validation
+            const formData = new FormData($form[0]);
+
+            $.ajax({
+                type: 'Delete',
+                url: '/api/Program/DeleteProgram',
+                processData: false, // Prevent jQuery from processing data (handled by FormData)
+                contentType: false, // Don't set content type header (FormData sets it)
+                data: formData,
+                success: function (_) {
+                    $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Program is deleted.</div>`);
+                },
+                error: function (xhr, response, status, error) {
+                    const errorMessage = xhr.responseText;
+                    $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Program is not deleted.</div>`);
                 }
             })
         } else {
@@ -542,6 +581,7 @@ $(document).ready(function () {
 
     $(".js-reset-pass").on("click", function (e) {
         e.preventDefault();
+        const $form = $('#resetPasswordForm');
         let t = $("#resetPasswordForm");
         let formData = t.serialize(); 
         $.ajax({
@@ -550,9 +590,11 @@ $(document).ready(function () {
             data: formData,  
             success: function (response) {
                 console.log("Got it:", response);
+                $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Password is reset.</div><div>Copy and send the link to the user:</div><span>${response}</span>`);
             },
             error: function (xhr, status, error) {
                 console.error("Error:", error);
+                $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Password is not reset. </div>`);
             }
         });
     });

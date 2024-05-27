@@ -19,31 +19,31 @@
                 </li>
                 <li class="nav-item" data-nav-el="addUser">
                     <a class="nav-link link-dark">
-                        <i class="fa-solid fa-user-plus me-2"></i>
+                        <i class="fa-solid fa-gear"></i>
                         User manager
                     </a>
                 </li>
                 <li class="nav-item" data-nav-el="allCourses">
                     <a class="nav-link link-dark">
-                        <i class="fa-solid fa-notes-medical me-2"></i>
+                        <i class="fa-solid fa-book-open"></i>
                         All Courses
                     </a>
                 </li>
                 <li class="nav-item" data-nav-el="addCourse">
                     <a class="nav-link link-dark">
-                        <i class="fa-solid fa-notes-medical me-2"></i>
+                        <i class="fa-solid fa-gear"></i>
                         Course manager
                     </a>
                 </li>
                 <li class="nav-item" data-nav-el="allPrograms">
                     <a class="nav-link link-dark">
-                        <i class="fa-solid fa-notes-medical me-2"></i>
+                        <i class="fa-solid fa-layer-group"></i>
                         All Programs
                     </a>
                 </li>
                 <li class="nav-item" data-nav-el="addProgram">
                     <a class="nav-link link-dark">
-                        <i class="fa-solid fa-notes-medical me-2"></i>
+                        <i class="fa-solid fa-gear"></i>
                         Program manager
                     </a>
                 </li>
@@ -63,63 +63,79 @@
         </div>
 
         <div class="add-user-container col d-none">
-            <h1 class="authentication-page__heading">Add new user</h1>
+            <h1 class="authentication-page__heading">User Manager</h1>
             <h5 class="authentication-page__message"></h5>
-            <form id="registerForm" class="">
-                <partial name="Partials/_UserForm"></partial>
-                <button type="button" class="btn btn-primary btn-lg w-100 js-add-user"><i class="fa-solid fa-plus"></i><span> Add User</span></button>
-                <div class="error-message"></div>
-            </form>
 
-            <form id="deleteUserForm" class="">
-                <div class="mb-3">
-                    <label for="userId" class="form__input form-control">User ID</label>
-                    <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
-                </div>
-                <button type="submit" class="btn btn-danger js-delete-user">Delete User</button>
-            </form>
+           
+            <div class="d-flex">
+                <form id="registerForm" class="me-4">
+                    <h3>Add New User</h3>
+                    <partial name="Partials/_UserForm"></partial>
+                    <button type="button" class="btn btn-primary btn-lg w-100 js-add-user"> Add User</button>
+                    <div class="error-message"></div>
+                </form>
 
-            <form id="changeRolesForm" class="">
-                <div class="mb-3">
-                    <label for="userId" class="form-label">User ID</label>
-                    <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Select Roles</label>
-                    <div>
-                        <input type="checkbox" id="Admin" name="roles" value="admin">
-                        <label for="admin">admin</label>
+               
+                <form id="deleteUserForm" class="me-4">
+                    <h3>Delete User</h3>
+                    <div class="mb-3">
+                        <label for="userId" class="form-label">User ID</label>
+                        <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
                     </div>
-                    <div>
-                        <input type="checkbox" id="Student" name="roles" value="student">
-                        <label for="student">student</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="Professor" name="roles" value="professor">
-                        <label for="professor">Professor</label>
-                    </div>
-                    <!-- Add more checkboxes for each role -->
-                </div>
-                <button type="submit" class="btn btn-primary js-change-role">Change Roles</button>
-            </form>
+                    <button type="submit" class="btn btn-danger js-delete-user">Delete User</button>
+                    <div class="error-message"></div>
+                </form>
 
-            <form id="editUserForm" class="my-2">
-                <div class="form__input-container mb-2">
-                    <label for="id">User Id</label>
-                    <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter user id">
-                </div>
-                <partial name="Partials/_UserForm"></partial>
-                <button type="button" class="btn btn-primary w-100 js-edit-user">Edit User</button>
-                <div class="error-message"></div>
-            </form>
+                
+                <form id="changeRolesForm" class="me-4">
+                    <h3>Change Role</h3>
+                    <div class="mb-3">
+                        <label for="userId" class="form-label">User ID</label>
+                        <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Select Roles</label>
+                        <div>
+                            <input type="checkbox" id="Admin" name="roles" value="admin">
+                            <label for="admin">admin</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="Student" name="roles" value="student">
+                            <label for="student">student</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="Professor" name="roles" value="professor">
+                            <label for="professor">Professor</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary js-change-role">Change Roles</button>
+                    <div class="error-message"></div>
+                </form>
 
-            <form id="resetPasswordForm" class="">
-                <div class="mb-3">
-                    <label for="userId" class="form-label">User ID</label>
-                    <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
-                </div>
-                <button type="submit" class="btn btn-primary js-reset-pass">Reset password!</button>
-            </form>
+                
+                <form id="editUserForm" class="me-4">
+                    <h3>Edit Role</h3>
+                    <div class="form__input-container mb-2">
+                        <label for="userId" class="form-label">User ID</label>
+                        <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter user id">
+                    </div>
+                    <partial name="Partials/_UserForm"></partial>
+                    <button type="button" class="btn btn-primary w-100 js-edit-user">Edit User</button>
+                    <div class="error-message"></div>
+                </form>
+
+               
+                <form id="resetPasswordForm" class="me-4">
+                    <h3>Reset User Password</h3>
+                    <div class="mb-3">
+                        <label for="userId" class="form-label">User ID</label>
+                        <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
+                    </div>
+                    <button type="button" class="btn btn-primary js-reset-pass">Reset password</button>
+                    <div class="error-message"></div>
+                </form>
+            </div>
+            
         </div>
         
         <div class="user-table col">
@@ -129,7 +145,7 @@
         </div>
 
         <div class="col all-courses-tab d-none">
-            <h2>All Courses</h2>
+            <h1>All Courses</h1>
             <table class="table table-striped" id="coursesTable">
             </table>
         </div>
@@ -143,41 +159,70 @@
         <div class="course-manager col d-none">
             <h1 class="authentication-page__heading">Course manager</h1>
             <h5 class="authentication-page__message"></h5>
-            <form id="createCourse" class="my-2">
-                <partial name="Partials/_CourseForm" />
-                <button type="button" class="btn btn-primary w-100 js-add-course">Add Course</button>
-                <div class="error-message"></div>
-            </form>
-            <hr />
-            <form id="editCourse" class="my-2">
-                <div class="form__input-container mb-2">
-                    <label for="id">Course Id</label>
-                    <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter course id">
-                </div>
-                <partial name="Partials/_CourseForm" />
-                <button type="button" class="btn btn-primary w-100 js-edit-course">Edit Course</button>
-                <div class="error-message"></div>
-            </form>
+            <div class="d-flex">
+                
+                <form id="createCourse" class="me-4">
+                    <h3>Add Course</h3>
+                    <partial name="Partials/_CourseForm" />
+                    <button type="button" class="btn btn-primary w-100 js-add-course">Add Course</button>
+                    <div class="error-message"></div>
+                </form>
+                
+                <form id="editCourse" class="me-4">
+                    <h3>Edit Course</h3>
+                    <div class="form__input-container mb-2">
+                        <label for="id">Course Id</label>
+                        <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter course id">
+                    </div>
+                    <partial name="Partials/_CourseForm" />
+                    <button type="button" class="btn btn-primary w-100 js-edit-course">Edit Course</button>
+                    <div class="error-message"></div>
+                </form>
+
+                <form id="deleteCourse" class="">
+                    <h3>Delete Course</h3>
+                    <div class="form__input-container mb-2">
+                        <label for="PublicId">Course Id</label>
+                        <input type="number" id="PublicId" name="PublicId" class="form__input form-control" placeholder="Enter course id">
+                    </div>
+                    <button type="button" class="btn btn-danger js-delete-course">Delete Course</button>
+                    <div class="error-message"></div>
+                </form>
+            </div>
+            
         </div>
 
         <div class="program-manager col d-none">
             <h1 class="authentication-page__heading">Program manager</h1>
             <h5 class="authentication-page__message"></h5>
-            <form id="createProgram" class="my-2">
-                <partial name="Partials/_ProgramForm" />
-                <button type="button" class="btn btn-primary w-100 js-add-program">Add Program</button>
-                <div class="error-message"></div>
-            </form>
-            <hr />
-            <form id="editProgram" class="my-2">
-                <div class="form__input-container mb-2">
-                    <label for="id">Program Id</label>
-                    <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter program id">
-                </div>
-                <partial name="Partials/_ProgramForm" />
-                <button type="button" class="btn btn-primary w-100 js-edit-program">Edit Program</button>
-                <div class="error-message"></div>
-            </form>
+            <div class="d-flex">
+                <form id="createProgram" class="me-4">
+                    <h3>Add Program</h3>
+                    <partial name="Partials/_ProgramForm" />
+                    <button type="button" class="btn btn-primary w-100 js-add-program">Add Program</button>
+                    <div class="error-message"></div>
+                </form>
+                <form id="editProgram" class="me-4">
+                    <h3>Edit Program</h3>
+                    <div class="form__input-container mb-2">
+                        <label for="id">Program Id</label>
+                        <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter program id">
+                    </div>
+                    <partial name="Partials/_ProgramForm" />
+                    <button type="button" class="btn btn-primary w-100 js-edit-program">Edit Program</button>
+                    <div class="error-message"></div>
+                </form>
+                <form id="deleteProgram" class="">
+                    <h3>Delete Program</h3>
+                    <div class="form__input-container mb-2">
+                        <label for="PublicId">Program Id</label>
+                        <input type="number" id="PublicId" name="PublicId" class="form__input form-control" placeholder="Enter program id">
+                    </div>
+                    <button type="button" class="btn btn-danger js-delete-program">Delete Program</button>
+                    <div class="error-message"></div>
+                </form>
+            </div>
+           
         </div>
     </div>
 
