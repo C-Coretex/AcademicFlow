@@ -1,0 +1,28 @@
+﻿@using AcademicFlow.Domain.Contracts.Entities
+@model Course
+
+@{
+    var course = Model;
+
+    ViewData["Title"] = @course.Name;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mt-4">
+        <li class="breadcrumb-item">Home</li>
+        <li class="breadcrumb-item">Course</li>
+        <li class="breadcrumb-item active" aria-current="page">@course.PublicId</li>
+    </ol>
+</nav>
+
+<img src="@Url.Content(course.ImageUrl)" alt="@course.Name" class="img-fluid hero-image">
+
+<h1 class="display-4 my-4">@course.Name</h1>
+<hr class="my-4">
+<p class="lead">@course.Description</p>
+
+<div class="course-data mt-5">
+    <p><strong>Lecturer:</strong> !!!TODO</p>
+    <p><strong>Grade:</strong> !!!TODO</p>
+</div>
+

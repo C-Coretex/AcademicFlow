@@ -1,0 +1,71 @@
+﻿@using AcademicFlow.Managers.Contracts.Models.CourseModels;
+@model IEnumerable<CourseTableItem>
+
+@{
+    var courses = Model;
+
+    string TruncateDescription(string description, int maxLength)
+    {
+        if (string.IsNullOrEmpty(description))
+        {
+            return string.Empty;
+        }
+
+        if (description.Length <= maxLength)
+        {
+            return description;
+        }
+
+        return description.Substring(0, maxLength) + "...";
+    }
+}
+
+@if (courses != null && courses.Count() > 0)
+{
+    <div class="row">
+        @for (int i = 0; i < 2; i++)
+        {
+            var course = courses.ElementAtOrDefault(i);
+
+            <div class="col-lg-6 col-md-12 mb-4">
+                <div class="p-4 bg-light rounded-3 h-100 position-relative d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start flex-column flex-sm-row">
+                        <h2 class="display-6 course-name course-name-lg">@course.Name</h2>
+                        <img src="@Url.Content(course.ImageUrl)" alt="@course.Name" class="img-fluid img-thumbnail ms-3 mb-2" style="max-width: 100px; max-height: 100px;">
+                    </div>
+                    <p class="lead">@course.PublicId</p>
+                    <hr class="my-4">
+                    <p>@TruncateDescription(course.Description, 150)</p>
+                    <div class="mt-auto">
+                        <a href="Course/@course.Id" class="btn btn-success">Learn more</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="row">
+        @for (int i = 2; i < courses.Count(); i++)
+        {
+            var course = courses.ElementAtOrDefault(i);
+
+            <div class="col-xl-4 col-lg-6 col-md-12 mb-4">
+                <div class="p-4 bg-light rounded-3 h-100 position-relative d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start flex-column flex-sm-row">
+                        <h2 class="display-6 course-name course-name-sm">@course.Name</h2>
+                        <img src="@Url.Content(course.ImageUrl)" alt="@course.Name" class="img-fluid img-thumbnail ms-3 mb-2" style="max-width: 100px; max-height: 100px;">
+                    </div>
+                    <p class="lead">@course.PublicId</p>
+                    <hr class="my-4">
+                    <p>@TruncateDescription(course.Description, 150)</p>
+                    <div class="mt-auto">
+                        <a href="Course/@course.Id" class="btn btn-success">Learn more</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No courses available.</p>
+}
