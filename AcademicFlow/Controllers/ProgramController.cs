@@ -78,7 +78,7 @@ namespace AcademicFlow.Controllers
             try
             {
                 var programs = _programManager.GetProgramTableItemList(assignedUserId, role);
-                return PartialView("Partials/_ProgramTable", programs); /// return html content
+                return Ok(programs);// PartialView("Partials/_ProgramTable", programs); /// return html content
             }
             catch (Exception e)
             {

@@ -83,7 +83,7 @@ namespace AcademicFlow.Controllers
             try
             {
                 var courses = _courseManager.GetCourseTableItemList(assignedUserId, role, assingedProgramId);
-                return PartialView("Partials/_CourseTable", courses); /// return html content
+                return Ok(courses);//PartialView("Partials/_CourseTable", courses); /// return html content
             }
             catch (Exception e)
             {
