@@ -207,6 +207,18 @@ function initProgramsTable(programs) {
             title: 'ID',
             name: 'id',
             data: 'id'
+        },
+        {
+            targets: 1,
+            title: 'Title',
+            name: 'name',
+            data: 'name'
+        },
+        {
+            targets: 2,
+            title: 'Semestr Number',
+            name: 'semesterNr',
+            data: 'semesterNr'
         }
     ];
     const options = {
@@ -433,7 +445,6 @@ $(document).ready(function () {
 
         if (true) {  //TODO add form validation
             const formData = new FormData($form[0]);
-            console.log(formData);
             $.ajax({
                 type: 'PUT',
                 url: '/api/Course/AddCourse',
@@ -459,7 +470,6 @@ $(document).ready(function () {
         const $form = $('#editCourse');
         if (true) {  //TODO add form validation
             const formData = new FormData($form[0]);
-            console.log(formData);
             $.ajax({
                 type: "POST",
                 url: '/api/Course/EditCourse',
@@ -485,10 +495,9 @@ $(document).ready(function () {
 
         if (true) {  //TODO add form validation
             const formData = new FormData($form[0]);
-            console.log(formData);
             $.ajax({
                 type: 'PUT',
-                url: '/api/Program/AddPogram',
+                url: '/api/Program/AddProgram',
                 processData: false, // Prevent jQuery from processing data (handled by FormData)
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
@@ -508,22 +517,22 @@ $(document).ready(function () {
     });
     $('.js-edit-program').on('click', function (ev) {
         ev.preventDefault();
-        const $form = $('#editCourse');
+        const $form = $('#editProgram');
         if (true) {  //TODO add form validation
             const formData = new FormData($form[0]);
             console.log(formData);
             $.ajax({
                 type: "POST",
-                url: '/api/Course/EditCourse',
+                url: '/api/Program/EditProgram',
                 processData: false, // Prevent jQuery from processing data (handled by FormData)
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function (_) {
-                    $('#editCourse .error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is edited.</div>`);
+                    $('#editProgram .error-message').html(`<div class="alert alert-success mt-2" role="alert">Program is edited.</div>`);
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
-                    $('#editCourse .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Course is not edited. ${errorMessage}</div>`);
+                    $('#editProgram .error-message').html(`<div class="alert alert-danger mt-2" role="alert">Program is not edited. ${errorMessage}</div>`);
                 }
             })
         } else {
