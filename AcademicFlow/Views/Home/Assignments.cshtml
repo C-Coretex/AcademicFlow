@@ -1,4 +1,4 @@
-﻿@{
+@{
     var assignments = ViewData["Assignments"] as List<AcademicFlow.Controllers.Assignment>;
     ViewData["Title"] = "Assignments";
 
@@ -20,30 +20,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-auto p-0 bg-light sticky-top">
-            <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
-                <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
-                    <li class="nav-item">
-                        <a href="/" class="nav-link link-dark py-3 px-2" title="Home" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-                            <i class="fa-solid fa-home"></i>
-                            <p class="small">Home</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/Home/Courses" class="nav-link py-3 px-2 text-success" title="Courses" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Dashboard">
-                            <i class="fa-solid fa-school"></i>
-                            <p class="small">My courses</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/Home/Assignments" class="nav-link py-3 px-2 text-success" title="Assignments" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Orders">
-                            <i class="fa-regular fa-file"></i>
-                            <p class="small">Assignments</p>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <partial name="../Course/Partials/_CourseNav" />
         <div class="col-sm p-0 min-vh-100">
             <div class="container">
                 <h1 class="display-4 my-4">Assignments !!!TODO</h1>
