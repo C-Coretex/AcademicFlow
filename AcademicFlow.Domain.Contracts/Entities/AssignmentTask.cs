@@ -12,6 +12,7 @@ namespace AcademicFlow.Domain.Contracts.Entities
         public string AssignmentDescription { get; set; }
         public float AssignmentWeight { get; set; } = 1.0f;
         public DateTime Modified { get; set; }
+        public DateTime Deadline { get; set; }
 
         public virtual ICollection<AssignmentEntry> AssignmentEntries { get; set; }
         public virtual User User { get; set; }

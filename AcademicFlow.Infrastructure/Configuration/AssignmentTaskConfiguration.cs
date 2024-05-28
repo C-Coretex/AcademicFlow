@@ -15,6 +15,7 @@ namespace AcademicFlow.Infrastructure.Configuration
                    .OnDelete(DeleteBehavior.ClientCascade);
             builder.HasIndex(x => x.CreatedById);
             builder.HasIndex(x => x.CourseId);
+            builder.HasIndex(x => x.Deadline);
         }
     }
 }
