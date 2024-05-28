@@ -16,7 +16,11 @@ namespace AcademicFlow.Domain.Entities
 
         public UserCredentials UserCredentials { get; set; }
         public List<UserRole> UserRoles { get; set; }
-        
+
+        public virtual ICollection<AssignmentTask> AssignmentTasks { get; set; }
+        public virtual ICollection<AssignmentEntry> AssignmentEntries { get; set; }
+        public virtual ICollection<AssignmentGrade> AssignmentGrades { get; set; }
+
         public User()
         {}
 

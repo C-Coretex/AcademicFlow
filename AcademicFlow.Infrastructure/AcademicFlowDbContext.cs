@@ -15,6 +15,10 @@ namespace AcademicFlow.Infrastructure
         public DbSet<Program> Program { get; set; }
         public DbSet<CourseUserRole> CourseUserRole { get; set; }
         public DbSet<Course> Course { get; set; }
+        public DbSet<AssignmentTask> AssignmentTask { get; set; }
+        public DbSet<AssignmentEntry> AssignmentEntry { get; set; }
+        public DbSet<AssignmentGrade> AssignmentGrade { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

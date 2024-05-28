@@ -14,6 +14,10 @@ namespace AcademicFlow.Domain.Extensions
             serviceCollection.AddScoped<ICourseService, CourseService>();
             serviceCollection.AddScoped<IProgramService, ProgramService>();
 
+            serviceCollection.AddScoped<IAssignmentTaskService, AssignmentTaskService>();
+            serviceCollection.AddScoped<IAssignmentEntryService, AssignmentEntryService>();
+            serviceCollection.AddScoped<IAssignmentGradeService, AssignmentGradeService>();
+
             return serviceCollection;
         }
     }

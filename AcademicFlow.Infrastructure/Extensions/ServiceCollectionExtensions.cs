@@ -21,6 +21,9 @@ namespace AcademicFlow.Infrastructure.Extensions
             serviceCollection.AddScoped<IProgramRepository, ProgramRepository>();
             serviceCollection.AddScoped<IProgramUserRoleRepository, ProgramUserRoleRepository>();
 
+            serviceCollection.AddScoped<IAssignmentTaskRepository, AssignmentTaskRepository>();
+            serviceCollection.AddScoped<IAssignmentEntryRepository, AssignmentEntryRepository>();
+            serviceCollection.AddScoped<IAssignmentGradeRepository, AssignmentGradeRepository>();
 
             return serviceCollection;
         }
