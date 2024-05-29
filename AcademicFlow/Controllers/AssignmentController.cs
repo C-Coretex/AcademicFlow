@@ -248,14 +248,14 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Professor, RolesEnum.Student)]
         [HttpGet("GetAllAssignmentsForCourse")]
-        public async Task<IActionResult> GetAllAssignmentsForCourse([FromQuery] bool withAssignedEntries = true, [FromQuery] bool withGrades = true, [FromQuery] string dateFrom = null, [FromQuery] string dateTo = null)
+        public async Task<IActionResult> GetAllAssignmentsForCourse([FromQuery] int courseId, [FromQuery] bool withAssignedEntries = true, [FromQuery] bool withGrades = true, [FromQuery] string dateFrom = null, [FromQuery] string dateTo = null)
         {
             try
             {
                 var dateFromDateTime = DateTime.ParseExact(dateFrom, "dd.MM.yyyy", CultureInfo.InvariantCulture);
                 var dateToDateTime = DateTime.ParseExact(dateTo, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
-                var data = await _assignmentManager.GetAllAssignmentsForCourse(withAssignedEntries, withGrades, dateFromDateTime, dateToDateTime);
+                var data = await _assignmentManager.GetAllAssignmentsForCourse(courseId, withAssignedEntries, withGrades, dateFromDateTime, dateToDateTime);
                 return Ok(data);
             }
             catch (Exception e)

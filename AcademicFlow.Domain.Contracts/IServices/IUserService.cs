@@ -8,6 +8,7 @@ namespace AcademicFlow.Domain.Contracts.IServices
         Task<User?> GetById(int id);
         IQueryable<User> GetUsers();
         Task<User> GetUserById(int userId);
+        Task<User?> GetUserByIdWithAssignments(int userId);
         Task DeleteUser(int userId);
         Task<User> AddUser(User user);
         Task UpdateRoles(int userId, IEnumerable<RolesEnum> roles);

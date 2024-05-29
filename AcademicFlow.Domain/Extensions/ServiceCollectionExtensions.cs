@@ -13,6 +13,7 @@ namespace AcademicFlow.Domain.Extensions
             serviceCollection.AddScoped<ICourseProgramService, CourseProgramService>();
             serviceCollection.AddScoped<ICourseService, CourseService>();
             serviceCollection.AddScoped<IProgramService, ProgramService>();
+            serviceCollection.AddScoped<IUserRoleService, UserRoleService>();
 
             serviceCollection.AddScoped<IAssignmentTaskService, AssignmentTaskService>();
             serviceCollection.AddScoped<IAssignmentEntryService, AssignmentEntryService>();
