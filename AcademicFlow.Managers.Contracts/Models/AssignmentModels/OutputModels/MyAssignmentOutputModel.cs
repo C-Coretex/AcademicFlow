@@ -1,9 +1,4 @@
 ﻿using AcademicFlow.Managers.Contracts.Models.UserModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AcademicFlow.Managers.Contracts.Models.AssignmentModels.OutputModels
 {
@@ -11,11 +6,11 @@ namespace AcademicFlow.Managers.Contracts.Models.AssignmentModels.OutputModels
     {
         public int Id { get; set; }
         public int CourseId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string AssignmentName { get; set; }
+        public string AssignmentDescription { get; set; }
         public float AssignmentWeight { get; set; }
         public DateTime Deadline { get; set; }
-        public DateTime LastModified { get; set; }
+        public DateTime Modified { get; set; }
 
         public UserWebModel CreatedBy { get; set; }
     }
@@ -24,7 +19,7 @@ namespace AcademicFlow.Managers.Contracts.Models.AssignmentModels.OutputModels
     {
         public int Id { get; set; }
         public string FileName { get; set; }
-        public DateTime LastModified { get; set; }
+        public DateTime Modified { get; set; }
 
         public UserWebModel CreatedBy { get; set; }
     }
@@ -34,7 +29,7 @@ namespace AcademicFlow.Managers.Contracts.Models.AssignmentModels.OutputModels
         public int Id { get; set; }
         public int Grade { get; set; }
         public string Comment { get; set; }
-        public DateTime LastModified { get; set; }
+        public DateTime Modified { get; set; }
 
         public UserWebModel GradedBy { get; set; }
     }

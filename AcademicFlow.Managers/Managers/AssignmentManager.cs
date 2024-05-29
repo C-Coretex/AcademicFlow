@@ -9,7 +9,6 @@ using AcademicFlow.Managers.Contracts.Models.AssignmentModels.OutputModels;
 using AutoMapper;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Options;
-using System.IO;
 
 namespace AcademicFlow.Managers.Managers
 {
@@ -71,7 +70,8 @@ namespace AcademicFlow.Managers.Managers
             if (userRole != RolesEnum.Professor && userRole != RolesEnum.Student)
                 throw new Exception("User is not assigned as Professor or Student for this course");
 
-            return null;
+            var returnData = Mapper.Map<AssignmentTaskOutputModel>(assignmentTask);
+            return returnData;
         }
 
         public async Task AddAssignmentEntry(int assignmentTaskId, FileModel file)
@@ -119,7 +119,8 @@ namespace AcademicFlow.Managers.Managers
             if (userRole != RolesEnum.Professor && userRole != RolesEnum.Student)
                 throw new Exception("User is not assigned as Professor or Student for this course");
 
-            return null;
+            var returnData = Mapper.Map<AssignmentEntryOutputModel>(assignmentEntry);
+            return returnData;
         }
 
         public async Task<FileModel> DownloadAssignmentFile(int id)
@@ -169,7 +170,8 @@ namespace AcademicFlow.Managers.Managers
             if (userRole != RolesEnum.Professor && userRole != RolesEnum.Student)
                 throw new Exception("User is not assigned as Professor or Student for this course");
 
-            return null;
+            var returnData = Mapper.Map<AssignmentGradeOutputModel>(assignmentGrade);
+            return returnData;
         }
 
         public async Task<AssignmentsOutputModel> GetAssignmentEntriesForAssignmentTask(int id)
