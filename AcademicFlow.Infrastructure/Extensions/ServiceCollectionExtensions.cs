@@ -15,6 +15,7 @@ namespace AcademicFlow.Infrastructure.Extensions
             serviceCollection.AddScoped<IUserRepository, UserRepository>();
             serviceCollection.AddScoped<IUserCredentialsRepository, UserCredentialsRepository>();
 
+            serviceCollection.AddScoped<IUserRoleRepository, UserRoleRepository>();
             serviceCollection.AddScoped<ICourseProgramRepository, CourseProgramRepository>();
             serviceCollection.AddScoped<ICourseRepository, CourseRepository>();
             serviceCollection.AddScoped<ICourseUserRoleRepository, CourseUserRoleRepository>();
