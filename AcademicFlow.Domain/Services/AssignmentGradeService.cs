@@ -1,8 +1,21 @@
-﻿using AcademicFlow.Domain.Contracts.IServices;
+﻿using AcademicFlow.Domain.Contracts.Entities;
+using AcademicFlow.Domain.Contracts.IRepositories;
+using AcademicFlow.Domain.Contracts.IServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace AcademicFlow.Domain.Services
 {
-    public class AssignmentGradeService: IAssignmentGradeService
+    public class AssignmentGradeService : IAssignmentGradeService
     {
+        private readonly IAssignmentGradeRepository _assignmentGradeRepository;
+        public AssignmentGradeService(IAssignmentGradeRepository assignmentGradeRepository)
+        {
+            _assignmentGradeRepository = assignmentGradeRepository;
+        }
+
+        public Task<AssignmentGrade?> GetById(int id)
+        {
+            return _assignmentGradeRepository.GetAll().Include(x => x.AssignmentEntry).ThenInclude(x => x.AssignmentTask).FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

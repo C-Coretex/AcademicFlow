@@ -13,6 +13,10 @@ namespace AcademicFlow.Infrastructure.Configuration
                    .HasForeignKey(x => x.CreatedById)
                    .HasPrincipalKey(x => x.Id)
                    .OnDelete(DeleteBehavior.ClientCascade);
+            builder.HasOne(x => x.Course).WithMany(x => x.AssignmentTasks)
+                   .HasForeignKey(x => x.CourseId)
+                   .HasPrincipalKey(x => x.Id)
+                   .OnDelete(DeleteBehavior.ClientCascade);
             builder.HasIndex(x => x.CreatedById);
             builder.HasIndex(x => x.CourseId);
             builder.HasIndex(x => x.Deadline);

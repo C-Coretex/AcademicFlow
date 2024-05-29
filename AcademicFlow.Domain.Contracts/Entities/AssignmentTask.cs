@@ -15,6 +15,7 @@ namespace AcademicFlow.Domain.Contracts.Entities
         public DateTime Deadline { get; set; }
 
         public virtual ICollection<AssignmentEntry> AssignmentEntries { get; set; }
+        public virtual Course Course { get; set; }
         public virtual User User { get; set; }
     }
 }

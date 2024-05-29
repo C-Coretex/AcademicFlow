@@ -7,6 +7,7 @@ namespace AcademicFlow.Managers.Contracts.IManagers
     public interface IAssignmentManager
     {
         public int UserId { get; set; }
+        public int CourseId { get; set; }
 
         Task AddAssignmentTask(AssignmentTaskInputModel assignmentTask);
         Task DeleteAssignmentTask(int id);
@@ -20,7 +21,7 @@ namespace AcademicFlow.Managers.Contracts.IManagers
         Task<AssignmentGradeOutputModel> GetAssignmentGrade(int id);
         Task<AssignmentsOutputModel> GetAssignmentEntriesForAssignmentTask(int id);
         Task<AssignmentsOutputModel> GetMyAssignmentEntryForAssignmentTask(int id);
-        Task<AssignmentsOutputModel> GetAllAssignmentsForCourse(bool withAssignedEntries, bool withGrades, DateTime? dateFrom, DateTime? dateTo);
+        Task<AssignmentsOutputModel> GetAllAssignmentsForCourse(int courseId, bool withAssignedEntries, bool withGrades, DateTime? dateFrom, DateTime? dateTo);
         Task<AssignmentsOutputModel> GetAllAssignmentGradesForCourse(int id);
         Task<AssignmentsOutputModel> GetAllAssignmentGradesForAllCourses();
     }

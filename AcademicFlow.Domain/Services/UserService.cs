@@ -41,6 +41,15 @@ namespace AcademicFlow.Domain.Services
             return user;
         }
 
+        public async Task<User?> GetUserByIdWithAssignments(int userId)
+        {
+            var user = await _userRepository.GetAll().Include(x => x.AssignmentTasks)
+                                                     .ThenInclude(x => x.Select(y => y.AssignmentEntries))
+                                                     .ThenInclude(x => x.Select(y => y.AssignmentGrade))
+                                                     .FirstOrDefaultAsync(u => u.Id == userId);
+            return user;
+        }
+
         public async Task DeleteUser(int userId)
         {
             var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Id == userId);

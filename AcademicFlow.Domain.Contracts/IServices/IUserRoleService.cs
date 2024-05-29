@@ -2,8 +2,8 @@
 
 namespace AcademicFlow.Domain.Contracts.IServices
 {
-    public interface IAssignmentEntryService
+    public interface IUserRoleService
     {
-        Task<AssignmentEntry?> GetById(int id);
+        Task<UserRole?> GetByUserId(int userId, int courseId);
     }
 }
