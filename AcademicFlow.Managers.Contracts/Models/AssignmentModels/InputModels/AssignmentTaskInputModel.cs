@@ -2,7 +2,7 @@
 {
     public class AssignmentTaskInputModel
     {
-        public int CourseID { get; set; }
+        public int CourseId { get; set; }
         public string AssignmentName { get; set; }
         public string AssignmentDescription { get; set; }
         public float AssignmentWeight { get; set; } = 1.0f;

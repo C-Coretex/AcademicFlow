@@ -14,9 +14,20 @@ namespace AcademicFlow.Domain.Services
             _assignmentEntryRepository = assignmentEntryRepository;
         }
 
+        public Task Add(AssignmentEntry assignmentEntry)
+        {
+            assignmentEntry.Modified = DateTime.Now;
+            return _assignmentEntryRepository.AddAsync(assignmentEntry);
+        }
+
+        public Task Delete(int id)
+        {
+            return _assignmentEntryRepository.DeleteAsync(id);
+        }
+
         public Task<AssignmentEntry?> GetById(int id)
         {
-            return _assignmentEntryRepository.GetAll().Include(x => x.AssignmentTask).FirstOrDefaultAsync(x => x.Id == id);
+            return _assignmentEntryRepository.GetAll().Include(x => x.AssignmentTask).Include(x => x.AssignmentGrade).FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }
