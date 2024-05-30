@@ -62,12 +62,14 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin, RolesEnum.Professor, RolesEnum.Student)]
         [HttpGet("GetCourse")]
-        public async Task<IActionResult> GetCourse(int id)
+        public async Task<IActionResult> GetCourse(int id, bool adminView = true)
         {
             try
             {
                 var course = await _courseManager.GetCourseByIdAsync(id);
-                return Ok(course);// PartialView("Partials/_CourseItem", course);  /// return html content
+
+                return adminView ? Ok(course) : PartialView("Partials/_CourseListItem", course);
+                //return PartialView("Partials/_CourseItem", course);  /// return html content
             }
             catch (Exception e)
             {
@@ -78,12 +80,14 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin, RolesEnum.Professor, RolesEnum.Student)]
         [HttpGet("GetCourseTable")]
-        public IActionResult GetCourseTable(int? assignedUserId = null, int? assingedProgramId = null, RolesEnum? role = null)
+        public IActionResult GetCourseTable(int? assignedUserId = null, int? assingedProgramId = null, RolesEnum? role = null, bool adminView = true)
         {
             try
             {
                 var courses = _courseManager.GetCourseTableItemList(assignedUserId, role, assingedProgramId);
-                return Ok(courses);//PartialView("Partials/_CourseTable", courses); /// return html content
+                
+                return adminView ? Ok(courses) : PartialView("Partials/_CourseList", courses);
+                //return PartialView("Partials/_CourseTable", courses); /// return html content
             }
             catch (Exception e)
             {

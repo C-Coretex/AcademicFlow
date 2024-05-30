@@ -109,7 +109,7 @@ namespace AcademicFlow.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Error while logging out");
+                _logger.LogError(e, "Error while fetching user data");
                 return BadRequest(e.Message);
             }
         }
