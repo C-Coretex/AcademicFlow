@@ -27,7 +27,7 @@ namespace AcademicFlow.Domain.Services
 
         public IQueryable<Course> GetAll()
         {
-            return _courseRepository.GetAll().Include(x => x.Programs).Include(x => x.Users);
+            return _courseRepository.GetAll().Include(x => x.Programs).Include(x => x.Users).AsNoTracking();
         }
 
         public async Task DeleteCourse(int id)
@@ -47,7 +47,7 @@ namespace AcademicFlow.Domain.Services
 
         public IEnumerable<CourseUserRole> GetUserRoles()
         {
-            return _courseUserRoleRepository.GetAll().Include(x => x.UserRole).Include(x => x.Course);
+            return _courseUserRoleRepository.GetAll().Include(x => x.UserRole).ThenInclude(x => x.User).Include(x => x.Course).AsNoTracking();
         }
     }
 }

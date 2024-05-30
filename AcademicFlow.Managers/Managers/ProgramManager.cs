@@ -6,6 +6,8 @@ using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models.ProgramModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace AcademicFlow.Managers.Managers
 {
@@ -35,44 +37,40 @@ namespace AcademicFlow.Managers.Managers
             await _programService.UpdateProgramAsync(program);
         }
 
-        public IEnumerable<ProgramTableItem> GetProgramTableItemList(int? userId, RolesEnum? role)
+        public IEnumerable<ProgramTableItem> GetProgramTableItemList(int? userId)
         {
             var programs = _programService.GetAll();
-            if (userId.HasValue && role.HasValue)
+            if (userId.HasValue)
             {
-                programs = programs.Where(x => x.UserRoles != null && x.UserRoles.Any(x => x.UserRole.Id == userId && x.UserRole.Role == role));
+                programs = programs.Where(x => x.UserRoles != null && x.UserRoles.Any(x => x.UserRole.Id == userId && x.UserRole.Role == RolesEnum.Student));
             }
             return programs.ProjectTo<ProgramTableItem>(MapperConfig).AsEnumerable();
         }
 
         public async Task EditProgramUserRolesAsync(int programId, int[] usersIds)
         {
-            var users = _userService.GetUsers();
+            var users = _userService.GetUsers().Include(x => x.UserRoles).ThenInclude(x => x.Programs);
             var oldUsers = users
                 .Where(x => x.UserRoles.Any(y => y.Courses != null && y.Courses.Any(z => z.Course.Id == programId)))
                 .ToList();
 
-            var toDeleteCourseUsers = oldUsers
-                .Where(x => !usersIds.Contains(x.Id))
-                .Select(x => x.UserRoles.Where(x => x.Role == RolesEnum.Student).FirstOrDefault())
-                .Where(x => x != null)
-                .Select(x => new ProgramUserRole()
-                {
-                    ProgramId = programId,
-                    UserRoleId = x.Id
-                });
-            await _programService.DeleteProgramUserRolesRangeAsync(toDeleteCourseUsers);
+            var toDeleteProgramUsers = oldUsers
+                           .Where(x => !usersIds.Contains(x.Id))
+                           .Select(x => x.UserRoles.Where(x => x.Role == RolesEnum.Student).FirstOrDefault())
+                           .Select(x => x?.Programs?.Where(x => x.ProgramId == programId).FirstOrDefault())
+                           .Where(x => x != null);
+            await _programService.DeleteProgramUserRolesRangeAsync(toDeleteProgramUsers!);
 
-            var toInsertCourseUsers = users
+            var toInsertProgramUsers = users
                 .Where(x => usersIds.Contains(x.Id))
                 .Select(x => x.UserRoles.Where(x => x.Role == RolesEnum.Student).FirstOrDefault())
                 .Where(x => x != null)
                 .Select(x => new ProgramUserRole()
                 {
                     ProgramId = programId,
-                    UserRoleId = x.Id
+                    UserRoleId = x!.Id
                 });
-            await _programService.AddProgramUserRolesRangeAsync(toInsertCourseUsers);
+            await _programService.AddProgramUserRolesRangeAsync(toInsertProgramUsers);
         }
 
         public IEnumerable<User> GetProgramUsers(int programId)

@@ -76,30 +76,25 @@ namespace AcademicFlow.Managers.Managers
 
         public async Task EditCourseUserRoles(int courseId, int[] usersIds, RolesEnum role)
         {
-            var users = _userService.GetUsers();
+            var users = _userService.GetUsers().Include(x => x.UserRoles).ThenInclude(x => x.Courses);
             var oldUsers = users
                 .Where(x => x.UserRoles.Any(y => y.Courses != null && y.Courses.Any(z => z.Course.Id == courseId)))
                 .ToList();
-
             var toDeleteCourseUsers = oldUsers
                 .Where(x => !usersIds.Contains(x.Id))
                 .Select(x => x.UserRoles.Where(x => x.Role == role).FirstOrDefault())
-                .Where(x => x != null) 
-                .Select(x => new CourseUserRole()
-                {
-                    CourseId = courseId,
-                    UserRoleId = x.Id
-                });
-            await _courseService.DeleteCourseUserRolesRange(toDeleteCourseUsers);
+                .Select(x => x?.Courses?.Where(x => x.CourseId == courseId).FirstOrDefault())
+                .Where(x => x != null);
+            await _courseService.DeleteCourseUserRolesRange(toDeleteCourseUsers!);
 
             var toInsertCourseUsers = users
                 .Where(x => usersIds.Contains(x.Id))
                 .Select(x => x.UserRoles.Where(x => x.Role == role).FirstOrDefault())
-                .Where(x => x != null) 
+                .Where(x => x != null)
                 .Select(x => new CourseUserRole()
                 {
                     CourseId = courseId,
-                    UserRoleId = x.Id
+                    UserRoleId = x!.Id
                 });
             await _courseService.AddCourseUserRolesRange(toInsertCourseUsers);
         }

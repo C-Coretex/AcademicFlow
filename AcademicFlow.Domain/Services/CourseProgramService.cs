@@ -11,7 +11,7 @@ namespace AcademicFlow.Domain.Services
 
         public IQueryable<CourseProgram> GetAll()
         {
-            return _courseProgramRepository.GetAll().Include(x => x.Program).Include(x => x.Course);
+            return _courseProgramRepository.GetAll().Include(x => x.Program).Include(x => x.Course).AsNoTracking();
         }
 
         public async Task DeleteRangeAsync(IEnumerable<CourseProgram> coursePrograms)
