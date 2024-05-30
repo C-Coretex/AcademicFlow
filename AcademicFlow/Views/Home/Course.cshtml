@@ -1,6 +1,5 @@
 ﻿@{
     var courseId = ViewData["CourseId"];
-    var assignments = ViewData["Assignments"] as List<AcademicFlow.Domain.Contracts.Entities.Assignment>;
 
     string TruncateDescription(string description, int maxLength)
     {
@@ -28,35 +27,7 @@
                 <div id="course-assignments" class="my-3">
                     <p class="display-6">Assignments (!!!TODO)</p>
 
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Grade</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var assignment in assignments)
-                            {
-                                <tr>
-                                    <th scope="row">@assignment.Id</th>
-                                    <td><a href="/Home/Assignment/@assignment.Id" class="text-success">@assignment.Title</a></td>
-                                    <td class="text-muted">@TruncateDescription(assignment.Description, 70)</td>
-
-                                    @if (@assignment.Grade != null) {
-                                        <td>@assignment.Grade/@assignment.TotalGrade</td>
-                                    }
-                                    else
-                                    {
-                                        <td>-</td>
-                                    }
-                                    
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                    <div id="assignment-list"></div>
                 </div>
             </div>
         </div>
