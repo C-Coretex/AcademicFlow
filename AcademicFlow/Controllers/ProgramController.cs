@@ -73,12 +73,12 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin, RolesEnum.Professor, RolesEnum.Student)]
         [HttpGet("GetProgramTable")]
-        public IActionResult GetProgramTable(int? assignedUserId = null, RolesEnum? role = null)
+        public IActionResult GetProgramTable(int? assignedUserId = null)
         {
             try
             {
-                var programs = _programManager.GetProgramTableItemList(assignedUserId, role);
-                return Ok(programs);// PartialView("Partials/_ProgramTable", programs); /// return html content
+                var programs = _programManager.GetProgramTableItemList(assignedUserId);
+                return Ok(programs);
             }
             catch (Exception e)
             {

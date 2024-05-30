@@ -11,7 +11,7 @@ namespace AcademicFlow.Managers.Contracts.IManagers
         Task DeleteProgramAsync(int id);
         Task<Program?> GetProgramByIdAsync(int id);
         Task UpdateProgramAsync(Program program);
-        IEnumerable<ProgramTableItem> GetProgramTableItemList(int? userId, RolesEnum? role);
+        IEnumerable<ProgramTableItem> GetProgramTableItemList(int? userId);
         Task EditProgramUserRolesAsync(int programId, int[] usersIds);
         IEnumerable<User> GetProgramUsers(int programId);
     }
