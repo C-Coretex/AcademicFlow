@@ -21,8 +21,7 @@ namespace AcademicFlow.Managers.Contracts.IManagers
         Task<AssignmentGradeOutputModel> GetAssignmentGrade(int id);
         Task<AssignmentsOutputModel> GetAssignmentEntriesForAssignmentTask(int id);
         Task<AssignmentsOutputModel> GetMyAssignmentEntryForAssignmentTask(int id);
-        Task<AssignmentsOutputModel> GetAllAssignmentsForCourse(int courseId, bool withAssignedEntries, bool withGrades, DateTime? dateFrom, DateTime? dateTo);
-        Task<AssignmentsOutputModel> GetAllAssignmentGradesForCourse(int id);
-        Task<AssignmentsOutputModel> GetAllAssignmentGradesForAllCourses();
+        Task<IEnumerable<AssignmentsOutputModel>> GetAllAssignmentsForCourse(int courseId, bool withAssignedEntries, bool withGrades, DateTime? dateFrom, DateTime? dateTo);
+        Task<IEnumerable<AssignmentsOutputModelByCourse>> GetAllAssignmentsForAllCourses();
     }
 }

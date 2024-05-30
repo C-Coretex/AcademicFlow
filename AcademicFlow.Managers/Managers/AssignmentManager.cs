@@ -7,6 +7,7 @@ using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models.AssignmentModels.InputModels;
 using AcademicFlow.Managers.Contracts.Models.AssignmentModels.OutputModels;
 using AutoMapper;
+using Azure.Identity;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Options;
 
@@ -176,47 +177,64 @@ namespace AcademicFlow.Managers.Managers
 
         public async Task<AssignmentsOutputModel> GetAssignmentEntriesForAssignmentTask(int id)
         {
-            var assignmentGrade = await _assignmentTaskService.GetByIdFull(id) ?? throw new Exception("AssignmentTask is not found by this Id");
-            var userRole = await RoleOfUserForCourse(assignmentGrade.CourseId);
+            var assignmentTask = await _assignmentTaskService.GetByIdFull(id) ?? throw new Exception("AssignmentTask is not found by this Id");
+            var userRole = await RoleOfUserForCourse(assignmentTask.CourseId);
             if (userRole != RolesEnum.Professor)
                 throw new Exception("User is not assigned as Professor for this course");
 
-            return null;
+            var returnData = new AssignmentsOutputModel(assignmentTask, Mapper);
+            return returnData;
         }
 
         public async Task<AssignmentsOutputModel> GetMyAssignmentEntryForAssignmentTask(int id)
         {
-            var assignmentGrade = await _assignmentTaskService.GetByIdFull(id) ?? throw new Exception("AssignmentTask is not found by this Id");
-            var userRole = await RoleOfUserForCourse(assignmentGrade.CourseId);
+            var assignmentTask = await _assignmentTaskService.GetByIdFull(id) ?? throw new Exception("AssignmentTask is not found by this Id");
+            var userRole = await RoleOfUserForCourse(assignmentTask.CourseId);
             if (userRole != RolesEnum.Student)
                 throw new Exception("User is not assigned as Student for this course");
 
-            return null;
+            assignmentTask.AssignmentEntries = assignmentTask.AssignmentEntries.Where(x => x.CreatedById == UserId).ToList();
+            var returnData = new AssignmentsOutputModel(assignmentTask, Mapper);
+            return returnData;
         }
 
-        public async Task<AssignmentsOutputModel> GetAllAssignmentsForCourse(int courseId, bool withAssignedEntries, bool withGrades, DateTime? dateFrom, DateTime? dateTo)
+        public async Task<IEnumerable<AssignmentsOutputModel>> GetAllAssignmentsForCourse(int courseId, bool withAssignedEntries, bool withGrades, DateTime? dateFrom, DateTime? dateTo)
         {
             var userRole = await RoleOfUserForCourse(courseId);
             if (userRole != RolesEnum.Student && userRole != RolesEnum.Professor)
                 throw new Exception("User is not assigned as Student or Professor for this course");
 
-            return null;
+            var assignmentTasks =  _assignmentTaskService.GetByCourseId(courseId);
+            if (userRole == RolesEnum.Student)
+                assignmentTasks = _assignmentTaskService.IncludeAssignmentEntriesWithGrades(assignmentTasks, UserId);
+            else
+                assignmentTasks = _assignmentTaskService.IncludeAssignmentEntriesWithGrades(assignmentTasks);
+
+            if (!withAssignedEntries)
+                assignmentTasks = assignmentTasks.Where(x => x.AssignmentEntries == null);
+            if (dateFrom != null)
+                assignmentTasks = assignmentTasks.Where(x => x.Modified >= dateFrom);
+            if (dateTo != null)
+                assignmentTasks = assignmentTasks.Where(x => dateTo >= x.Modified);
+            if (!withGrades)
+            {
+                assignmentTasks = assignmentTasks.ToList().AsQueryable();
+                foreach (var assignmentTask in assignmentTasks.Where(x => x.AssignmentEntries != null && x.AssignmentEntries.Count > 0))
+                    assignmentTask.AssignmentEntries = assignmentTask.AssignmentEntries.Where(x => x.AssignmentGrade != null).ToList();
+            }
+
+            var returnData = assignmentTasks.Select(x => new AssignmentsOutputModel(x, Mapper)).ToList();
+            return returnData;
         }
 
-        public async Task<AssignmentsOutputModel> GetAllAssignmentGradesForCourse(int id)
+        public async Task<IEnumerable<AssignmentsOutputModelByCourse>> GetAllAssignmentsForAllCourses()
         {
-            var userRole = await RoleOfUserForCourse(id);
-            if (userRole != RolesEnum.Student)
-                throw new Exception("User is not assigned as Student for this course");
+            var user = await _userService.GetUserByIdWithAssignments(UserId) ?? throw new Exception("User by this id is not found"); ;                
 
-            return null;
-        }
+            var courseIdAssignmentTaskGroup = user.AssignmentTasks.GroupBy(x => x.CourseId);
+            var returnData = courseIdAssignmentTaskGroup.Select(x => new AssignmentsOutputModelByCourse(x.First().Course)).ToList();
 
-        public async Task<AssignmentsOutputModel> GetAllAssignmentGradesForAllCourses()
-        {
-            var user = await _userService.GetUserByIdWithAssignments(UserId);
-
-            return null;
+            return returnData;
         }
 
         private Task<RolesEnum> RoleOfUserForCourse(int courseId)

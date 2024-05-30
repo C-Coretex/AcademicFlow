@@ -34,5 +34,20 @@ namespace AcademicFlow.Domain.Services
             return _assignmentTaskRepository.GetAll(asNoTracking).Include(x => x.AssignmentEntries).ThenInclude(x => x.Select(y => y.AssignmentGrade))
                     .FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        public IQueryable<AssignmentTask> GetByCourseId(int id)
+        {
+            return _assignmentTaskRepository.GetAll().Where(x => x.CourseId == id);
+        }
+
+        public IQueryable<AssignmentTask> IncludeAssignmentEntriesWithGrades(IQueryable<AssignmentTask> query, int? entryUserId = null)
+        {
+            if(entryUserId.HasValue)
+                query = query.Include(x => x.AssignmentEntries.Where(y => y.CreatedById == entryUserId)).ThenInclude(x => x.Select(y => y.AssignmentGrade));
+            else
+                query = query.Include(x => x.AssignmentEntries).ThenInclude(x => x.Select(y => y.AssignmentGrade));
+
+            return query;
+        }
     }
 }

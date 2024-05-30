@@ -265,23 +265,6 @@ namespace AcademicFlow.Controllers
             }
         }
 
-        // Get all assignment grades for course (global grade by weights)
-        [AuthorizeUser(RolesEnum.Student)]
-        [HttpGet("GetAllAssignmentGradesForCourse")]
-        public async Task<IActionResult> GetAllAssignmentGradesForCourse([FromQuery] int id)
-        {
-            try
-            {
-                var data = await _assignmentManager.GetAllAssignmentGradesForCourse(id);
-                return Ok(data);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Error while getting all assignment grades for course");
-                return BadRequest(e.Message);
-            }
-        }
-
         // Get all assignment grades for all courses
         [AuthorizeUser(RolesEnum.Student)]
         [HttpGet("GetAllAssignmentGradesForAllCourses")]
@@ -289,7 +272,7 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                var data = await _assignmentManager.GetAllAssignmentGradesForAllCourses();
+                var data = await _assignmentManager.GetAllAssignmentsForAllCourses();
                 return Ok(data);
             }
             catch (Exception e)

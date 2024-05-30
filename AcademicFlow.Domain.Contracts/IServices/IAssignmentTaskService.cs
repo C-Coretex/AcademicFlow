@@ -8,5 +8,7 @@ namespace AcademicFlow.Domain.Contracts.IServices
         Task Delete(int id);
         Task<AssignmentTask?> GetById(int id);
         Task<AssignmentTask?> GetByIdFull(int id, bool asNoTracking = true);
+        IQueryable<AssignmentTask> GetByCourseId(int id);
+        IQueryable<AssignmentTask> IncludeAssignmentEntriesWithGrades(IQueryable<AssignmentTask> query, int? entryUserId = null);
     }
 }
