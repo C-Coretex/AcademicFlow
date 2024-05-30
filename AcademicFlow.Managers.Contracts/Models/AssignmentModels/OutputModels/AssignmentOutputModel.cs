@@ -2,6 +2,7 @@
 using AcademicFlow.Managers.Contracts.Models.CourseModels;
 using AcademicFlow.Managers.Contracts.Models.UserModels;
 using AutoMapper;
+using System.Linq;
 
 namespace AcademicFlow.Managers.Contracts.Models.AssignmentModels.OutputModels
 {
@@ -56,11 +57,11 @@ namespace AcademicFlow.Managers.Contracts.Models.AssignmentModels.OutputModels
         public AssignmentsOutputModel(AssignmentTask assignmentTask, IMapper mapper)
         {
             AssignmentTaskOutputModel = mapper.Map<AssignmentTaskOutputModel>(assignmentTask);
-            AssignmentEntityOutputModels = assignmentTask.AssignmentEntries.Select(x => new AssignmentEntityOutputModel()
+            AssignmentEntityOutputModels = assignmentTask.AssignmentEntries.Where(x => x != null).Select(x => new AssignmentEntityOutputModel()
             {
                 AssignmentEntryOutputModel = mapper.Map<AssignmentEntryOutputModel>(x),
-                AssignmentGradeOutputModel = mapper.Map<AssignmentGradeOutputModel>(x.AssignmentGrade),
-                GradeWithWeight = assignmentTask.AssignmentWeight * x.AssignmentGrade.Grade
+                AssignmentGradeOutputModel = x.AssignmentGrade != null ? mapper.Map<AssignmentGradeOutputModel>(x.AssignmentGrade) : null,
+                GradeWithWeight = x.AssignmentGrade != null ? assignmentTask.AssignmentWeight * x.AssignmentGrade.Grade : null
             }).ToList();
         }
     }
@@ -69,6 +70,7 @@ namespace AcademicFlow.Managers.Contracts.Models.AssignmentModels.OutputModels
     {
         public CourseTableItem Course { get; set; }
         public IEnumerable<AssignmentsOutputModel> AssignmentsOutputModels { get; set; }
+        public float? AverageCourseGrade { get; set; }
 
         public AssignmentsOutputModelByCourse()
         { }
@@ -77,6 +79,10 @@ namespace AcademicFlow.Managers.Contracts.Models.AssignmentModels.OutputModels
         {
             Course = mapper.Map<CourseTableItem>(course);
             AssignmentsOutputModels = course.AssignmentTasks.Select(x => new AssignmentsOutputModel(x, mapper)).ToList();
+
+            AverageCourseGrade = AssignmentsOutputModels.Where(x => x.AssignmentEntityOutputModels != null)
+                                    .Average(x => x.AssignmentEntityOutputModels.Where(y => y.GradeWithWeight != null)
+                                                .Average(y => y.GradeWithWeight));
         }
     }
 }
