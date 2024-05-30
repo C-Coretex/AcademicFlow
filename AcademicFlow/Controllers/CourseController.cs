@@ -67,7 +67,9 @@ namespace AcademicFlow.Controllers
             try
             {
                 var course = await _courseManager.GetCourseByIdAsync(id);
-                return adminView ? PartialView("Partials/_CourseItem", course) : PartialView("Partials/_CourseListItem", course);
+
+                return adminView ? Ok(course) : PartialView("Partials/_CourseListItem", course);
+                //return PartialView("Partials/_CourseItem", course);  /// return html content
             }
             catch (Exception e)
             {
@@ -83,7 +85,9 @@ namespace AcademicFlow.Controllers
             try
             {
                 var courses = _courseManager.GetCourseTableItemList(assignedUserId, role, assingedProgramId);
-                return adminView ? PartialView("Partials/_CourseTable", courses) : PartialView("Partials/_CourseList", courses);
+                
+                return adminView ? Ok(courses) : PartialView("Partials/_CourseList", courses);
+                //return PartialView("Partials/_CourseTable", courses); /// return html content
             }
             catch (Exception e)
             {

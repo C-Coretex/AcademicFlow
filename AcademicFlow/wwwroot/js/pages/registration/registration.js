@@ -1,9 +1,4 @@
-
-let redirectionURL;
-function setRedirectURL() {
-    //TODO change redirection URL by user role
-    redirectionURL = "/Home/AdminCenter"
-}
+import { checkUserPermissionsLevel, getURLbyUserRole } from "./../../components/utils.js";
 async function registerUser() {
     const secretKey = document.getElementById("secretKey").value;
     const username = document.getElementById("username").value;
@@ -13,14 +8,20 @@ async function registerUser() {
         username: username,
         password: password
     };
-
+    const $form = $('#registerForm');
     $.ajax({
         url: '/api/Authorization/RegisterUser',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(userData),
         success: function (response) {
-            window.location.href = redirectionURL;
+            let roleValue = checkUserPermissionsLevel(data.roles);
+            let redirectionURL = getURLbyUserRole(roleValue);
+            if (redirectionURL) {
+                window.location.href = redirectionURL;
+            } else {
+                $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Something went wrong.</div>`);
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Something went wrong. Please contact with our support team.</div>`);
@@ -30,7 +31,7 @@ async function registerUser() {
 };
 $(document).ready(function () {
     //Event Listeners
-    setRedirectURL();
+    getURLbyUserRole();
     $('.js-register-user').click(function () {
         registerUser();
     });

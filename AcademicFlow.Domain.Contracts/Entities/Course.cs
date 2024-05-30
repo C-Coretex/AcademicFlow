@@ -21,6 +21,7 @@ namespace AcademicFlow.Domain.Contracts.Entities
         /// </summary>
         public ICollection<CourseUserRole>? Users { get; set; }
 
+        public virtual ICollection<AssignmentTask> AssignmentTasks { get; set; }
         public Course() { }
         public Course(string name, string description, int creditPoints, string publicId, string? imageUrl)
         {

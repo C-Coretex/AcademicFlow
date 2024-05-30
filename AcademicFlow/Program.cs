@@ -1,9 +1,9 @@
+using AcademicFlow.Domain.Contracts.Models.Configs;
 using AcademicFlow.Domain.Extensions;
 using AcademicFlow.Filters;
 using AcademicFlow.Infrastructure.Extensions;
-using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Extensions;
-using AcademicFlow.Managers.Managers;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +11,8 @@ var academicFlowConnectionString = builder.Configuration.GetConnectionString("Ac
 builder.Services.RegisterRepositories(academicFlowConnectionString);
 builder.Services.RegisterServices();
 builder.Services.RegisterManagers();
+
+builder.Services.Configure<AppConfigs>(builder.Configuration.GetSection("AppConfigs"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

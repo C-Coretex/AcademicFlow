@@ -42,6 +42,7 @@ namespace AcademicFlow.Domain.Services
         {
             var userCredentials = await _userCredentialsRepository.GetAll()
                                                        .Include(x => x.User)
+                                                       .ThenInclude(x => x.UserRoles)
                                                        .FirstOrDefaultAsync(x => x.Username == username);
 
             var isUserCredentialsCorrect = IsUserCredentialsCorrect(userCredentials, password);

@@ -24,9 +24,20 @@ namespace AcademicFlow.Filters
                 context.Result = new UnauthorizedResult();
                 return;
             }
-            using var scope = ServiceScopeFactory();
-            var userManager = scope.ServiceProvider.GetService<IUserManager>()!;
-            var user = userManager.GetUserById(userId.Value).Result;
+
+            if (_roles != null && _roles.Length > 0)
+            {
+                using var scope = ServiceScopeFactory();
+                var userManager = scope.ServiceProvider.GetService<IUserManager>()!;
+
+                var user = userManager.GetUserById(userId.Value).Result;
+                var isAuthorized = AuthorizationHelpers.HasRole(_roles, user);
+                if (!isAuthorized)
+                {
+                    context.Result = new UnauthorizedResult();
+                    return;
+                }
+            }
         }
     }
 }
