@@ -49,7 +49,7 @@
                 </li>
             </ul>
             <hr>
-            <div class="dropdown">
+            <div class="dropdown" role="button">
                 <a class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle cursor-pointer" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-circle-user me-2"></i>
                     <div class="js-user-name"></div>
@@ -140,6 +140,27 @@
         
         <div class="user-table col">
             <h2>User Data</h2>
+            <div class="d-flex">
+                <div class="dropdown js-dd-courses" role="button">
+                    <button class="btn btn-primary  d-flex align-items-center dropdown-toggle cursor-pointer js-course-dd-selected-value me-2" id="courseDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div>Select course... </div>
+                    </button>
+                    <ul class="dropdown-menu js-course-dd-selection-menu text-small shadow" aria-labelledby="courseDropdown">
+                    </ul>
+                </div>
+                <div class="js-select-role-to-course me-2">
+                    <span>Select role: </span>
+                    <div class="d-flex column">
+                        <input type="checkbox" id="Student" name="roles" value="student">
+                        <label for="student me-2">Student</label>
+                        <input type="checkbox" id="Professor" name="roles" value="professor">
+                        <label for="professor">Professor</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary d-flex align-items-center js-assign-users-to-course">
+                    <i class="fa-solid fa-file-pen me-2"></i><div>Assign selected users to course</div>
+                </button>
+            </div>
             <table class="table table-striped" id="usersTable">
             </table>
         </div>

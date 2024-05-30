@@ -1,6 +1,9 @@
-import { toggleObjectVisibility } from "./../../components/utils.js";
+import { toggleObjectVisibility, editCourseUserRoles, checkUserPermissionsLevel, getCurrentUser, renderHeaderLinks, getUserByID  } from "./../../components/utils.js";
 import { Table } from "./../../components/table.js";
 
+let selectedUserIDs = [];
+let coursesData;
+let programData
 
 //functions
 function hideAllObjects(containers) {
@@ -29,11 +32,22 @@ async function getCoursesData() {
         method: "GET",
         dataType: "json",
         success: function (data) {
-             initCoursesTable(data);
+            initCoursesTable(data);
+            renderCoursesDropdownValues(data);
         },
         error: function (error) {
             console.error("Error fetching data:", error);
         }
+    });
+}
+
+function renderCoursesDropdownValues(courseData) {
+    const dropdownMenu = $('.js-dd-courses').find('.dropdown-menu'); // Select the dropdown menu element
+    dropdownMenu.empty();
+
+    courseData.forEach(course => {
+        const option = `<li><a class="dropdown-item" value="${course.id}">${course.publicId}: ${course.name}</a></li>`;
+        dropdownMenu.append(option);
     });
 }
 
@@ -49,6 +63,10 @@ async function getProgramData() {
             console.error("Error fetching data:", error);
         }
     });
+}
+
+function showUserManagementTools(userData){
+    console.log('should show', userData);
 }
 
 function initUsersTable(users) {
@@ -98,17 +116,21 @@ function initUsersTable(users) {
             targets: 6,
             title: 'Age',
             name: 'age',
-            data: 'age'
+            data: 'age',
         },
         {
             targets: 7,
             title: 'Registration Link',
             name: 'registrationLink',
             data: 'registrationLink',
+            width: '10%',
             data: function (data) {
 
                 return data.userRegistrationData.isRegistered ? "" : data.userRegistrationData.registrationUrl ;
-            }
+            },
+            render: function (data, type, rowData, meta) {
+                return data ? `<button class="btn btn-primary"><i class="fa-regular fa-copy js-copy p-2" data-link="${data}"></i></button>` : "";
+            },
         },
         {
             targets: 8,
@@ -126,10 +148,51 @@ function initUsersTable(users) {
             table.rows().every(function () {
                 $(this.node()).css('cursor', 'pointer');
             });
+
+
             $('#usersTable tbody').on('click', 'tr', function (data) {
-                table.$('tr').removeClass('selected');
-                $(this).addClass('selected');
-                console.log('Selected Data', table.row(this).data())
+                const clickedElement = $(event.target); 
+
+                if (!clickedElement.hasClass('js-copy')) {
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                    } else {
+                        $(this).addClass('selected');
+                    }
+                    
+                    const selectedData = table.row(this).data();
+
+                    selectedUserIDs = $.map(table.rows('.selected').data(), function (item) {
+                        return item.id
+                    });
+                    console.log('Selected IDs:', selectedUserIDs);
+
+                    getUserByID(selectedData.id)
+                        .then(userData => {
+                            console.log('User data:', userData);
+                            
+                            //showUserManagementTools(userData);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching user data:', error);
+                        });
+
+
+                    console.log('Selected Data', selectedData);
+                }
+            });
+
+            const copyIcons = document.querySelectorAll('.js-copy');
+
+            copyIcons.forEach(icon => {
+                icon.addEventListener('click', function () {
+
+                    const link = $(this).data('link'); // Access the URL from the data attribute
+                    console.log(link);
+                    table.$('tr').removeClass('selected');
+                    navigator.clipboard.writeText(link);
+
+                });
             });
         }
     };
@@ -252,11 +315,11 @@ function refreshUsersTable() {
 };
 
 function refreshCoursesTable() {
-    getCoursesData();
+    coursesData = getCoursesData();
 };
 
 function refreshProgramsTable() {
-    getProgramData();
+    programData = getProgramData();
 };
 
 /*function refreshCoursesTable() {
@@ -266,17 +329,52 @@ function refreshProgramsTable() {
     $('#all-programs-table').load('/api/Program/GetProgramTable');
 }*/
 
+function assignUsersToCourse(selectedCourseID, selectedUserIDs, selectedRole) {
+
+    console.log(selectedCourseID, selectedUserIDs, selectedRole);
+    editCourseUserRoles(selectedCourseID, selectedUserIDs, selectedRole);
+}
+
 $(document).ready(function () {
-
-    $('.js-user-name').html(`<strong>Name</strong>`);
-
-    const containers = { $addUser: $('.add-user-container'), $allUsers: $('.user-table'), $addCourse: $('.course-manager'), $allCourses: $('.all-courses-tab'), $allPrograms: $('.all-programs-tab'), $addProgram: $('.program-manager') };
+    const containers = { $manageUser: $('.add-user-container'), $allUsers: $('.user-table'), $ManageCourse: $('.course-manager'), $allCourses: $('.all-courses-tab'), $allPrograms: $('.all-programs-tab'), $ManageProgram: $('.program-manager') };
 
     refreshUsersTable();
     refreshCoursesTable();
     refreshProgramsTable();
 
     //Event Listeners
+
+    $(".js-course-dd-selection-menu").on('click', 'li a', function (data) {
+        const selectedCourseID = $(data.currentTarget).attr('value');
+
+        $(".js-course-dd-selected-value div").text($(this).text());
+        $(".js-course-dd-selected-value").attr('selectedCourseID', selectedCourseID);
+    });
+
+    $('.js-assign-users-to-course').on('click', function (data) {
+        const selectedCourseID = $(".js-course-dd-selected-value").attr('selectedCourseID');
+        const roleSelection = $('.js-select-role-to-course input[type="checkbox"]:checked');
+        let selectedRole;
+        let selectedRoleAsNum;
+        if (roleSelection) {
+            selectedRole = roleSelection.val();
+            switch (selectedRole) {
+                case "professor":
+                    selectedRoleAsNum = 2;
+                    break;
+                case "student":
+                    selectedRoleAsNum = 1;
+                    break;
+                default: selectedRoleAsNum = -1;
+            }
+                // Get the value of the checked checkbox
+            console.log('Selected role:', roleSelection.val(), roleSelection);
+        } else {
+            console.log('No role selected.');
+        }
+        
+        assignUsersToCourse(parseInt(selectedCourseID), selectedUserIDs, selectedRoleAsNum);
+    });
     $('.nav-item').on('click', function () {
         const self = this;
 
@@ -294,10 +392,10 @@ $(document).ready(function () {
                 refreshUsersTable();
                 break;
             case 'addUser':
-                toggleObjectVisibility($(containers.$addUser), true);
+                toggleObjectVisibility($(containers.$manageUser), true);
                 break;
             case 'addCourse':
-                toggleObjectVisibility($(containers.$addCourse), true);
+                toggleObjectVisibility($(containers.$ManageCourse), true);
                 break;
             case 'allCourses':
                 toggleObjectVisibility($(containers.$allCourses), true);
@@ -308,7 +406,7 @@ $(document).ready(function () {
                 refreshProgramsTable();
                 break;
             case 'addProgram':
-                toggleObjectVisibility($(containers.$addProgram), true);
+                toggleObjectVisibility($(containers.$ManageProgram), true);
                 break;
             default:
                 hideAllObjects(containers);
@@ -409,6 +507,7 @@ $(document).ready(function () {
         t.find("roleValues").val()
         {
             let e = new FormData(t[0]);
+            console.log(t[0]);
             $.ajax({
                 type: "POST",
                 url: "/api/User/ChangeRoles",
