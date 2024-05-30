@@ -232,7 +232,7 @@ namespace AcademicFlow.Managers.Managers
             var user = await _userService.GetUserByIdWithAssignments(UserId) ?? throw new Exception("User by this id is not found"); ;                
 
             var courseIdAssignmentTaskGroup = user.AssignmentTasks.GroupBy(x => x.CourseId);
-            var returnData = courseIdAssignmentTaskGroup.Select(x => new AssignmentsOutputModelByCourse(x.First().Course)).ToList();
+            var returnData = courseIdAssignmentTaskGroup.Select(x => new AssignmentsOutputModelByCourse(x.First().Course, Mapper)).ToList();
 
             return returnData;
         }

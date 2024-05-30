@@ -73,9 +73,10 @@ namespace AcademicFlow.Managers.Contracts.Models.AssignmentModels.OutputModels
         public AssignmentsOutputModelByCourse()
         { }
 
-        public AssignmentsOutputModelByCourse(Course course)
+        public AssignmentsOutputModelByCourse(Course course, IMapper mapper)
         {
-
+            Course = mapper.Map<CourseTableItem>(course);
+            AssignmentsOutputModels = course.AssignmentTasks.Select(x => new AssignmentsOutputModel(x, mapper)).ToList();
         }
     }
 }
