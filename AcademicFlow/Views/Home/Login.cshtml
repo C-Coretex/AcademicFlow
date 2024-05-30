@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="main container-fluid">
+    <div class="authentication-page row">
+        <div class="col">
+            <img class="authentication-page__hero" src="~/img/heroImg.svg" alt="Website hero image">
+        </div>
+        
+        <div class="login-container col-4 align-self-center">
+            <h1 class="authentication-page__heading">Log in</h1>
+            <h5 class="authentication-page__message">Sign in to access course updates and materials</h5>
+
+            <form id="loginForm">
+                <div class="form__input-container mb-2">
+                    <label for="username2">Username</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username2" name="username" class="form__input form-control" placeholder="Username" aria-label="Username">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+                <div class="form__input-container mb-2">
+                    <label for="password2">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password2" name="password" class="form__input form-control" placeholder="Password" aria-label="Password">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-lg w-100 js-login-user"><i class="fa-solid fa-right-to-bracket"></i><span> Log in</span></button>
+                <div class="error-message"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="~/js/dist/site.js" asp-append-version="true"></script>
+<script type="module" src="~/js/dist/pages/authentification/auth.js" asp-append-version="true"></script>

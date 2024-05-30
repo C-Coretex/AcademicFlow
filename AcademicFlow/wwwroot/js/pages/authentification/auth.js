@@ -1,37 +1,4 @@
-let redirectionURL;
-
-function setRedirectURL(roleValue) {
-    //TODO change redirection URL by user role
-    switch (roleValue) {
-        case 1:
-            return "/Home/AdminCenter"
-            break;
-        case 2:
-            return "/Home/MainPage"
-            break;
-        case 3:
-            return "/Home/MainPage"
-            break;
-        default:
-            return ""
-    }
-}
-
-function checkRoleImportance(roles) {
-    const rolePriorities = {
-        "Admin": 1,
-        "Professor": 2,
-        "Student": 3,
-    };
-
-    let highestRole = 3; // Initialize with lowest priority (Student)
-    for (const role of roles) {
-        if (rolePriorities[role] && rolePriorities[role] < highestRole) {
-            highestRole = rolePriorities[role];
-        }
-    }
-    return highestRole;
-}
+import { checkUserPermissionsLevel, getURLbyUserRole} from "./../../components/utils.js";
 
 async function loginUser() {
     const username = document.getElementById("username2").value;
@@ -40,10 +7,7 @@ async function loginUser() {
         username: username,
         password: password
     };
-    let userID;
-    const $form = $('#loginForm');
-    const formData = new FormData($form[0]);
-    
+    const $form = $('#loginForm');    
 
     $.ajax({
         url: '/api/Authorization/LoginUser',
@@ -52,8 +16,8 @@ async function loginUser() {
         dataType: 'json',
         data: JSON.stringify(userData),
         success: function (data) {
-            let roleValue = checkRoleImportance(data.roles);
-            let redirectionURL = setRedirectURL(roleValue);
+            let roleValue = checkUserPermissionsLevel(data.roles);
+            let redirectionURL = getURLbyUserRole(roleValue);
             if (redirectionURL) {
                 window.location.href = redirectionURL;
             } else {
@@ -66,7 +30,7 @@ async function loginUser() {
         }
     });
 };
-$(document).ready(function () {
+$(document).ready(async function () {
     //Event Listeners
     $('.js-login-user').click(function () {
         loginUser();

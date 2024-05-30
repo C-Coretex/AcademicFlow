@@ -17,15 +17,12 @@ async function logoutUser() {
 };
 
 function redirectToLoginPage() {
-    window.location.href = "/";
+    window.location.href = "/Home/Login";
 };
 
 $(document).ready(function () {
-    //TODO: Show User Name
-    $('.js-user-name').html(`<strong>Name</strong>`);
-
+   
     $('.js-logout-user').click(function () {
-        console.log('aaaa');
         logoutUser()
             .then(() => { // After successful logout
                 redirectToLoginPage();
