@@ -55,13 +55,15 @@ namespace AcademicFlow.Managers.Managers
 
         public async Task<User> GetUserById(int userId)
         {
-           return  await _userService.GetUserById(userId);
-            
+           return await _userService.GetUserById(userId);
+
         }
 
         public async Task<UserWebModel> GetUserModelById(int userId)
         {
-            return Mapper.Map<UserWebModel>(await GetUserById(userId));
+            var user = await _userService.GetUserById(userId);
+            return Mapper.Map<UserWebModel>(user);
+
         }
 
         public async Task DeleteUser(int userId)

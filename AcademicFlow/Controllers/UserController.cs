@@ -97,12 +97,11 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser]
         [HttpGet("GetUserById")]
-        public async Task<IActionResult> GetUserByUserId([FromForm] int userId)
+        public async Task<IActionResult> GetUserByUserId([FromQuery] int userId)
         {
             try
             {
-                var user = await _userManager.GetUserById(userId);
-
+                var user = await _userManager.GetUserModelById(userId);
                 return Ok(user);
             }
             catch (Exception e)

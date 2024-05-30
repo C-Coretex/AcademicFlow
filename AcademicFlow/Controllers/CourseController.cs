@@ -67,7 +67,7 @@ namespace AcademicFlow.Controllers
             try
             {
                 var course = await _courseManager.GetCourseByIdAsync(id);
-                return PartialView("Partials/_CourseItem", course);  /// return html content
+                return Ok(course);// PartialView("Partials/_CourseItem", course);  /// return html content
             }
             catch (Exception e)
             {
