@@ -1,4 +1,4 @@
-//This file is used to store commonly used functions to stay on DRY method
+﻿//This file is used to store commonly used functions to stay on DRY method
 
 export function toggleObjectVisibility($object, state) {//State is false -> hide container, State is true -> show container
     if (state) {
@@ -52,19 +52,41 @@ export async function editCourseUserRoles(courseId, userIds, role) {
     }
 }
 
-//TODO NOT WORKING!!!
 export async function getUserByID(id) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: `/api/User/GetUserById?id=${id}`,
+            url: `/api/User/GetUserById?userId=${parseInt(id)}`,
             type: 'GET',
             dataType: 'json',
+            processData: false,
+            contentType: "application/json",
             success: function (data) {
-                console.log('User data:', data);
                 resolve(data);
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                reject(new Error("Error:", textStatus, errorThrown));
+                console.error("Error:", textStatus, errorThrown);
+                reject(new Error("Failed to get user data")); 
+
+            }
+        });
+    });
+}
+
+export async function getCourseByID(id) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: `/api/Course/GetCourse?id=${parseInt(id)}`,
+            type: 'GET',
+            dataType: 'json',
+            processData: false,
+            contentType: "application/json",
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error:", textStatus, errorThrown);
+                reject(new Error("Failed to get user data"));
+
             }
         });
     });
@@ -93,7 +115,6 @@ export function checkUserPermissionsLevel(roles) {
             highestRole = rolePriorities[role];
         }
     }
-    console.log(roles,highestRole);
     return highestRole;
 }
 

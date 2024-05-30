@@ -1,7 +1,8 @@
-import { toggleObjectVisibility, editCourseUserRoles, checkUserPermissionsLevel, getCurrentUser, renderHeaderLinks, getUserByID  } from "./../../components/utils.js";
+import { toggleObjectVisibility, editCourseUserRoles, checkUserPermissionsLevel, getCurrentUser, renderHeaderLinks, getUserByID, getCourseByID  } from "./../../components/utils.js";
 import { Table } from "./../../components/table.js";
 
-let selectedUserIDs = [];
+let selectedUsersIDs = [];
+let selectedCoursesIDs = [];
 let coursesData;
 let programData
 
@@ -13,34 +14,34 @@ function hideAllObjects(containers) {
 }
 
 async function getUsersData() {
-    $.ajax({
-        url: "/api/User/GetAllUsers",
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-             initUsersTable(data);
-        },
-        error: function (error) {
-            console.error("Error fetching data:", error);
-        }
-    });
+    try {
+        const response = await $.ajax({
+            url: "/api/User/GetAllUsers",
+            method: "GET",
+            dataType: "json"
+        });
+        return response;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle errors appropriately (e.g., display error message to user)
+        return undefined; // Or throw an error for further handling
+    }
 }
 
 async function getCoursesData() {
-    $.ajax({
-        url: "/api/Course/GetCourseTable",
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-            initCoursesTable(data);
-            renderCoursesDropdownValues(data);
-        },
-        error: function (error) {
-            console.error("Error fetching data:", error);
-        }
-    });
+    try {
+        const response = await $.ajax({
+            url: "/api/Course/GetCourseTable",
+            method: "GET",
+            dataType: "json"
+        });
+        return response;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle errors appropriately (e.g., display error message to user)
+        return undefined; // Or throw an error for further handling
+    }
 }
-
 function renderCoursesDropdownValues(courseData) {
     const dropdownMenu = $('.js-dd-courses').find('.dropdown-menu'); // Select the dropdown menu element
     dropdownMenu.empty();
@@ -71,10 +72,6 @@ function showUserManagementTools(userData){
 
 function initUsersTable(users) {
 
-    if ($.fn.DataTable.isDataTable('#usersTable')) {
-        let table = $('#usersTable').DataTable();
-        table.destroy();
-    }
     const columns = [
         {
             targets: 0,
@@ -137,6 +134,15 @@ function initUsersTable(users) {
             title: 'Role',
             name: 'roles',
             data: 'roles'
+        },
+        {
+            targets: 9,
+            title: 'Actions',
+            name: 'roles',
+            data: 'roles',
+            render: function (data, type, rowData, meta) {
+                return data ? `<button class="btn btn-primary js-table-edit-user"><i class="fa-regular fa-edit p-2"></i></button>` : "";
+            },
         }
     ];
     const options = {
@@ -149,27 +155,26 @@ function initUsersTable(users) {
                 $(this.node()).css('cursor', 'pointer');
             });
 
+            $('#usersTable tbody').on('click', 'tr', function (event) {
+                event.stopPropagation();
+                const that = this;
+                const clickedElement = $(event.target); //here
+                console.log(clickedElement);
 
-            $('#usersTable tbody').on('click', 'tr', function (data) {
-                const clickedElement = $(event.target); 
-
-                if (!clickedElement.hasClass('js-copy')) {
-                    if ($(this).hasClass('selected')) {
-                        $(this).removeClass('selected');
+                if (!clickedElement.hasClass('js-copy') && !clickedElement.hasClass('js-table-edit-user')) {
+                    if ($(that).hasClass('selected')) {
+                        $(that).removeClass('selected');
                     } else {
-                        $(this).addClass('selected');
+                        $(that).addClass('selected');
                     }
-                    
-                    const selectedData = table.row(this).data();
-
-                    selectedUserIDs = $.map(table.rows('.selected').data(), function (item) {
+                    const selectedData = $('#usersTable').DataTable().row(that).data();
+                    selectedUsersIDs = $.map(table.rows('.selected').data(), function (item) {
                         return item.id
                     });
-                    console.log('Selected IDs:', selectedUserIDs);
-
+                    //let requestedUser = await getUserByID();
+                    
                     getUserByID(selectedData.id)
                         .then(userData => {
-                            console.log('User data:', userData);
                             
                             //showUserManagementTools(userData);
                         })
@@ -201,11 +206,6 @@ function initUsersTable(users) {
 };
 
 function initCoursesTable(courses) {
-
-    if ($.fn.DataTable.isDataTable('#coursesTable')) {
-        let table = $('#coursesTable').DataTable();
-        table.destroy();
-    }
     const columns = [
         {
             targets: 0,
@@ -253,10 +253,31 @@ function initCoursesTable(courses) {
             table.rows().every(function () {
                 $(this.node()).css('cursor', 'pointer');
             });
-            $('#coursesTable tbody').on('click', 'tr', function (data) {
-                table.$('tr').removeClass('selected');
-                $(this).addClass('selected');
-                console.log('Selected Data', table.row(this).data())
+
+            $('#coursesTable tbody').on('click', 'tr', function (event) {
+                event.stopPropagation();
+                const that = this;
+                //here
+                console.log($(that).hasClass('selected'));
+                if ($(that).hasClass('selected')) {
+                    $(that).removeClass('selected');
+                } else {
+                    $(that).addClass('selected');
+                }
+
+                const selectedData = $('#coursesTable').DataTable().row(that).data();
+                selectedCoursesIDs = $.map(table.rows('.selected').data(), function (item) {
+                    return item.id
+                });
+                getCourseByID(selectedData.id)
+                    .then(courseData => {
+                        //showUserManagementTools(userData);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching user data:', error);
+                    });
+
+                console.log('Selected Data', selectedData);
             });
         }
     };
@@ -310,12 +331,15 @@ function initProgramsTable(programs) {
     const programsTable = new Table('#programsTable', programs, columns, options);
 };
 
-function refreshUsersTable() {
-    getUsersData();
+function refreshUsersTable(tableData) {
+    $('#usersTable').DataTable().clear(); // Clear existing data
+    $('#usersTable').DataTable().rows.add(tableData).draw();
 };
 
-function refreshCoursesTable() {
-    coursesData = getCoursesData();
+function refreshCoursesTable(tableData) {
+    $('#coursesTable').DataTable().clear(); // Clear existing data
+    $('#coursesTable').DataTable().rows.add(tableData).draw();
+    renderCoursesDropdownValues(tableData);
 };
 
 function refreshProgramsTable() {
@@ -329,18 +353,44 @@ function refreshProgramsTable() {
     $('#all-programs-table').load('/api/Program/GetProgramTable');
 }*/
 
-function assignUsersToCourse(selectedCourseID, selectedUserIDs, selectedRole) {
-
-    console.log(selectedCourseID, selectedUserIDs, selectedRole);
-    editCourseUserRoles(selectedCourseID, selectedUserIDs, selectedRole);
+function assignUsersToCourse(selectedCourseID, selectedUsersIDs, selectedRole) {
+    editCourseUserRoles(selectedCourseID, selectedUsersIDs, selectedRole);
 }
 
-$(document).ready(function () {
+$(document).ready(async function () {
     const containers = { $manageUser: $('.add-user-container'), $allUsers: $('.user-table'), $ManageCourse: $('.course-manager'), $allCourses: $('.all-courses-tab'), $allPrograms: $('.all-programs-tab'), $ManageProgram: $('.program-manager') };
+    initUsersTable();
+    initCoursesTable();
+    initProgramsTable();
 
-    refreshUsersTable();
-    refreshCoursesTable();
-    refreshProgramsTable();
+
+
+    try {
+        const usersData = await getUsersData();
+        console.log(usersData);
+        refreshUsersTable(usersData);
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        // Handle errors here (e.g., display error message)
+    }
+
+    try {
+        const coursesData = await getCoursesData();
+        console.log(coursesData);
+        refreshCoursesTable(coursesData);
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        // Handle errors here (e.g., display error message)
+    }
+
+   /* getProgramsData()
+        .then(programsData => {
+            refreshProgramsTable(programsData);
+        })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+        });
+    */
 
     //Event Listeners
 
@@ -373,9 +423,9 @@ $(document).ready(function () {
             console.log('No role selected.');
         }
         
-        assignUsersToCourse(parseInt(selectedCourseID), selectedUserIDs, selectedRoleAsNum);
+        assignUsersToCourse(parseInt(selectedCourseID), selectedUsersIDs, selectedRoleAsNum);
     });
-    $('.nav-item').on('click', function () {
+    $('.nav-item').on('click', async function () {
         const self = this;
 
         //Styles
@@ -389,7 +439,15 @@ $(document).ready(function () {
         switch (selectedEl) {
             case 'allUsers':
                 toggleObjectVisibility($(containers.$allUsers), true);
-                refreshUsersTable();
+                try {
+                    const usersData = await getUsersData();
+                    console.log(usersData);
+                    refreshUsersTable(usersData);
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                    // Handle errors here (e.g., display error message)
+                }
+                
                 break;
             case 'addUser':
                 toggleObjectVisibility($(containers.$manageUser), true);
@@ -399,7 +457,14 @@ $(document).ready(function () {
                 break;
             case 'allCourses':
                 toggleObjectVisibility($(containers.$allCourses), true);
-                refreshCoursesTable();
+                try {
+                    const coursesData = await getCoursesData();
+                    console.log(coursesData);
+                    refreshCoursesTable(coursesData);
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                    // Handle errors here (e.g., display error message)
+                }
                 break;
             case 'allPrograms':
                 toggleObjectVisibility($(containers.$allPrograms), true);
