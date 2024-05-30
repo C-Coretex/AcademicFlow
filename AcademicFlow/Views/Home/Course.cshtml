@@ -1,20 +1,5 @@
 ﻿@{
     var courseId = ViewData["CourseId"];
-
-    string TruncateDescription(string description, int maxLength)
-    {
-        if (string.IsNullOrEmpty(description))
-        {
-            return string.Empty;
-        }
-
-        if (description.Length <= maxLength)
-        {
-            return description;
-        }
-
-        return description.Substring(0, maxLength) + "...";
-    }
 }
 
 <div class="container-fluid">
