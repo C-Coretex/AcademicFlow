@@ -34,17 +34,16 @@ $(document).ready(async function () {
             }
         });
 
-        const studentBlock = $('#student-course-list')
-
-        const title = $('<h2 class="display-4 my-4">').text(`Student courses`);
-        studentBlock.append(title);
-
         const hr = $('<hr class="my-4">');
-        studentBlock.append(hr);
 
-        if (!programs?.length) {
-            studentBlock.append('<p>No courses available.</p>')
-        } else {
+        if (programs?.length) {
+            const studentBlock = $('#student-course-list')
+
+            const studentTitle = $('<h2 class="display-4 my-4">').text(`Student courses`);
+            studentBlock.append(studentTitle);
+
+            studentBlock.append(hr);
+
             $.each(programs, function(_, program) {
                 const tableData = { 
                     assignedUserId: userData.id,
@@ -60,10 +59,9 @@ $(document).ready(async function () {
         if (userData.roles.some(role => role == 'Professor')) {
             const professorBlock = $('#professor-course-list')
 
-            const title = $('<h2 class="display-4 my-4">').text(`Professor courses`);
-            professorBlock.append(title);
+            const professorTitle = $('<h2 class="display-4 my-4">').text(`Professor courses`);
+            professorBlock.append(professorTitle);
 
-            const hr = $('<hr class="my-4">');
             professorBlock.append(hr);
 
             const tableData = { 
