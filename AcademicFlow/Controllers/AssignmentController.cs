@@ -256,8 +256,18 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                var dateFromDateTime = DateTime.ParseExact(dateFrom, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-                var dateToDateTime = DateTime.ParseExact(dateTo, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                var dateFromDateTime = (DateTime?)null;
+                var dateToDateTime = (DateTime?)null;
+
+                if (dateFrom != null)
+                {
+                    dateFromDateTime = DateTime.ParseExact(dateFrom, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                }
+
+                if (dateTo != null)
+                {
+                    dateToDateTime = DateTime.ParseExact(dateTo, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                }
 
                 var data = await _assignmentManager.GetAllAssignmentsForCourse(courseId, withAssignedEntries, withGrades, dateFromDateTime, dateToDateTime);
                 return Ok(data);
