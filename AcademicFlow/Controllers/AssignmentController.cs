@@ -34,7 +34,7 @@ namespace AcademicFlow.Controllers
         // Add assignment task
         [AuthorizeUser(RolesEnum.Professor)]
         [HttpPut("AddAssignmentTask")]
-        public async Task<IActionResult> AddAssignmentTask([FromBody] AssignmentTaskInputModel assignmentTask)
+        public async Task<IActionResult> AddAssignmentTask([FromForm] AssignmentTaskInputModel assignmentTask)
         {
             try
             {
