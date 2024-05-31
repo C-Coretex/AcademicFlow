@@ -5,13 +5,14 @@ using AcademicFlow.Helpers;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models.AssignmentModels.InputModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Globalization;
 
 namespace AcademicFlow.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class AssignmentController : ControllerBase
+    public class AssignmentController : Controller
     {
         private readonly IAssignmentManager _assignmentManager;
         private readonly ILogger<AssignmentController> _logger;
@@ -19,17 +20,21 @@ namespace AcademicFlow.Controllers
         public AssignmentController(IAssignmentManager assignmentManager, ILogger<AssignmentController> logger)
         {
             _assignmentManager = assignmentManager;
-            var userId = AuthorizationHelpers.GetUserIdIfAuthorized(HttpContext.Session);
-            if(userId.HasValue)
-                _assignmentManager.UserId = userId.Value;
-
             _logger = logger;
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext ctx)
+        {
+            base.OnActionExecuting(ctx);
+            var userId = AuthorizationHelpers.GetUserIdIfAuthorized(HttpContext.Session);
+            if (userId.HasValue)
+                _assignmentManager.UserId = userId.Value;
         }
 
         // Add assignment task
         [AuthorizeUser(RolesEnum.Professor)]
         [HttpPut("AddAssignmentTask")]
-        public async Task<IActionResult> AddAssignmentTask([FromBody] AssignmentTaskInputModel assignmentTask)
+        public async Task<IActionResult> AddAssignmentTask([FromForm] AssignmentTaskInputModel assignmentTask)
         {
             try
             {
@@ -251,8 +256,18 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                var dateFromDateTime = DateTime.ParseExact(dateFrom, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-                var dateToDateTime = DateTime.ParseExact(dateTo, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                var dateFromDateTime = (DateTime?)null;
+                var dateToDateTime = (DateTime?)null;
+
+                if (dateFrom != null)
+                {
+                    dateFromDateTime = DateTime.ParseExact(dateFrom, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                }
+
+                if (dateTo != null)
+                {
+                    dateToDateTime = DateTime.ParseExact(dateTo, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                }
 
                 var data = await _assignmentManager.GetAllAssignmentsForCourse(courseId, withAssignedEntries, withGrades, dateFromDateTime, dateToDateTime);
                 return Ok(data);

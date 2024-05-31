@@ -10,4 +10,21 @@ Features:
 - Assignment submitting and grading
 - Management of all the data and relations
 
+----
+
+### How to run the application:
+- Install the latest version of Visual Studio
+- Install node.js
+- Install ef core tools (https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
+- Install SSMS (optionally https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
+- Download this repository, open the AcademicFlow.sln file with VisualStudio
+- Open AcademicFlow/AcademicFlow.Migrations/ folder with cmd (could also be done directly in VisualStudio)
+- Run this command in cmd and close the window after success _dotnet ef database update_
+- If everything is fine - press green arrow button on the top of the screen (in the middle of the toolbar) ![image](https://github.com/C-Coretex/AcademicFlow/assets/44605873/e5be7760-0740-438f-8ea5-2062a8c3eb30)
+- On login enter: Username: admin   Password: BadPassword01
+ 
+
+
+----
+
 ![image](https://github.com/C-Coretex/AcademicFlow/assets/44605873/5a918857-c054-4487-9ba6-2d3b86b2bc37)

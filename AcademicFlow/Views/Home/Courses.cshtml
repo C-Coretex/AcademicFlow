@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Courses";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <partial name="../Course/Partials/_CourseNav" />
+        <div class="col-sm p-0 min-vh-100">
+            <div class="container">
+                <div id="student-course-list"></div>
+                <div id="professor-course-list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="~/js/dist/pages/courses/courses.js" asp-append-version="true"></script>

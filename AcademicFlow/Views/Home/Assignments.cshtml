@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Assignments";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <partial name="../Course/Partials/_CourseNav" />
+        <div class="col-sm p-0 min-vh-100">
+            <div class="container">
+                <h1 class="display-4 my-4">Assignments</h1>
+                <hr class="my-4">
+                <p class="lead">List of all assignments</p>
+
+                <div id="assignment-list" class="assignments d-flex flex-column gap-3 my-5"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="~/js/dist/pages/assignments/assignments.js" asp-append-version="true"></script>

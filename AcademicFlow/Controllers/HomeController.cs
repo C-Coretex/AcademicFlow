@@ -7,6 +7,7 @@ namespace AcademicFlow.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -26,6 +27,7 @@ namespace AcademicFlow.Controllers
         {
             return View();
         }
+
         public IActionResult MainPage()
         {
             return View();
@@ -43,6 +45,40 @@ namespace AcademicFlow.Controllers
 
         public IActionResult Login()
         {
+            return View();
+        }
+        
+        [HttpGet("Home/Courses")]
+        public IActionResult Courses()
+        {
+            return View();
+        }
+
+        [HttpGet("Home/Course/{id}")]
+        public IActionResult Course(int id)
+        {
+            ViewData["CourseId"] = id;
+
+            return View();
+        }
+
+        [HttpGet("Home/Assignment/New")]
+        public IActionResult NewAssignment()
+        {
+            return View();
+        }
+
+        [HttpGet("Home/Assignments")]
+        public IActionResult Assignments()
+        {
+            return View();
+        }
+
+        [HttpGet("Home/Assignment/{id}")]
+        public IActionResult Assignment(int id)
+        {
+            ViewData["AssignmentId"] = id;
+
             return View();
         }
 

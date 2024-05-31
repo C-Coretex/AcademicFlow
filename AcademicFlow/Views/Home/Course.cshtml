@@ -1,0 +1,22 @@
+﻿@{
+    var courseId = ViewData["CourseId"];
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <partial name="../Course/Partials/_CourseNav" />
+        <div class="col-sm p-0 min-vh-100">
+            <div class="container">
+                <div id="course-list-item" class="mb-5" courseId="@courseId"></div>
+
+                <div id="course-assignments" class="my-3">
+                    <p class="display-6">Assignments (!!!TODO)</p>
+
+                    <div id="assignment-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="~/js/dist/pages/course/course.js" asp-append-version="true"></script>

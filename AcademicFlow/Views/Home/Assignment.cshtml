@@ -1,0 +1,24 @@
+﻿@{
+    var assignmentId = ViewData["AssignmentId"];
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <partial name="../Course/Partials/_CourseNav" />
+        <div class="col-sm p-0 min-vh-100">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mt-4">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Assignment</li>
+                        <li class="breadcrumb-item active" aria-current="page"></li>
+                    </ol>
+                </nav>
+
+                <div id="assignment-item" assignmentId="@assignmentId"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="~/js/dist/pages/assignment/assignment.js" asp-append-version="true"></script>
