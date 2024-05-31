@@ -74,6 +74,14 @@ namespace AcademicFlow.Controllers
             return View();
         }
 
+        [HttpGet("Home/Assignment/{id}")]
+        public IActionResult Assignment(int id)
+        {
+            ViewData["AssignmentId"] = id;
+
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

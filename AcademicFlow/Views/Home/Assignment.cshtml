@@ -1,6 +1,5 @@
-@{
-    var assignment = ViewData["Assignment"] as AcademicFlow.Controllers.Assignment;
-    ViewData["Title"] = @assignment.Title;
+﻿@{
+    var assignmentId = ViewData["AssignmentId"];
 }
 
 <div class="container-fluid">
@@ -12,11 +11,11 @@
                     <ol class="breadcrumb mt-4">
                         <li class="breadcrumb-item">Home</li>
                         <li class="breadcrumb-item">Assignment</li>
-                        <li class="breadcrumb-item active" aria-current="page">@assignment.Title</li>
+                        <li class="breadcrumb-item active" aria-current="page">TODO title</li>
                     </ol>
                 </nav>
 
-                <h1 class="display-4 my-4">@assignment.Title</h1>
+                @* <h1 class="display-4 my-4">@assignment.Title</h1>
                 <hr class="my-4">
                 <p class="lead">@assignment.Description</p>
 
@@ -34,8 +33,10 @@
 
                         !!!TODO file upload handling
                     </div>
-                </div>
+                </div> *@
             </div>
         </div>
     </div>
 </div>
+
+<script type="module" src="~/js/dist/pages/assignment/assignment.js" asp-append-version="true"></script>
