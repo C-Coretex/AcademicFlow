@@ -33,6 +33,18 @@
     "course": {
       "source": "js/pages/course/course.js",
       "distDir": "js/dist"
+    },
+    "newAssignment": {
+      "source": "js/pages/newAssignment/newAssignment.js",
+      "distDir": "js/dist"
+    },
+    "assignments": {
+      "source": "js/pages/assignments/assignments.js",
+      "distDir": "js/dist"
+    },
+    "assignment": {
+      "source": "js/pages/assignment/assignment.js",
+      "distDir": "js/dist"
     }
   },
   "scripts": {

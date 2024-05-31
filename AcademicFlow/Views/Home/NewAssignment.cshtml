@@ -1,0 +1,71 @@
+﻿@using AcademicFlow.Managers.Contracts.Models.AssignmentModels.InputModels
+@model AssignmentTaskInputModel;
+
+@{
+    ViewData["Title"] = "Add new assignment";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <partial name="../Course/Partials/_CourseNav" />
+        <div class="col-sm p-0 min-vh-100">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mt-4">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Assignments</li>
+                        <li class="breadcrumb-item active" aria-current="page">New assignment</li>
+                    </ol>
+                </nav>
+
+                <div id="assignment-course-info">
+                    <h1 class="display-4 my-4">Add new assignment</h1>
+                    <hr class="my-4">
+                </div>
+
+                <div id="form-logs"></div>
+
+                <form id="assignmentForm" class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.CourseId, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.CourseId, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.AssignmentName, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.AssignmentName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.AssignmentDescription, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(m => m.AssignmentDescription, new { @class = "form-control", rows = 5 })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.AssignmentWeight, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.AssignmentWeight, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Deadline, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Deadline, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
+                        </div>
+                    </div>
+                    <div class="form-group mt-4">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Add Assignment Task" class="btn btn-primary js-add-assignment" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="~/js/dist/pages/newAssignment/newAssignment.js" asp-append-version="true"></script>
