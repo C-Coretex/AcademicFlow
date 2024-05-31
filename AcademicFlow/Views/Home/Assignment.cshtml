@@ -11,29 +11,11 @@
                     <ol class="breadcrumb mt-4">
                         <li class="breadcrumb-item">Home</li>
                         <li class="breadcrumb-item">Assignment</li>
-                        <li class="breadcrumb-item active" aria-current="page">TODO title</li>
+                        <li class="breadcrumb-item active" aria-current="page"></li>
                     </ol>
                 </nav>
 
-                @* <h1 class="display-4 my-4">@assignment.Title</h1>
-                <hr class="my-4">
-                <p class="lead">@assignment.Description</p>
-
-                <div class="assignment-content d-flex flex-column gap-3 my-5">
-                    @if (@assignment.Grade != null) {
-                        <p><strong>Grade:</strong> @assignment.Grade/@assignment.TotalGrade</p>
-                    }
-                    else
-                    {
-                        <p><strong>Grade:</strong> -</p>
-                    }
-
-                    <div class="assignment-file">
-                        <p class="display-6">Assignment</p>
-
-                        !!!TODO file upload handling
-                    </div>
-                </div> *@
+                <div id="assignment-item" assignmentId="@assignmentId"></div>
             </div>
         </div>
     </div>
