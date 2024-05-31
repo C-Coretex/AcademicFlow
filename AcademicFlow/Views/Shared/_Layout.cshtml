@@ -12,8 +12,9 @@
     <link href="/lib/fontawesome/css/solid.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> 
 
+    @await RenderSectionAsync("Scripts", required: false)
 </head>
 <body>
     <header>
@@ -62,6 +63,5 @@
     <script type="module" src="~/js/dist/components/navigation.js" asp-append-version="true"></script>
     <script src="~/js/dist/site.js" asp-append-version="true"></script>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
