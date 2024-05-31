@@ -5,13 +5,14 @@ using AcademicFlow.Helpers;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models.AssignmentModels.InputModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Globalization;
 
 namespace AcademicFlow.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class AssignmentController : ControllerBase
+    public class AssignmentController : Controller
     {
         private readonly IAssignmentManager _assignmentManager;
         private readonly ILogger<AssignmentController> _logger;
@@ -19,11 +20,15 @@ namespace AcademicFlow.Controllers
         public AssignmentController(IAssignmentManager assignmentManager, ILogger<AssignmentController> logger)
         {
             _assignmentManager = assignmentManager;
-            var userId = AuthorizationHelpers.GetUserIdIfAuthorized(HttpContext.Session);
-            if(userId.HasValue)
-                _assignmentManager.UserId = userId.Value;
-
             _logger = logger;
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext ctx)
+        {
+            base.OnActionExecuting(ctx);
+            var userId = AuthorizationHelpers.GetUserIdIfAuthorized(HttpContext.Session);
+            if (userId.HasValue)
+                _assignmentManager.UserId = userId.Value;
         }
 
         // Add assignment task
