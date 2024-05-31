@@ -62,7 +62,7 @@ namespace AcademicFlow.Controllers
             return View();
         }
 
-        [HttpGet("Home/Assignments/new")]
+        [HttpGet("Home/Assignment/New")]
         public IActionResult NewAssignment()
         {
             return View();
