@@ -1,7 +1,8 @@
-import { toggleObjectVisibility, editCourseUserRoles, checkUserPermissionsLevel, getCurrentUser, renderHeaderLinks, getUserByID, getCourseByID  } from "./../../components/utils.js";
+﻿import { toggleObjectVisibility, editCourseUserRoles, checkUserPermissionsLevel, getCurrentUser, renderHeaderLinks, getUserByID, getCourseByID, editCoursePrograms  } from "./../../components/utils.js";
 import { Table } from "./../../components/table.js";
 
 let selectedUsersIDs = [];
+let selectedProgramsIDs = [];
 let selectedCoursesIDs = [];
 let coursesData;
 let programData
@@ -42,32 +43,86 @@ async function getCoursesData() {
         return undefined; // Or throw an error for further handling
     }
 }
+
+async function getProgramsData() {
+    try {
+        const response = await $.ajax({
+            url: "/api/Program/GetProgramTable",
+            method: "GET",
+            dataType: "json"
+        });
+        return response;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle errors appropriately (e.g., display error message to user)
+        return undefined; // Or throw an error for further handling
+    }
+}
 function renderCoursesDropdownValues(courseData) {
-    const dropdownMenu = $('.js-dd-courses').find('.dropdown-menu'); // Select the dropdown menu element
+    const dropdownMenu = $('.js-dd-courses').find('.js-course-dd-selected-value'); // Select the dropdown menu element
     dropdownMenu.empty();
+    dropdownMenu.append(`<option value=""> </option>`);
 
     courseData.forEach(course => {
-        const option = `<li><a class="dropdown-item" value="${course.id}">${course.publicId}: ${course.name}</a></li>`;
+        const option = `<option value="${course.id}">${course.publicId}: ${course.name}</option>`;
         dropdownMenu.append(option);
     });
 }
 
-async function getProgramData() {
-    $.ajax({
-        url: "/api/Program/GetProgramTable",
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-            initProgramsTable(data);
-        },
-        error: function (error) {
-            console.error("Error fetching data:", error);
-        }
-    });
-}
+async function showUserManagementTools(userId) {
+    const $manageUser = $('.add-user-container');
+    const $ediUder = $('.user-table');
+    toggleObjectVisibility($manageUser, true);
+    toggleObjectVisibility($ediUder, false);
 
-function showUserManagementTools(userData){
-    console.log('should show', userData);
+    const userData = await getUserByID(userId);
+    $('.js-user-fullname').text(userData.name + ' ' + userData.surname);
+    renderUserData(userData);
+    console.log(userData);
+
+}
+function renderUserData(data) {
+    const userElement = document.querySelector('.js-show-user-data');
+    let htmlContent = '';
+
+    htmlContent += `<h2>Information</h2>`;
+    htmlContent += `<table>`;
+
+    // Table header row
+    htmlContent += `<tr>`;
+    htmlContent += `<th>Field</th>`;
+    htmlContent += `<th>Value</th>`;
+    htmlContent += `</tr>`;
+
+    // Table body rows
+    for (const key in data) {
+        if (key !== 'userRegistrationData') { // Exclude nested object
+            const value = data[key] || 'N/A'; // Handle missing data
+            htmlContent += `<tr>`;
+            htmlContent += `<td>${key}</td>`;
+            htmlContent += `<td>${value}</td>`;
+            htmlContent += `</tr>`;
+        }
+    }
+
+    // Registration information (optional)
+    if (data.userRegistrationData) {
+        htmlContent += `<tr>`;
+        htmlContent += `<td>Registered</td>`;
+        htmlContent += `<td>${data.userRegistrationData.isRegistered ? 'Yes' : 'No'}</td>`;
+        htmlContent += `</tr>`;
+
+        if (data.userRegistrationData.registrationUrl) {
+            htmlContent += `<tr>`;
+            htmlContent += `<td>Registration Link</td>`;
+            htmlContent += `<td><a href="${data.userRegistrationData.registrationUrl}">Link</a></td>`;
+            htmlContent += `</tr>`;
+        }
+    }
+
+    htmlContent += `</table>`;
+
+    userElement.innerHTML = htmlContent;
 }
 
 function initUsersTable(users) {
@@ -125,9 +180,26 @@ function initUsersTable(users) {
 
                 return data.userRegistrationData.isRegistered ? "" : data.userRegistrationData.registrationUrl ;
             },
-            render: function (data, type, rowData, meta) {
-                return data ? `<button class="btn btn-primary"><i class="fa-regular fa-copy js-copy p-2" data-link="${data}"></i></button>` : "";
+            createdCell: function (td, cellData, rowData, row, col) {
+                if (td.querySelector('.js-copy')) {
+                    td.querySelector('.js-copy').addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const $button = $(this);
+                        let deleteBtn = $button[0];
+
+                        const link = $button.data('link');
+                        console.log(link);
+                        navigator.clipboard.writeText(link);
+
+                    }, true);
+                }
+                
+
             },
+            render: function (data, type, rowData, meta) {
+                return data ? `<button class="btn btn-primary not-for-select js-copy" data-link="${data}"><i class="fa-regular fa-copy not-for-select p-2" data-link="${data}"></i></button>` : "";
+            }
+            
         },
         {
             targets: 8,
@@ -138,11 +210,27 @@ function initUsersTable(users) {
         {
             targets: 9,
             title: 'Actions',
-            name: 'roles',
-            data: 'roles',
-            render: function (data, type, rowData, meta) {
-                return data ? `<button class="btn btn-primary js-table-edit-user"><i class="fa-regular fa-edit p-2"></i></button>` : "";
+            name: 'id',
+            data: 'id',
+            createdCell: function (td, cellData, rowData, row, col) {
+                if (td.querySelector('.js-table-edit-user')) {
+                    td.querySelector('.js-table-edit-user').addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const $button = $(this);
+                        let deleteBtn = $button[0];
+
+                        const userID = parseInt($button.data('userid'));
+                        console.log('selected ID', userID);
+                        showUserManagementTools(userID);
+
+                    }, true);
+                }
+
+
             },
+            render: function (data, type, rowData, meta) {
+                return data ? `<button class="btn btn-primary not-for-select js-table-edit-user" data-userid="${data}"><i class="fa-regular fa-edit p-2 not-for-select"></i></button>` : "";
+            }
         }
     ];
     const options = {
@@ -151,9 +239,7 @@ function initUsersTable(users) {
         select: true,
         initComplete: function () {
             let table = $('#usersTable').DataTable();
-            table.rows().every(function () {
-                $(this.node()).css('cursor', 'pointer');
-            });
+            table.rows().every(row => $(row.node()).css('cursor', 'pointer'));
 
             $('#usersTable tbody').on('click', 'tr', function (event) {
                 event.stopPropagation();
@@ -161,7 +247,7 @@ function initUsersTable(users) {
                 const clickedElement = $(event.target); //here
                 console.log(clickedElement);
 
-                if (!clickedElement.hasClass('js-copy') && !clickedElement.hasClass('js-table-edit-user')) {
+                if (!clickedElement.hasClass('not-for-select')) {
                     if ($(that).hasClass('selected')) {
                         $(that).removeClass('selected');
                     } else {
@@ -185,19 +271,6 @@ function initUsersTable(users) {
 
                     console.log('Selected Data', selectedData);
                 }
-            });
-
-            const copyIcons = document.querySelectorAll('.js-copy');
-
-            copyIcons.forEach(icon => {
-                icon.addEventListener('click', function () {
-
-                    const link = $(this).data('link'); // Access the URL from the data attribute
-                    console.log(link);
-                    table.$('tr').removeClass('selected');
-                    navigator.clipboard.writeText(link);
-
-                });
             });
         }
     };
@@ -250,9 +323,7 @@ function initCoursesTable(courses) {
         select: true,
         initComplete: function () {
             let table = $('#coursesTable').DataTable();
-            table.rows().every(function () {
-                $(this.node()).css('cursor', 'pointer');
-            });
+            table.rows().every(row => $(row.node()).css('cursor', 'pointer'));
 
             $('#coursesTable tbody').on('click', 'tr', function (event) {
                 event.stopPropagation();
@@ -286,17 +357,13 @@ function initCoursesTable(courses) {
 };
 
 function initProgramsTable(programs) {
-
-    if ($.fn.DataTable.isDataTable('#programsTable')) {
-        let table = $('#programsTable').DataTable();
-        table.destroy();
-    }
     const columns = [
         {
             targets: 0,
             title: 'ID',
             name: 'id',
-            data: 'id'
+            data: 'id',
+            width: 80
         },
         {
             targets: 1,
@@ -308,7 +375,8 @@ function initProgramsTable(programs) {
             targets: 2,
             title: 'Semester Number',
             name: 'semesterNr',
-            data: 'semesterNr'
+            data: 'semesterNr',
+            width: 100
         }
     ];
     const options = {
@@ -317,13 +385,27 @@ function initProgramsTable(programs) {
         select: true,
         initComplete: function () {
             let table = $('#programsTable').DataTable();
-            table.rows().every(function () {
-                $(this.node()).css('cursor', 'pointer');
-            });
-            $('#programsTable tbody').on('click', 'tr', function (data) {
-                table.$('tr').removeClass('selected');
-                $(this).addClass('selected');
-                console.log('Selected Data', table.row(this).data())
+            table.rows().every(row => $(row.node()).css('cursor', 'pointer'));
+            
+            $('#programsTable tbody').on('click', 'tr', function (event) {
+                event.stopPropagation();
+                const that = this;
+                //here
+                console.log($(that).hasClass('selected'));
+                if ($(that).hasClass('selected')) {
+                    $(that).removeClass('selected');
+                } else {
+                    $(that).addClass('selected');
+                }
+                const selectedData = $('#programsTable').DataTable().row(that).data();
+
+                console.log('Selected Data', selectedData);
+
+                selectedProgramsIDs = $.map(table.rows('.selected').data(), function (item) {
+                    console.log('item',item);
+                    return item.id
+                });
+                console.log('programsIds',selectedProgramsIDs);
             });
         }
     };
@@ -342,19 +424,25 @@ function refreshCoursesTable(tableData) {
     renderCoursesDropdownValues(tableData);
 };
 
-function refreshProgramsTable() {
-    programData = getProgramData();
+function refreshProgramsTable(tableData) {
+    $('#programsTable').DataTable().clear(); // Clear existing data
+    $('#programsTable').DataTable().rows.add(tableData).draw();
 };
 
-/*function refreshCoursesTable() {
-    $('#all-courses-table').load('/api/Course/GetCourseTable');
-}*/
-/*function refreshProgramTable() {
-    $('#all-programs-table').load('/api/Program/GetProgramTable');
-}*/
+async function assignUsersToCourse(selectedCourseID, selectedUsersIDs, selectedRole) {
+    const result = await editCourseUserRoles(selectedCourseID, selectedUsersIDs, selectedRole);
+    if (result) {
+        triggerRefreshUsersTable();
+    }
+}
+function assignProgramsToCourse(selectedCourseID, selectedProgramsIDs) {
+    editCoursePrograms(selectedCourseID, selectedProgramsIDs);
+}
 
-function assignUsersToCourse(selectedCourseID, selectedUsersIDs, selectedRole) {
-    editCourseUserRoles(selectedCourseID, selectedUsersIDs, selectedRole);
+async function triggerRefreshUsersTable() {
+    const usersData = await getUsersData();
+    console.log('test here',usersData);
+    refreshUsersTable(usersData);
 }
 
 $(document).ready(async function () {
@@ -376,38 +464,41 @@ $(document).ready(async function () {
 
     try {
         const coursesData = await getCoursesData();
-        console.log(coursesData);
         refreshCoursesTable(coursesData);
     } catch (error) {
         console.error("Error fetching user data:", error);
         // Handle errors here (e.g., display error message)
     }
 
-   /* getProgramsData()
-        .then(programsData => {
-            refreshProgramsTable(programsData);
-        })
-        .catch(error => {
-            console.error('Error fetching user data:', error);
-        });
-    */
+    try {
+        const programsData = await getProgramsData();
+        refreshProgramsTable(programsData);
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        // Handle errors here (e.g., display error message)
+    }
+    
 
     //Event Listeners
+    $(".js-back-to-user-manager").on('click', function (data) {
+        const $manageUser = $('.add-user-container');
+        const $ediUder = $('.user-table');
+        toggleObjectVisibility($manageUser, false);
+        toggleObjectVisibility($ediUder, true);
+    });
 
     $(".js-course-dd-selection-menu").on('click', 'li a', function (data) {
         const selectedCourseID = $(data.currentTarget).attr('value');
-
-        $(".js-course-dd-selected-value div").text($(this).text());
-        $(".js-course-dd-selected-value").attr('selectedCourseID', selectedCourseID);
+        console.log($(this).text());
+        $(".js-course-dd-selected-value").text(`${$(this).text()}`);
+        console.log(selectedCourseID);
     });
 
     $('.js-assign-users-to-course').on('click', function (data) {
-        const selectedCourseID = $(".js-course-dd-selected-value").attr('selectedCourseID');
-        const roleSelection = $('.js-select-role-to-course input[type="checkbox"]:checked');
-        let selectedRole;
+        const selectedCourseID = $(".user-table").find(".js-course-dd-selected-value").find(":selected").val();
+        const selectedRole = $('.js-select-role-to-course').find(":selected").val();//here
         let selectedRoleAsNum;
-        if (roleSelection) {
-            selectedRole = roleSelection.val();
+        if (selectedRole) {
             switch (selectedRole) {
                 case "professor":
                     selectedRoleAsNum = 2;
@@ -415,16 +506,23 @@ $(document).ready(async function () {
                 case "student":
                     selectedRoleAsNum = 1;
                     break;
-                default: selectedRoleAsNum = -1;
+                default: selectedRoleAsNum = null;
             }
                 // Get the value of the checked checkbox
-            console.log('Selected role:', roleSelection.val(), roleSelection);
+            console.log('Selected role:', selectedRole);
         } else {
             console.log('No role selected.');
         }
         
         assignUsersToCourse(parseInt(selectedCourseID), selectedUsersIDs, selectedRoleAsNum);
     });
+
+    $('.js-assign-programms-to-course').on('click', function (data) {
+        const selectedCourseID = $(".programs-table").find(".js-course-dd-selected-value").find(":selected").val();
+        console.log(selectedCourseID);
+        assignProgramsToCourse(parseInt(selectedCourseID), selectedProgramsIDs);
+    });
+
     $('.nav-item').on('click', async function () {
         const self = this;
 
@@ -459,7 +557,6 @@ $(document).ready(async function () {
                 toggleObjectVisibility($(containers.$allCourses), true);
                 try {
                     const coursesData = await getCoursesData();
-                    console.log(coursesData);
                     refreshCoursesTable(coursesData);
                 } catch (error) {
                     console.error("Error fetching user data:", error);
@@ -468,7 +565,14 @@ $(document).ready(async function () {
                 break;
             case 'allPrograms':
                 toggleObjectVisibility($(containers.$allPrograms), true);
-                refreshProgramsTable();
+                try {
+                    const programsData = await getProgramsData();
+                    console.log(programsData);
+                    refreshProgramsTable(programsData);
+                } catch (error) {
+                    console.error("Error fetching user data:", error);
+                    // Handle errors here (e.g., display error message)
+                }
                 break;
             case 'addProgram':
                 toggleObjectVisibility($(containers.$ManageProgram), true);
@@ -494,8 +598,9 @@ $(document).ready(async function () {
                 data: formData,
                 success: function (response) {
                     $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is added.</div>`);
-                    console.error('Error:', textStatus, errorThrown);
                     console.log('User added successfully');
+                    triggerRefreshUsersTable();
+                    
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;

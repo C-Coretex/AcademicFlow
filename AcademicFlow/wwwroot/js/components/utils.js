@@ -42,6 +42,65 @@ export async function editCourseUserRoles(courseId, userIds, role) {
         if (response.status === "success") {
             console.log("Course user roles edited successfully!");
             // Handle successful update (e.g., display success message)
+            return (true);
+        } else {
+            console.error("Error editing course user roles:", response.message);
+            // Handle error (e.g., display error message)
+            return (false);
+        }
+    } catch (error) {
+        console.error("Error sending AJAX request:", error);
+        // Handle any errors during the AJAX request
+        return (false);
+    }
+}
+
+export async function editCourseUserRoles(courseId, userIds, role) {
+    const requestData = {
+        id: courseId,
+        userIds: userIds,
+        role: role, // Assuming role is an enum value that matches the server-side definition
+    };
+    console.log(requestData);
+    try {
+        const response = await $.ajax({
+            url: "/api/Course/EditCourseUserRoles", // Replace with your actual URL
+            method: "POST",
+            dataType: "json", // Expected response data type
+            data: requestData
+        });
+
+        if (response.status === "success") {
+            console.log("Course user roles edited successfully!");
+            // Handle successful update (e.g., display success message)
+        } else {
+            console.error("Error editing course user roles:", response.message);
+            // Handle error (e.g., display error message)
+        }
+    } catch (error) {
+        console.error("Error sending AJAX request:", error);
+        // Handle any errors during the AJAX request
+    }
+}
+
+//EditCoursePrograms
+export async function editCoursePrograms(courseId, programsIds) {
+    const requestData = {
+        id: courseId,
+        progamIds: programsIds
+    };
+    console.log('send data',requestData);
+    try {
+        const response = await $.ajax({
+            url: "/api/Course/EditCoursePrograms", // Replace with your actual URL
+            method: "POST",
+            dataType: "json", // Expected response data type
+            data: requestData
+        });
+
+        if (response.status === "success") {
+            console.log("Course user roles edited successfully!");
+            // Handle successful update (e.g., display success message)
         } else {
             console.error("Error editing course user roles:", response.message);
             // Handle error (e.g., display error message)
