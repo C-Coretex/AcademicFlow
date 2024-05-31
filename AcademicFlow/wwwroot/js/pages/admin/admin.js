@@ -1,4 +1,4 @@
-﻿import { toggleObjectVisibility, editCourseUserRoles, checkUserPermissionsLevel, getCurrentUser, renderHeaderLinks, getUserByID, getCourseByID, editCoursePrograms  } from "./../../components/utils.js";
+﻿import { toggleObjectVisibility, editCourseUserRoles, editProgramUserRoles, checkUserPermissionsLevel, getCurrentUser, renderHeaderLinks, getUserByID, getCourseByID, editCoursePrograms  } from "./../../components/utils.js";
 import { Table } from "./../../components/table.js";
 
 let selectedUsersIDs = [];
@@ -69,6 +69,17 @@ function renderCoursesDropdownValues(courseData) {
     });
 }
 
+function renderProgrammsDropdownValues(programData) {
+    const dropdownMenu = $('.js-dd-programs').find('.js-program-dd-selected-value'); // Select the dropdown menu element
+    dropdownMenu.empty();
+    dropdownMenu.append(`<option value=""> </option>`);
+
+    programData.forEach(program => {
+        const option = `<option value="${program.id}">${program.semesterNr}: ${program.name}</option>`;
+        dropdownMenu.append(option);
+    });
+}
+
 async function showUserManagementTools(userId) {
     const $manageUser = $('.add-user-container');
     const $ediUder = $('.user-table');
@@ -100,7 +111,7 @@ function renderUserData(data) {
             const value = data[key] || 'N/A'; // Handle missing data
             htmlContent += `<tr>`;
             htmlContent += `<td>${key}</td>`;
-            htmlContent += `<td>${value}</td>`;
+            htmlContent += `<td class="js-user-info-${key}" data-${key}="${value}">${value}</td>`;
             htmlContent += `</tr>`;
         }
     }
@@ -244,7 +255,7 @@ function initUsersTable(users) {
             $('#usersTable tbody').on('click', 'tr', function (event) {
                 event.stopPropagation();
                 const that = this;
-                const clickedElement = $(event.target); //here
+                const clickedElement = $(event.target);
                 console.log(clickedElement);
 
                 if (!clickedElement.hasClass('not-for-select')) {
@@ -328,7 +339,6 @@ function initCoursesTable(courses) {
             $('#coursesTable tbody').on('click', 'tr', function (event) {
                 event.stopPropagation();
                 const that = this;
-                //here
                 console.log($(that).hasClass('selected'));
                 if ($(that).hasClass('selected')) {
                     $(that).removeClass('selected');
@@ -390,7 +400,6 @@ function initProgramsTable(programs) {
             $('#programsTable tbody').on('click', 'tr', function (event) {
                 event.stopPropagation();
                 const that = this;
-                //here
                 console.log($(that).hasClass('selected'));
                 if ($(that).hasClass('selected')) {
                     $(that).removeClass('selected');
@@ -427,7 +436,8 @@ function refreshCoursesTable(tableData) {
 function refreshProgramsTable(tableData) {
     $('#programsTable').DataTable().clear(); // Clear existing data
     $('#programsTable').DataTable().rows.add(tableData).draw();
-};
+    renderProgrammsDropdownValues(tableData);
+}
 
 async function assignUsersToCourse(selectedCourseID, selectedUsersIDs, selectedRole) {
     const result = await editCourseUserRoles(selectedCourseID, selectedUsersIDs, selectedRole);
@@ -435,8 +445,12 @@ async function assignUsersToCourse(selectedCourseID, selectedUsersIDs, selectedR
         triggerRefreshUsersTable();
     }
 }
-function assignProgramsToCourse(selectedCourseID, selectedProgramsIDs) {
-    editCoursePrograms(selectedCourseID, selectedProgramsIDs);
+
+async function assignProgramsToCourse(selectedProgramID, selectedUsersIDs) {
+    const result = await editProgramUserRoles(selectedProgramID, selectedUsersIDs);
+    if (result) {
+        triggerRefreshUsersTable();
+    }
 }
 
 async function triggerRefreshUsersTable() {
@@ -482,21 +496,29 @@ $(document).ready(async function () {
     //Event Listeners
     $(".js-back-to-user-manager").on('click', function (data) {
         const $manageUser = $('.add-user-container');
-        const $ediUder = $('.user-table');
+        const $editUser = $('.user-table');
         toggleObjectVisibility($manageUser, false);
-        toggleObjectVisibility($ediUder, true);
+        toggleObjectVisibility($editUser, true);
+        triggerRefreshUsersTable();
+
     });
 
-    $(".js-course-dd-selection-menu").on('click', 'li a', function (data) {
+   /* $(".js-course-dd-selection-menu").on('click', 'li a', function (data) {
         const selectedCourseID = $(data.currentTarget).attr('value');
         console.log($(this).text());
         $(".js-course-dd-selected-value").text(`${$(this).text()}`);
         console.log(selectedCourseID);
     });
+    $(".js-program-dd-selection-menu").on('click', 'li a', function (data) {
+        const selectedProgramID = $(data.currentTarget).attr('value');
+        console.log($(this).text());
+        $(".js-program-dd-selected-value").text(`${$(this).text()}`);
+        console.log(selectedProgramID);
+    });*/
 
     $('.js-assign-users-to-course').on('click', function (data) {
         const selectedCourseID = $(".user-table").find(".js-course-dd-selected-value").find(":selected").val();
-        const selectedRole = $('.js-select-role-to-course').find(":selected").val();//here
+        const selectedRole = $('.js-select-role-to-course').find(":selected").val();
         let selectedRoleAsNum;
         if (selectedRole) {
             switch (selectedRole) {
@@ -515,12 +537,14 @@ $(document).ready(async function () {
         }
         
         assignUsersToCourse(parseInt(selectedCourseID), selectedUsersIDs, selectedRoleAsNum);
+        triggerRefreshUsersTable();
     });
 
-    $('.js-assign-programms-to-course').on('click', function (data) {
-        const selectedCourseID = $(".programs-table").find(".js-course-dd-selected-value").find(":selected").val();
-        console.log(selectedCourseID);
-        assignProgramsToCourse(parseInt(selectedCourseID), selectedProgramsIDs);
+    $('.js-assign-users-to-program').on('click', function (data) {
+        const selectedProgramID = $(".user-table").find(".js-program-dd-selected-value").find(":selected").val();
+        console.log(selectedProgramID);
+        assignProgramsToCourse(parseInt(selectedProgramID), selectedUsersIDs);
+        triggerRefreshUsersTable();
     });
 
     $('.nav-item').on('click', async function () {
@@ -646,8 +670,10 @@ $(document).ready(async function () {
     $('.js-delete-user').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#deleteUserForm');
+        const userID = parseInt($('.js-user-info-id').data('id'));
         if (true) {  //TODO add form validation
-            const formData = new FormData($form[0]);
+            const formData = new FormData();
+            formData.append('userId', userID);
             $.ajax({
                 type: 'Delete',
                 url: '/api/User/DeleteUser',
@@ -657,6 +683,7 @@ $(document).ready(async function () {
                 success: function (response) {
                     $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is deleted.</div>`);
                     console.log('User deleted successfully');
+                    document.querySelector('.js-back-to-user-manager').click();
                 },
                 error: function (xhr, status, error) {
                     const errorMessage = xhr.responseText;

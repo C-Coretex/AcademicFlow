@@ -54,17 +54,16 @@ export async function editCourseUserRoles(courseId, userIds, role) {
         return (false);
     }
 }
-
-export async function editCourseUserRoles(courseId, userIds, role) {
+//EditProgramUserRoles
+export async function editProgramUserRoles(programId, usersIds) {
     const requestData = {
-        id: courseId,
-        userIds: userIds,
-        role: role, // Assuming role is an enum value that matches the server-side definition
+        id: programId,
+        userIds: usersIds
     };
-    console.log(requestData);
+    console.log('send data', requestData);
     try {
         const response = await $.ajax({
-            url: "/api/Course/EditCourseUserRoles", // Replace with your actual URL
+            url: "/api/Program/EditProgramUserRoles", // Replace with your actual URL
             method: "POST",
             dataType: "json", // Expected response data type
             data: requestData
@@ -82,6 +81,35 @@ export async function editCourseUserRoles(courseId, userIds, role) {
         // Handle any errors during the AJAX request
     }
 }
+
+
+/*export async function editProgramUserRoles(courseId, userIds, role) {
+    const requestData = {
+        id: courseId,
+        userIds: userIds,
+        role: role, // Assuming role is an enum value that matches the server-side definition
+    };
+    console.log(requestData);
+    try {
+        const response = await $.ajax({
+            url: "/api/Program/EditProgramUserRoles", // Replace with your actual URL
+            method: "POST",
+            dataType: "json", // Expected response data type
+            data: requestData
+        });
+
+        if (response.status === "success") {
+            console.log("Course user roles edited successfully!");
+            // Handle successful update (e.g., display success message)
+        } else {
+            console.error("Error editing course user roles:", response.message);
+            // Handle error (e.g., display error message)
+        }
+    } catch (error) {
+        console.error("Error sending AJAX request:", error);
+        // Handle any errors during the AJAX request
+    }
+}*/
 
 //EditCoursePrograms
 export async function editCoursePrograms(courseId, programsIds) {

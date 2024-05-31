@@ -72,64 +72,66 @@
             <div class="d-flex">
                 <div class="js-show-user-data col-sm-3">
                 </div>
-                <form id="deleteUserForm" class="me-4">
-                    <h3>Delete User</h3>
-                    <div class="mb-3">
-                        <label for="userId" class="form-label">User ID</label>
-                        <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
-                    </div>
-                    <button type="submit" class="btn btn-danger js-delete-user">Delete User</button>
-                    <div class="error-message"></div>
-                </form>
-
-                
-                <form id="changeRolesForm" class="me-4">
-                    <h3>Change Role</h3>
-                    <div class="mb-3">
-                        <label for="userId" class="form-label">User ID</label>
-                        <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Select Roles</label>
-                        <div>
-                            <input type="checkbox" id="Admin" name="roles" value="admin">
-                            <label for="admin">admin</label>
+                <div class="col-sm-9 d-flex">
+                    <form id="deleteUserForm" class="me-4">
+                        <h3>Delete User</h3>
+                        <div class="mb-3">
+                            <label for="userId" class="form-label">User ID</label>
+                            <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
                         </div>
-                        <div>
-                            <input type="checkbox" id="Student" name="roles" value="student">
-                            <label for="student">student</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="Professor" name="roles" value="professor">
-                            <label for="professor">Professor</label>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary js-change-role">Change Roles</button>
-                    <div class="error-message"></div>
-                </form>
+                        <button type="submit" class="btn btn-danger js-delete-user">Delete User</button>
+                        <div class="error-message"></div>
+                    </form>
 
-                
-                <form id="editUserForm" class="me-4">
-                    <h3>Edit User</h3>
-                    <div class="form__input-container mb-2">
-                        <label for="userId" class="form-label">User ID</label>
-                        <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter user id">
-                    </div>
-                    <partial name="Partials/_UserForm"></partial>
-                    <button type="button" class="btn btn-primary w-100 js-edit-user">Edit User</button>
-                    <div class="error-message"></div>
-                </form>
 
-               
-                <form id="resetPasswordForm" class="me-4">
-                    <h3>Reset User Password</h3>
-                    <div class="mb-3">
-                        <label for="userId" class="form-label">User ID</label>
-                        <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
-                    </div>
-                    <button type="button" class="btn btn-primary js-reset-pass">Reset password</button>
-                    <div class="error-message"></div>
-                </form>
+                    <form id="changeRolesForm" class="me-4">
+                        <h3>Change Role</h3>
+                        <div class="mb-3">
+                            <label for="userId" class="form-label">User ID</label>
+                            <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Select Roles</label>
+                            <div>
+                                <input type="checkbox" id="Admin" name="roles" value="admin">
+                                <label for="admin">admin</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Student" name="roles" value="student">
+                                <label for="student">student</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="Professor" name="roles" value="professor">
+                                <label for="professor">Professor</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary js-change-role">Change Roles</button>
+                        <div class="error-message"></div>
+                    </form>
+
+
+                    <form id="editUserForm" class="me-4">
+                        <h3>Edit User</h3>
+                        <div class="form__input-container mb-2">
+                            <label for="userId" class="form-label">User ID</label>
+                            <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter user id">
+                        </div>
+                        <partial name="Partials/_UserForm"></partial>
+                        <button type="button" class="btn btn-primary w-100 js-edit-user">Edit User</button>
+                        <div class="error-message"></div>
+                    </form>
+
+
+                    <form id="resetPasswordForm" class="me-4">
+                        <h3>Reset User Password</h3>
+                        <div class="mb-3">
+                            <label for="userId" class="form-label">User ID</label>
+                            <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
+                        </div>
+                        <button type="button" class="btn btn-primary js-reset-pass">Reset password</button>
+                        <div class="error-message"></div>
+                    </form>
+                </div>
             </div>
             
         </div>
@@ -147,32 +149,55 @@
                     </form>
                 </div>
                 <div class="col-sm-9">
-                    <h4>Assign Users to Course</h4>
-                    <div class="d-flex mb-2">
-                        <div class="d-flex flex-column me-2">
-                            <span class="mb-2">Select course: </span>
-                            <div class="js-dd-courses">
-                                <select class="form-select d-flex align-items-center cursor-pointer js-course-dd-selected-value me-2" id="courseDropdown" aria-expanded="false">
-                                    <option> </option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="d-flex">
+                        <div class="me-5">
+                            <h4>Assign Users to Course</h4>
+                            <div class="d-flex mb-2">
+                                <div class="d-flex flex-column me-2">
+                                    <span class="mb-2">Select course: </span>
+                                    <div class="js-dd-courses">
+                                        <select class="form-select d-flex align-items-center cursor-pointer js-course-dd-selected-value me-2" id="courseDropdown" aria-expanded="false">
+                                            <option> </option>
+                                        </select>
+                                    </div>
+                                </div>
 
 
-                        <div class="js-select-role-to-course d-flex flex-column me-2">
-                            <span class="mb-2">Select role: </span>
-                            <div class="d-flex column js-select-role-to-course">
-                                <select class="form-select d-flex align-items-center cursor-pointer js-select-role-to-course me-2" aria-expanded="false">
-                                    <option value=""> </option>
-                                    <option value="student">Student</option>
-                                    <option value="professor">Professor</option>
-                                </select>
+                                <div class="js-select-role-to-course d-flex flex-column me-2">
+                                    <span class="mb-2">Select role: </span>
+                                    <div class="d-flex column js-select-role-to-course">
+                                        <select class="form-select d-flex align-items-center cursor-pointer js-select-role-to-course me-2" aria-expanded="false">
+                                            <option value=""> </option>
+                                            <option value="student">Student</option>
+                                            <option value="professor">Professor</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary d-flex align-items-center js-assign-users-to-course">
+                                    <i class="fa-solid fa-file-pen me-2"></i><div>Assign to course</div>
+                                </button>
                             </div>
                         </div>
-                        <button class="btn btn-primary d-flex align-items-center js-assign-users-to-course">
-                            <i class="fa-solid fa-file-pen me-2"></i><div>Assign to course</div>
-                        </button>
+                       
+                        <div>
+                            <h4>Assign Users to Program</h4>
+                            <div class="d-flex mb-2">
+                                <div class="d-flex flex-column me-2">
+                                    <span class="mb-2">Select program: </span>
+                                    <div class="js-dd-programs">
+                                        <select class="form-select d-flex align-items-center cursor-pointer js-program-dd-selected-value me-2" id="programDropdown" aria-expanded="false">
+                                            <option> </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary d-flex align-items-center js-assign-users-to-program">
+                                    <i class="fa-solid fa-file-pen me-2"></i><div>Assign to program</div>
+                                </button>
+                            </div>
+                        </div>
+                        
                     </div>
+                    
                     <hr>
                     <h4>All Users</h4>
                     <table class="table table-striped" id="usersTable">
