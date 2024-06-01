@@ -82,6 +82,12 @@ namespace AcademicFlow.Controllers
             return View();
         }
 
+        [HttpGet("Home/AssignmentEntry/New")]
+        public IActionResult NewAssignmentEntry()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

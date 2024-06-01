@@ -1,17 +1,30 @@
-import { addAssignmentTable } from "../../components/utils";
-
+import { getCurrentUser, addAssignmentTable } from "../../components/utils";
 
 $(document).ready(async function () {
-    const id = $('#course-list-item').attr('courseId');
+    const courseBlock = $('#course-list-item');
     
-    const url = '/api/Course/GetCourse';
-    const params = { 
-        id: id,
-        adminView: false 
-    };
+    try {
+        const userData = await getCurrentUser();
+        if (!userData) {
+            courseBlock.append($(`<p>No user data provided</p>`));
+            return;
+        };
 
-    $('#course-list-item').load(`${url}?${$.param(params)}`);
+        const id = courseBlock.attr('courseId');
+    
+        const url = '/api/Course/GetCourse';
+        const params = { 
+            id: id,
+            adminView: false 
+        };
 
-    const assignmentBlock = $('#assignment-list');
-    addAssignmentTable(assignmentBlock, id);
+        courseBlock.load(`${url}?${$.param(params)}`);
+
+        const assignmentBlock = $('#assignment-list');
+        await addAssignmentTable(assignmentBlock, id);
+    } catch (e) {
+        console.error("Error sending AJAX request:", e);
+        assignmentBlock.append(`<div class="alert alert-danger mt-2" role="alert">${e?.responseText ?? 'Internal Error'}</div>`);
+    }
+    
 });

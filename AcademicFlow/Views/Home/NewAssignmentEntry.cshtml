@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Add new assignment entry";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <partial name="../Course/Partials/_CourseNav" />
+        <div class="col-sm p-0 min-vh-100">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mt-4">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Assignments</li>
+                        <li class="breadcrumb-item active" aria-current="page">New assignment entry</li>
+                    </ol>
+                </nav>
+
+                <div id="assignment-course-info">
+                    <h1 class="display-4 my-4">Add new assignment entry</h1>
+                    <hr class="my-4">
+                </div>
+
+                <div id="form-logs"></div>
+
+                <form id="assignmentEntryForm" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="assignmentTaskId" class="col-md-2 control-label">Assignment Task ID</label>
+
+                        <div class="col-md-10">
+                            <input type="number" class="form-control" id="assignmentTaskId" name="assignmentTaskId" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="file" class="col-md-2 control-label">Upload File</label>
+
+                        <div class="col-md-10">
+                            <input type="file" class="form-control" id="file" name="file" />
+                        </div>
+                    </div>
+                    <div class="form-group mt-4">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Add Assignment Entry" class="btn btn-success js-add-assignment-entry" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="~/js/dist/pages/newAssignmentEntry/newAssignmentEntry.js" asp-append-version="true"></script>
