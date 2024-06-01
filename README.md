@@ -20,8 +20,9 @@ Features:
 - Download this repository, open the AcademicFlow.sln file with VisualStudio
 - Open AcademicFlow/AcademicFlow.Migrations/ folder with cmd (could also be done directly in VisualStudio)
 - Run this command in cmd and close the window after success _dotnet ef database update_
-- If everything is fine - press green arrow button on the top of the screen (in the middle of the toolbar) ![image](https://github.com/C-Coretex/AcademicFlow/assets/44605873/e5be7760-0740-438f-8ea5-2062a8c3eb30)
-- On login enter: Username: admin   Password: BadPassword01
+- If everything is fine - press green arrow button on the top of the screen (in the middle of the toolbar) ![image](https://github.com/C-Coretex/AcademicFlow/assets/44605873/d3b0e078-065a-4e18-a7e3-42764157dc15)
+
+- On login enter: Username: _admin_   Password: _BadPassword01_
  
 
 
