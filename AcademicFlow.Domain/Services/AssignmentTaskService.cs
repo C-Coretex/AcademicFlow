@@ -31,7 +31,7 @@ namespace AcademicFlow.Domain.Services
 
         public Task<AssignmentTask?> GetByIdFull(int id, bool asNoTracking = true)
         {
-            return _assignmentTaskRepository.GetAll(asNoTracking).Include(x => x.AssignmentEntries).ThenInclude(x => x.Select(y => y.AssignmentGrade))
+            return _assignmentTaskRepository.GetAll(asNoTracking).Include(x => x.AssignmentEntries).ThenInclude(x => x.AssignmentGrade)
                     .FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -43,9 +43,9 @@ namespace AcademicFlow.Domain.Services
         public IQueryable<AssignmentTask> IncludeAssignmentEntriesWithGrades(IQueryable<AssignmentTask> query, int? entryUserId = null)
         {
             if(entryUserId.HasValue)
-                query = query.Include(x => x.AssignmentEntries.Where(y => y.CreatedById == entryUserId)).ThenInclude(x => x.Select(y => y.AssignmentGrade));
+                query = query.Include(x => x.AssignmentEntries.Where(y => y.CreatedById == entryUserId)).ThenInclude(x => x.AssignmentGrade);
             else
-                query = query.Include(x => x.AssignmentEntries).ThenInclude(x => x.Select(y => y.AssignmentGrade));
+                query = query.Include(x => x.AssignmentEntries).ThenInclude(x => x.AssignmentGrade);
 
             return query;
         }

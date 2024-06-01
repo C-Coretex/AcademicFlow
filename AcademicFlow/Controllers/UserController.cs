@@ -51,6 +51,7 @@ namespace AcademicFlow.Controllers
                 var currentUserID = AuthorizationHelpers.GetUserIdIfAuthorized(HttpContext.Session);
                 id ??= currentUserID;
                 var user = await _userManager.GetUserById(id!.Value);
+                var currentUser = await _userManager.GetUserById(currentUserID!.Value);
                 if (user == null)
                 {
                     var message = $"User {id} do not exist";
@@ -58,7 +59,7 @@ namespace AcademicFlow.Controllers
                     return BadRequest(message);
                 }
 
-                if (id != currentUserID && !AuthorizationHelpers.HasRole([RolesEnum.Admin], user))
+                if (id != currentUserID && !AuthorizationHelpers.HasRole([RolesEnum.Admin], currentUser))
                     throw new UnauthorizedAccessException("Non admin cannot change different user");
 
                 user.Name = name;

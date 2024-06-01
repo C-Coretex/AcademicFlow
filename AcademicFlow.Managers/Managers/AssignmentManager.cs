@@ -200,7 +200,7 @@ namespace AcademicFlow.Managers.Managers
 
         public async Task<IEnumerable<AssignmentsOutputModel>> GetAllAssignmentsForCourse(int courseId, bool withAssignedEntries, bool withGrades, DateTime? dateFrom, DateTime? dateTo)
         {
-            var userRole = await RoleOfUserForCourse(courseId);
+             var userRole = await RoleOfUserForCourse(courseId);
             if (userRole != RolesEnum.Student && userRole != RolesEnum.Professor)
                 throw new Exception("User is not assigned as Student or Professor for this course");
 
