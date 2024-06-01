@@ -51,6 +51,28 @@ $(document).ready(async function () {
       }
 
       assignmentBlock.append(assignmentEntriesBlock);
+
+      const deleteButton = $('<button>', {
+        type: 'button',
+        class: 'btn btn-danger',
+        id: 'deleteAssignment',
+        text: 'Delete assignment'
+      });
+
+      deleteButton.on('click', function() {
+        if (confirm("Are you sure you want to proceed?") == true) {
+          $.ajax({
+            url: `/api/Assignment/DeleteAssignmentTask?id=${assignment.id}`,
+            method: "Delete",
+            dataType: "json",
+            success: function () {
+              window.location.href = 'Assignments';
+            },
+          });
+        }
+      });
+
+      assignmentBlock.append(deleteButton);
     } else {
       const myAssignmentEntry = await $.ajax({
         url: '/api/Assignment/GetMyAssignmentEntryForAssignmentTask',
