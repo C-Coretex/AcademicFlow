@@ -3,8 +3,10 @@ body {
 }
 
 button {
-    background-color: var(--color3) !important;
-    border-color: var(--color3) !important;
+    &:not(.btn-danger) {
+        background-color: var(--color3) !important;
+        border-color: var(--color3) !important;
+    }
 }
 
 .course-name {
