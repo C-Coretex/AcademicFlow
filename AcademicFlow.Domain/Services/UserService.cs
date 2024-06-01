@@ -44,8 +44,8 @@ namespace AcademicFlow.Domain.Services
         public async Task<User?> GetUserByIdWithAssignments(int userId)
         {
             var user = await _userRepository.GetAll().Include(x => x.AssignmentTasks)
-                                                     .ThenInclude(x => x.Select(y => y.AssignmentEntries))
-                                                     .ThenInclude(x => x.Select(y => y.AssignmentGrade))
+                                                     .ThenInclude(x => x.AssignmentEntries)
+                                                     .ThenInclude(x => x.AssignmentGrade)
                                                      .FirstOrDefaultAsync(u => u.Id == userId);
             return user;
         }
@@ -66,8 +66,8 @@ namespace AcademicFlow.Domain.Services
             if (user == null)
                 throw new ValidationException($"User with id {userId} does not exist.");
 
-            var rolesToDelete = user.UserRoles.ExceptBy(roles,x => x.Role).ToList();
-            var rolesToAdd = roles.Except(user.UserRoles.Select(x => x.Role)).ToList();
+            var rolesToDelete = user.UserRoles.ExceptBy(roles,x => x.Role).ToHashSet();
+            var rolesToAdd = roles.Except(user.UserRoles.Select(x => x.Role)).ToHashSet();
             //Add roles
 
             user.UserRoles.AddRange(rolesToAdd.Select(x => new UserRole(user.Id,x)));
