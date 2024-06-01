@@ -83,7 +83,7 @@ $(document).ready(async function () {
 
             if (professorCourses?.length) {
                 $.each(professorCourses, function(_, course) {
-                    const professorAssignments = $('<div class="assignments d-flex flex-column gap-3 mt-5 mb-4">');
+                    const professorAssignments = $('<div class="assignments d-flex flex-column gap-3 mt-5">');
                     professorAssignments.append($(`<a href="Course/${course.id}" class="lead text-success">${course.name}</a>`));
         
                     addAssignmentTable(professorAssignments, course.id);
@@ -94,7 +94,7 @@ $(document).ready(async function () {
                 professorAssignmentBlock.append($('<p>No assignments available.</p>'))
             }
 
-            professorAssignmentBlock.append($('<a class="btn btn-success" href="/Home/Assignment/New">Add new assignment</a>'))
+            professorAssignmentBlock.append($('<a class="btn btn-success mt-4" href="/Home/Assignment/New">Add new assignment</a>'))
         } else {
             professorAssignmentBlock.append($('<p>No assignments available.</p>'))
         }
