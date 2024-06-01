@@ -51,7 +51,7 @@ namespace AcademicFlow.Managers.Managers
 
         public async Task DeleteAssignmentTask(int id)
         {
-            var assignmentTask = await _assignmentTaskService.GetByIdFull(id, false) ?? throw new Exception("AssignmentTask is not found by this Id");
+            var assignmentTask = await _assignmentTaskService.GetByIdFull(id) ?? throw new Exception("AssignmentTask is not found by this Id");
             var userRole = await RoleOfUserForCourse(assignmentTask.CourseId);
             if (userRole != RolesEnum.Professor)
                 throw new Exception("User is not assigned as Professor for this course");

@@ -45,6 +45,10 @@
     "assignment": {
       "source": "js/pages/assignment/assignment.js",
       "distDir": "js/dist"
+    },
+    "newAssignmentEntry": {
+      "source": "js/pages/newAssignmentEntry/newAssignmentEntry.js",
+      "distDir": "js/dist"
     }
   },
   "scripts": {
