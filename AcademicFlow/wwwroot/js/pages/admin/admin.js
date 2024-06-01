@@ -240,7 +240,12 @@ function initUsersTable(users) {
 
             },
             render: function (data, type, rowData, meta) {
-                return data ? `<button class="btn btn-primary not-for-select js-table-edit-user" data-userid="${data}"><i class="fa-regular fa-edit p-2 not-for-select"></i></button>` : "";
+
+                if (data !== 1) {
+                    return `<button class="btn btn-primary not-for-select js-table-edit-user" data-userid="${data}"><i class="fa-regular fa-edit p-2 not-for-select"></i></button>`;
+                } else {
+                    return "";
+                }
             }
         }
     ];
@@ -459,6 +464,23 @@ async function triggerRefreshUsersTable() {
     refreshUsersTable(usersData);
 }
 
+async function triggerGetUserByID(id) {
+    const userData = await getUserByID(id);
+    return userData;
+}
+
+function refreshUsersInfoTable(id) {
+    triggerGetUserByID(id)
+        .then(userData => { // Resolve function receives the user data
+            renderUserData(userData);
+            console.log(userData); // Optional: Log the user data
+        })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+            // Handle errors appropriately (e.g., display an error message to the user)
+        });
+}
+
 $(document).ready(async function () {
     const containers = { $manageUser: $('.add-user-container'), $allUsers: $('.user-table'), $ManageCourse: $('.course-manager'), $allCourses: $('.all-courses-tab'), $allPrograms: $('.all-programs-tab'), $ManageProgram: $('.program-manager') };
     initUsersTable();
@@ -642,7 +664,13 @@ $(document).ready(async function () {
         ev.preventDefault();
         const $form = $('#editUserForm');
         if (true) {  //TODO add form validation
-            const formData = new FormData($form[0]);
+            const formData = new FormData();
+            console.log($form[0]);
+            formData.append('id',parseInt($('.js-user-info-id').data('id')));
+            const formElements = $form.serializeArray();
+            formElements.forEach(element => {
+                formData.append(element.name, element.value);
+            });
             
             $.ajax({
                 type: "POST",
@@ -654,6 +682,8 @@ $(document).ready(async function () {
                     $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is changed.</div>`);
                     console.error('Error:', textStatus, errorThrown);
                     console.log('User edited successfully');
+                    refreshUsersInfoTable(userID);
+
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
@@ -699,30 +729,43 @@ $(document).ready(async function () {
     $(".js-change-role").on("click", function (e) {
         e.preventDefault();
         const $form = $('#changeRolesForm');
+        const userID = parseInt($('.js-user-info-id').data('id'));
         let t = $("#changeRolesForm");
         t.find("#userId").val();
-        t.find("roleValues").val()
-        {
-            let e = new FormData(t[0]);
-            console.log(t[0]);
-            $.ajax({
-                type: "POST",
-                url: "/api/User/ChangeRoles",
-                processData: !1,
-                contentType: !1,
-                data: e,
-                success: function (e) {
-                    console.log("Role changed successfully");
-                    $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Role is changed </div>`);
 
-                },
-                error: function (e, t, r) {
-                    console.error("Error changing role:", r)
-                    $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Role is not changed</div>`);
 
-                }
-            })
-        }
+        //const selectedRoles = t.find("roleValues").val();
+
+        const roleCheckboxes = document.querySelectorAll('input[type="checkbox"][name="roles"]');
+        const selectedRoles = [];
+
+        let formData = new FormData();
+        formData.append('userId', userID);
+        roleCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                const roleValue = checkbox.value; 
+                formData.append('roles', roleValue);
+            }
+        });
+
+        console.log(formData);
+        $.ajax({
+            type: "POST",
+            url: "/api/User/ChangeRoles",
+            processData: !1,
+            contentType: !1,
+            data: formData,
+            success: function (e) {
+                console.log("Role changed successfully");
+                $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Role is changed </div>`);
+                refreshUsersInfoTable(userID);
+            },
+            error: function (e, t, r) {
+                console.error("Error changing role:", r)
+                $form.find('.error-message').html(`<div class="alert alert-danger mt-2" role="alert">Role is not changed</div>`);
+
+            }
+        })
     });
 
     $('.js-add-course').on('click', function (ev) {
@@ -879,11 +922,14 @@ $(document).ready(async function () {
         e.preventDefault();
         const $form = $('#resetPasswordForm');
         let t = $("#resetPasswordForm");
-        let formData = t.serialize(); 
+        let formData = new FormData();
+        const userID = parseInt($('.js-user-info-id').data('id'));
+        formData.append('userId', userID);
+
         $.ajax({
             type: "POST",  
             url: "/api/User/ResetPassword",
-            data: formData,  
+            data: { userId: userID },  
             success: function (response) {
                 console.log("Got it:", response);
                 $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Password is reset.</div><div>Copy and send the link to the user:</div><span>${response}</span>`);

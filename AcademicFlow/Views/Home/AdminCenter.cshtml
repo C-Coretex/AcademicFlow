@@ -17,7 +17,7 @@
                         Users Manager
                     </a>
                 </li>
-                <li class="nav-item" data-nav-el="addUser">
+                <li class="nav-item d-none" data-nav-el="addUser">
                     <a class="nav-link link-dark">
                         <i class="fa-solid fa-gear"></i>
                         User manager
@@ -73,25 +73,24 @@
                 <div class="js-show-user-data col-sm-3">
                 </div>
                 <div class="col-sm-9 d-flex">
-                    <form id="deleteUserForm" class="me-4">
-                        <h3>Delete User</h3>
-                        <div class="mb-3">
+
+                    <form id="resetPasswordForm" class="me-4">
+                        <div class="mb-3 d-none">
                             <label for="userId" class="form-label">User ID</label>
                             <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
                         </div>
-                        <button type="submit" class="btn btn-danger js-delete-user">Delete User</button>
+                        <button type="button" class="btn btn-primary js-reset-pass">Reset password</button>
                         <div class="error-message"></div>
                     </form>
 
-
                     <form id="changeRolesForm" class="me-4">
                         <h3>Change Role</h3>
-                        <div class="mb-3">
+                        <div class="mb-3 d-none">
                             <label for="userId" class="form-label">User ID</label>
                             <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Select Roles</label>
+                            <label class="form-label">Select roles:</label>
                             <div>
                                 <input type="checkbox" id="Admin" name="roles" value="admin">
                                 <label for="admin">admin</label>
@@ -109,28 +108,25 @@
                         <div class="error-message"></div>
                     </form>
 
-
                     <form id="editUserForm" class="me-4">
                         <h3>Edit User</h3>
-                        <div class="form__input-container mb-2">
-                            <label for="userId" class="form-label">User ID</label>
-                            <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter user id">
-                        </div>
                         <partial name="Partials/_UserForm"></partial>
                         <button type="button" class="btn btn-primary w-100 js-edit-user">Edit User</button>
                         <div class="error-message"></div>
                     </form>
 
-
-                    <form id="resetPasswordForm" class="me-4">
-                        <h3>Reset User Password</h3>
-                        <div class="mb-3">
-                            <label for="userId" class="form-label">User ID</label>
-                            <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
+                    <form id="deleteUserForm" class="me-4">
+                        <div class="d-none">
+                            <h3>Delete User</h3>
+                            <div class="mb-3">
+                                <label for="userId" class="form-label">User ID</label>
+                                <input type="text" class="form-control" id="userId" name="userId" placeholder="Enter User ID">
+                            </div>
                         </div>
-                        <button type="button" class="btn btn-primary js-reset-pass">Reset password</button>
+                        <button type="submit" class="btn btn-danger js-delete-user">Delete User</button>
                         <div class="error-message"></div>
                     </form>
+                    
                 </div>
             </div>
             
