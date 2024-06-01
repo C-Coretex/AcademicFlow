@@ -40,20 +40,39 @@ export async function addAssignmentTable(parent, courseId) {
         const tbody = $('<tbody>');
     
         $.each(assignments, function(_, assignment) {
+            const assignmentTask = assignment?.assignmentTaskOutputModel;
+            if (!assignmentTask) return;
+
             const tr = $('<tr>');
     
-            tr.append($(`<th scope="row">${assignment.id}</th>`))
-            tr.append($(`<td><a href="/Home/Assignment/${assignment.id}" class="text-success">${assignment.assignmentName}</a></td>`))
-            tr.append($(`<td class="text-muted">${assignment.assignmentDescription}</td>`))
-            tr.append($(`<th>${assignment.deadline}</th>`))
+            tr.append($(`<th scope="row">${assignmentTask.id}</th>`))
+            tr.append($(`<td><a href="/Home/Assignment/${assignmentTask.id}" class="text-success">${assignmentTask.assignmentName}</a></td>`))
+            tr.append($(`<td class="text-muted">${assignmentTask.assignmentDescription}</td>`))
+            tr.append($(`<th>${formatDate(new Date(assignmentTask.deadline))}</th>`))
     
             tbody.append(tr);
         });
+
+        table.append(tbody)
 
         parent.append(table)
     } catch(e) {
         parent.append('<p>Error fetching assignments</p>');
     }
+}
+
+export function formatDate(date) {
+    if (!date || !(date instanceof Date)) return '-';
+
+    var day = ('0' + date.getDate()).slice(-2);
+    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+    var year = date.getFullYear();
+
+    var hours = ('0' + date.getHours()).slice(-2);
+    var minutes = ('0' + date.getMinutes()).slice(-2);
+    var seconds = ('0' + date.getSeconds()).slice(-2);
+
+    return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
 }
 
 export async function getCurrentUser() {
