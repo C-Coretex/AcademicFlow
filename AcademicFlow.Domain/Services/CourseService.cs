@@ -47,7 +47,7 @@ namespace AcademicFlow.Domain.Services
 
         public IEnumerable<CourseUserRole> GetUserRoles()
         {
-            return _courseUserRoleRepository.GetAll().Include(x => x.UserRole).ThenInclude(x => x.User).Include(x => x.Course).AsNoTracking();
+            return _courseUserRoleRepository.GetAll().Include(x => x.UserRole).ThenInclude(x => x.User).Include(x => x.Course);
         }
     }
 }
