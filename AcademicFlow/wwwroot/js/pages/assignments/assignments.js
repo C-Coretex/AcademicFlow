@@ -24,44 +24,76 @@ $(document).ready(async function () {
         studentAssignmentBlock.append($('<hr class="my-4">'));
         studentAssignmentBlock.append($('<p class="lead">List of student assignments.</p>'));
 
-        const studentPrograms = $('<div>')
+        // const studentPrograms = $('<div>')
 
-        if (programs?.length) {
-            $.each(programs, async function(_, program) {
-                const studentProgram = $('<div>');
-                studentProgram.append($('<h3 class="display-6 my-4">').text(`${program.name} (${program.semesterNr}. sem)`));
-                studentProgram.append($('<hr class="my-4">'));
+        // if (programs?.length) {
+        //     $.each(programs, async function(_, program) {
+        //         const studentProgram = $('<div>');
+        //         studentProgram.append($('<h3 class="display-6 my-4">').text(`${program.name} (${program.semesterNr}. sem)`));
+        //         studentProgram.append($('<hr class="my-4">'));
 
-                const studentCourses = await $.ajax({
-                    url: '/api/Course/GetCourseTable',
-                    method: "GET",
-                    dataType: "json",
-                    data: { 
-                        assignedUserId: userData.id,
-                        assingedProgramId: program.id
-                    }
-                });
+        //         const studentCourses = await $.ajax({
+        //             url: '/api/Course/GetCourseTable',
+        //             method: "GET",
+        //             dataType: "json",
+        //             data: { 
+        //                 assignedUserId: userData.id,
+        //                 assingedProgramId: program.id
+        //             }
+        //         });
 
-                if (studentCourses?.length) {
-                    $.each(studentCourses, function(_, course) {
-                    const studentAssignments = $('<div class="assignments d-flex flex-column gap-3 mt-5 mb-4">');
+        //         if (studentCourses?.length) {
+        //             $.each(studentCourses, function(_, course) {
+        //             const studentAssignments = $('<div class="assignments d-flex flex-column gap-3 mt-5 mb-4">');
+        //             studentAssignments.append($(`<a href="Course/${course.id}" class="lead text-success">${course.name}</a>`));
+        
+        //             addAssignmentTable(studentAssignments, course.id);
+        
+        //             studentProgram.append(studentAssignments)
+        //         });
+        //         } else {
+        //             studentProgram.append($('<p>No assignments available.</p>'))
+        //         }
+
+        //         studentPrograms.append(studentProgram)
+        //     });
+
+        //     studentAssignmentBlock.append(studentPrograms)
+        // } else {
+        //     studentAssignmentBlock.append($('<p>No assignments available.</p>'))
+        // }
+
+        // QuickFix
+        if (userData.roles.some(role => role == 'Student')) {
+            studentAssignmentBlock.append($('<h3 class="display-6 my-4">').text(`Student courses`));
+            studentAssignmentBlock.append($('<hr class="my-4">'));
+
+            const studentCourses = await $.ajax({
+                url: '/api/Course/GetCourseTable',
+                method: "GET",
+                dataType: "json",
+                data: { 
+                    assignedUserId: userData.id,
+                    role: 'Student'
+                }
+            });
+
+            if (studentCourses?.length) {
+                $.each(studentCourses, function(_, course) {
+                    const studentAssignments = $('<div class="assignments d-flex flex-column gap-3 mt-5">');
                     studentAssignments.append($(`<a href="Course/${course.id}" class="lead text-success">${course.name}</a>`));
         
                     addAssignmentTable(studentAssignments, course.id);
         
-                    studentProgram.append(studentAssignments)
+                    studentAssignmentBlock.append(studentAssignments)
                 });
-                } else {
-                    studentProgram.append($('<p>No assignments available.</p>'))
-                }
-
-                studentPrograms.append(studentProgram)
-            });
-
-            studentAssignmentBlock.append(studentPrograms)
+            } else {
+                studentAssignmentBlock.append($('<p>No assignments available.</p>'))
+            }
         } else {
             studentAssignmentBlock.append($('<p>No assignments available.</p>'))
         }
+        // QuickFix
 
         professorAssignmentBlock.append($('<h2 class="display-4 my-4">').text(`Professor assignments`));
         professorAssignmentBlock.append($('<hr class="my-4">'));
