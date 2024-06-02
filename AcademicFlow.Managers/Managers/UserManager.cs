@@ -15,11 +15,9 @@ namespace AcademicFlow.Managers.Managers
     public class UserManager : BaseManager, IUserManager
     {
         private readonly IUserService _userService;
-        private readonly IUserCredentialsManager _userCredentialsManager;
-        public UserManager(IMapper mapper, IUserService userService, IUserCredentialsManager userCredentialsManager): base(mapper)
+        public UserManager(IMapper mapper, IUserService userService): base(mapper)
         {
             _userService = userService;
-            _userCredentialsManager = userCredentialsManager;
         }
 
         public async Task<string> AddUser(User user)

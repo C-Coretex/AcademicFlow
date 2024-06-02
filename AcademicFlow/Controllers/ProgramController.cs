@@ -36,7 +36,7 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                var program = await _programManager.GetProgramByIdAsync(id);
+                var program = _programManager.GetProgramById(id);
                 if (program == null)
                 {
                     var message = $"Program {id} do not exist";
@@ -57,11 +57,11 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin, RolesEnum.Professor, RolesEnum.Student)]
         [HttpGet("GetProgram")]
-        public async Task<IActionResult> GetProgram(int id)
+        public IActionResult GetProgram(int id)
         {
             try
             {
-                var program = await _programManager.GetProgramByIdAsync(id);
+                var program = _programManager.GetProgramById(id);
                 return Ok(program);
             }
             catch (Exception e)
