@@ -23,7 +23,8 @@ Features:
 - (optional) In case you can not to connect to your database, check ...\AcademicFlow\AcademicFlow\appsettings.json file. Look for "ConnectionStrings" -> "AcademicFlowConnectionString" string. 
 Change value to "Server=localhost;Database=AcademicFLow;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True" record. Or change "Server" value in case your database connection is different.
 Check the same string in ...\AcademicFlow\AcademicFlow.Migrations\appsettings.json.
-- If everything is fine - press green arrow button on the top of the screen (in the middle of the toolbar) ![image](https://github.com/C-Coretex/AcademicFlow/assets/44605873/d3b0e078-065a-4e18-a7e3-42764157dc15)
+- If everything is fine - press green arrow button on the top of the screen (in the middle of the toolbar) ![image](https://github.com/C-Coretex/AcademicFlow/assets/145047860/ad5a97fe-41c9-45f4-be46-34a4431ce000)
+
 
 The application shoud run successfully.
 
