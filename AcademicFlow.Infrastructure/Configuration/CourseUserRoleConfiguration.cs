@@ -11,6 +11,7 @@ namespace AcademicFlow.Infrastructure.Configuration
             builder.HasKey(u => u.Id);
             builder.HasOne(x => x.UserRole).WithMany(x => x.Courses);
             builder.HasOne(x => x.Course).WithMany(x => x.Users);
+            builder.HasIndex(x => new { x.UserRoleId, x.CourseId }).IsUnique();
         }
     }
 }

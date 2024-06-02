@@ -15,7 +15,7 @@ namespace AcademicFlow.Domain.Entities
         public bool IsDeleted { get; set; } = false;
 
         public UserCredentials UserCredentials { get; set; }
-        public List<UserRole> UserRoles { get; set; }
+        public virtual List<UserRole> UserRoles { get; set; }
 
         public virtual ICollection<AssignmentTask> AssignmentTasks { get; set; }
         public virtual ICollection<AssignmentEntry> AssignmentEntries { get; set; }

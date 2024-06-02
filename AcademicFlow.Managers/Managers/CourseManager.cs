@@ -76,27 +76,25 @@ namespace AcademicFlow.Managers.Managers
 
         public async Task EditCourseUserRoles(int courseId, int[] usersIds, RolesEnum role)
         {
-            var users = _userService.GetUsers().Include(x => x.UserRoles).ThenInclude(x => x.Courses);
-            var oldUsers = users
-                .Where(x => x.UserRoles.Any(y => y.Courses != null && y.Courses.Any(z => z.Course.Id == courseId)))
-                .ToList();
-            var toDeleteCourseUsers = oldUsers
-                .Where(x => !usersIds.Contains(x.Id))
-                .Select(x => x.UserRoles.Where(x => x.Role == role).FirstOrDefault())
-                .Select(x => x?.Courses?.Where(x => x.CourseId == courseId).FirstOrDefault())
-                .Where(x => x != null);
-            await _courseService.DeleteCourseUserRolesRange(toDeleteCourseUsers!);
+            var users = usersIds.ToHashSet();
+            var courseUsers = _courseService.GetUserRoles().Where(x => x.CourseId == courseId && x.UserRole.Role == role);
+            var toDelete = courseUsers.Where(x => !users.Contains(x.UserRole.UserId)).ToList();
+            await _courseService.DeleteCourseUserRolesRange(toDelete!);
 
-            var toInsertCourseUsers = users
-                .Where(x => usersIds.Contains(x.Id))
-                .Select(x => x.UserRoles.Where(x => x.Role == role).FirstOrDefault())
-                .Where(x => x != null)
+            var oldUsersIds = courseUsers
+                .Select(x => x.UserRole.UserId)
+                .ToHashSet();
+            var toInsertUserIds = users.Where(x => !oldUsersIds.Contains(x)).ToHashSet();
+            var toInsert = _userService.GetUsers()
+                .Where(x => toInsertUserIds.Contains(x.Id))
+                .SelectMany(x => x.UserRoles)
+                .Where(x => x.Role == role)
                 .Select(x => new CourseUserRole()
                 {
                     CourseId = courseId,
                     UserRoleId = x!.Id
                 });
-            await _courseService.AddCourseUserRolesRange(toInsertCourseUsers);
+            await _courseService.AddCourseUserRolesRange(toInsert);
         }
 
         public IEnumerable<User> GetCourseUsers(int courseId, RolesEnum role)

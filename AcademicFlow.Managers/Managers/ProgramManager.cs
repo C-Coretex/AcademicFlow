@@ -49,28 +49,25 @@ namespace AcademicFlow.Managers.Managers
 
         public async Task EditProgramUserRolesAsync(int programId, int[] usersIds)
         {
-            var users = _userService.GetUsers().Include(x => x.UserRoles).ThenInclude(x => x.Programs);
-            var oldUsers = users
-                .Where(x => x.UserRoles.Any(y => y.Courses != null && y.Courses.Any(z => z.Course.Id == programId)))
-                .ToList();
+            var users = usersIds.ToHashSet();
+            var courseUsers = _programService.GetAllUserRoles().Where(x => x.ProgramId == programId && x.UserRole.Role == RolesEnum.Student);
+            var toDelete = courseUsers.Where(x => !users.Contains(x.UserRole.UserId)).ToList();
+            await _programService.DeleteProgramUserRolesRangeAsync(toDelete!);
 
-            var toDeleteProgramUsers = oldUsers
-                           .Where(x => !usersIds.Contains(x.Id))
-                           .Select(x => x.UserRoles.Where(x => x.Role == RolesEnum.Student).FirstOrDefault())
-                           .Select(x => x?.Programs?.Where(x => x.ProgramId == programId).FirstOrDefault())
-                           .Where(x => x != null);
-            await _programService.DeleteProgramUserRolesRangeAsync(toDeleteProgramUsers!);
-
-            var toInsertProgramUsers = users
-                .Where(x => usersIds.Contains(x.Id))
-                .Select(x => x.UserRoles.Where(x => x.Role == RolesEnum.Student).FirstOrDefault())
-                .Where(x => x != null)
+            var oldUsersIds = courseUsers
+                .Select(x => x.UserRole.UserId)
+                .ToHashSet();
+            var toInsertUserIds = users.Where(x => !oldUsersIds.Contains(x)).ToHashSet();
+            var toInsert = _userService.GetUsers()
+                .Where(x => toInsertUserIds.Contains(x.Id))
+                .SelectMany(x => x.UserRoles)
+                .Where(x => x.Role == RolesEnum.Student)
                 .Select(x => new ProgramUserRole()
                 {
                     ProgramId = programId,
                     UserRoleId = x!.Id
                 });
-            await _programService.AddProgramUserRolesRangeAsync(toInsertProgramUsers);
+            await _programService.AddProgramUserRolesRangeAsync(toInsert);
         }
 
         public IEnumerable<User> GetProgramUsers(int programId)

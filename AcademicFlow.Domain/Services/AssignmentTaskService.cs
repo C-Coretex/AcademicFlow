@@ -26,7 +26,7 @@ namespace AcademicFlow.Domain.Services
 
         public Task<AssignmentTask?> GetById(int id)
         {
-            return _assignmentTaskRepository.GetByIdAsync(id);
+            return _assignmentTaskRepository.GetAll().Include(x => x.User).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public Task<AssignmentTask?> GetByIdFull(int id, bool asNoTracking = true)

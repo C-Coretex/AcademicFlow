@@ -21,9 +21,15 @@ function addCourseBlock(parent, tableParams, title = null) {
 }
 
 $(document).ready(async function () {
+    const studentBlock = $('#student-course-list')
+    const professorBlock = $('#professor-course-list')
+
     try {
         const userData = await getCurrentUser();
-        if (!userData) return;
+        if (!userData) {
+            studentBlock.append($(`<p>No user data provided</p>`));
+            return;
+          };
 
         const programs = await $.ajax({
             url: '/api/Program/GetProgramTable',
@@ -33,8 +39,6 @@ $(document).ready(async function () {
                 assignedUserId: userData.id 
             }
         });
-
-        const studentBlock = $('#student-course-list')
 
         studentBlock.append($('<h2 class="display-4 my-4">').text(`Student courses`));
         studentBlock.append($('<hr class="my-4">'));
@@ -54,8 +58,6 @@ $(document).ready(async function () {
             studentBlock.append($('<p>No courses available.</p>'))
         }
 
-        const professorBlock = $('#professor-course-list')
-
         professorBlock.append($('<h2 class="display-4 my-4">').text(`Professor courses`));
         professorBlock.append($('<hr class="my-4">'));
         
@@ -73,5 +75,6 @@ $(document).ready(async function () {
 
     } catch (e) {
         console.error("Error sending AJAX request:", error);
+        professorBlock.append(`<div class="alert alert-danger mt-2" role="alert">${e?.responseText ?? 'Internal Error'}</div>`);
     }
 });
