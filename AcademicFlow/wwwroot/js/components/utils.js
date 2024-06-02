@@ -197,6 +197,34 @@ export async function getUserByID(id) {
         });
     });
 }
+export async function getUserCourses(id) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: `/api/Course/GetCourseUsers?userId=${parseInt(id)}`,
+            type: 'GET',
+            dataType: 'json',
+            processData: false,
+            contentType: "application/json",
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error:", textStatus, errorThrown);
+                reject(new Error("Failed to get user data")); 
+
+            }
+        });
+    });
+}
+
+export function toggleLogoutButton(state) {
+    const $logoutButton = $('.js-logout-button');
+    if (state) {
+        $logoutButton.removeClass('d-none');
+    } else {
+        $logoutButton.addClass('d-none');
+    }
+}
 
 export async function getCourseByID(id) {
     return new Promise((resolve, reject) => {
@@ -268,27 +296,32 @@ export function renderHeaderLinks(userRole) {
     if (userRole) {
         switch (userRole) {
             case 1:
-                $('.js-admin-tab').removeClass('d-none')
+                $('.js-admin-tab').removeClass('d-none');
+                toggleLogoutButton(true);
                 break;
             case 2:
                 $('.js-users-tab').removeClass('d-none')
                 $('.js-assignments-tab').removeClass('d-none');
                 $('.js-courses-tab').removeClass('d-none');
+                toggleLogoutButton(true);
                 break;
             case 3:
                 $('.js-users-tab').removeClass('d-none')
                 $('.js-assignments-tab').removeClass('d-none');
                 $('.js-courses-tab').removeClass('d-none');
+                toggleLogoutButton(true);
                 break;
             default:
                 $('.js-admin-tab').addClass('d-none');
                 $('.js-users-tab').addClass('d-none');
+                toggleLogoutButton(false);
         }
     } else {
         $('.js-admin-tab').addClass('d-none');
         $('.js-users-tab').addClass('d-none');
         $('.js-assignments-tab').addClass('d-none');
         $('.js-courses-tab').addClass('d-none');
+        toggleLogoutButton(false);
     }
 }
 
