@@ -14,16 +14,26 @@ Features:
 
 ### How to run the application:
 - Install the latest version of Visual Studio
-- Install node.js
+- Install node.js (https://nodejs.org/en/download/package-manager)
 - Install ef core tools (https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
 - Install SSMS (optionally https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
 - Download this repository, open the AcademicFlow.sln file with VisualStudio
 - Open AcademicFlow/AcademicFlow.Migrations/ folder with cmd (could also be done directly in VisualStudio)
-- Run this command in cmd and close the window after success _dotnet ef database update_
+- Run this command in cmd and close the window after success: dotnet ef database update
+- (optional) In case you can not to connect to your database, check ...\AcademicFlow\AcademicFlow\appsettings.json file. Look for "ConnectionStrings" -> "AcademicFlowConnectionString" string. 
+Change value to "Server=localhost;Database=AcademicFLow;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True" record. Or change "Server" value in case your database connection is different.
+Check the same string in ...\AcademicFlow\AcademicFlow.Migrations\appsettings.json.
 - If everything is fine - press green arrow button on the top of the screen (in the middle of the toolbar) ![image](https://github.com/C-Coretex/AcademicFlow/assets/44605873/d3b0e078-065a-4e18-a7e3-42764157dc15)
 
-- On login enter: Username: _admin_   Password: _BadPassword01_
- 
+The application shoud run successfully.
+
+On login enter:
+- Username: admin
+- For Password enter: BadPassword01
+
+### Sistēmas dokumentācija ir pieejāma šeit: 
+
+### Ja jums rodas jautājumi vai neskaidrības, lūdzu rakstiet uz af21043@edu.lu.lv.
 
 
 ----
