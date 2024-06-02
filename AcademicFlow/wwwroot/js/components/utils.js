@@ -8,6 +8,49 @@ export function toggleObjectVisibility($object, state) {//State is false -> hide
     }
 }
 
+export async function renderAssignmentEntryTable(parent, assignmentEntries) {
+    try {
+        const table = $('<table class="table">');
+    
+        table.append($(`
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">User</th>
+                    <th scope="col">File</th>
+                    <th scope="col">Grade</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+        `));
+    
+        const tbody = $('<tbody>');
+
+        $.each(assignmentEntries, function(_, assignment) {
+            const assignmentEntry = assignment?.assignmentEntryOutputModel;
+            if (!assignmentEntry) return;
+
+            const tr = $('<tr>');
+    
+            tr.append($(`<th scope="row">${assignmentEntry.id}</th>`))
+            tr.append($(`<td class="text-muted">${formatDate(new Date(assignmentEntry.modified))}</td>`))
+            tr.append($(`<td class="text-muted">!!!TODO John Smith</td>`))
+            tr.append($(`<td class="text-muted">${assignmentEntry.fileName}</td>`))
+            tr.append($(`<td class="text-muted">!!!TODO</td>`))
+            tr.append($(`<td><a href="/Home/AssignmentEntry/${assignmentEntry.id}" class="text-success">View</a></td>`))
+    
+            tbody.append(tr);
+        });
+
+        table.append(tbody)
+
+        parent.append(table)
+    } catch(e) {
+        parent.append('<p>Error fetching assignments</p>');
+    }
+}
+
 export async function addAssignmentTable(parent, courseId) {
     try {
         const assignments = await $.ajax({
