@@ -8,6 +8,80 @@ export function toggleObjectVisibility($object, state) {//State is false -> hide
     }
 }
 
+async function logoutUser() {
+    try {
+        const response = await fetch('/api/Authorization/LogoutUser', {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(errorMessage);
+        }
+        console.log("User logged out successfully!");
+        // Optionally, redirect to another page or perform other actions upon successful logout
+    } catch (error) {
+        console.error('Error:', error);
+        alert("Failed to logout. Please try again.");
+    }
+};
+
+export function proceedLogout() {
+    if (confirm("Are you sure you want to proceed?") == true) {
+        logoutUser()
+            .then(() => { // After successful logout
+                window.location.href = "/Home/Login";
+            })
+                .catch(error => {
+                    console.error("Error logging out:", error);
+                    // Handle logout errors (optional)
+                });
+    }
+};
+
+export async function renderAssignmentEntryTable(parent, assignmentEntries) {
+    try {
+        const table = $('<table class="table">');
+    
+        table.append($(`
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">User</th>
+                    <th scope="col">File</th>
+                    <th scope="col">Grade</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+        `));
+    
+        const tbody = $('<tbody>');
+
+        $.each(assignmentEntries?.assignmentEntityOutputModels, function(_, assignment) {
+            const assignmentEntry = assignment?.assignmentEntryOutputModel;
+            if (!assignmentEntry) return;
+
+            const tr = $('<tr>');
+    
+            tr.append($(`<th scope="row">${assignmentEntry.id}</th>`))
+            tr.append($(`<td class="text-muted">${formatDate(new Date(assignmentEntry.modified))}</td>`))
+            tr.append($(`<td class="text-muted">${assignmentEntry.createdBy?.name} ${assignmentEntry.createdBy?.surname}</td>`))
+            tr.append($(`<td class="text-muted">${assignmentEntry.fileName}</td>`))
+            tr.append($(`<td class="text-muted">${assignment?.assignmentGradeOutputModel ? `<strong>${assignment?.assignmentGradeOutputModel.grade}/10</strong>` : '-'}</td>`))
+            tr.append($(`<td><a href="/Home/Assignment/${assignmentEntries?.assignmentTaskOutputModel?.id}/AssignmentEntry/${assignmentEntry.id}" class="text-success">View</a></td>`))
+    
+            tbody.append(tr);
+        });
+
+        table.append(tbody)
+
+        parent.append(table)
+    } catch(e) {
+        parent.append('<p>Error fetching assignments</p>');
+    }
+}
+
 export async function addAssignmentTable(parent, courseId) {
     try {
         const assignments = await $.ajax({
