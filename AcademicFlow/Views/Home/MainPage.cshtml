@@ -1,33 +1,34 @@
 ﻿@{
-    ViewData["Title"] = "Main Page";
+    ViewData["Title"] = "Profile";
 }
-<div class="main container mt-3">
-    <div class="user-name-surname">
+<div class="main container mt-5 d-flex flex-column min-vh-100">
+    <div class="user-name-surname pt-5">
         <h2></h2>
     </div>
     <div class="user-role mb-5 mt-3">
         <h5></h5>
     </div>
     <div class="user-additional-data">
-        <div class="form-group mb-3 mt-3">
+        <div class="form-group mb-4 mt-3">
             <label for="personal-code">Personal code:</label>
             <input type="text" class="form_input" id="pers_code" name="pers_code" readonly>
         </div>
-        <div class="form-group mb-3">
+        <div class="form-group mb-4">
             <label for="e-mail">E-mail:</label>
-            <input type="text" class="form_input" id="e-mail" name="e-mail" readonly>
+            <input type="text" class="form_input" id="e-mail" name="email" readonly>
             <button type="button" class="btn btn-success btn-sm edit-email">Edit</button>
         </div>
-        <div class="form-group mb-3">
+        <div class="form-group mb-4">
             <label for="phone-nr">Phone number:</label>
-            <input type="text" class="form_input" id="phone-nr" name="phone-nr" readonly>
+            <input type="text" class="form_input" id="phone-nr" name="phoneNumber" readonly>
             <button type="button" class="btn btn-success btn-sm edit-phone">Edit</button>
         </div>
-        <div class="form-group mb-3">
+        <div class="form-group mb-4">
             <label for="age">Age:</label>
             <input type="text" class="form_input" id="age" name="age" readonly>
         </div>
     </div>
+    <div class="error-message"></div>
 </div>
 
 <script type="module" src="~/js/dist/site.js" asp-append-version="true"></script>
