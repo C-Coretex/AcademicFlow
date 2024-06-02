@@ -31,7 +31,7 @@ namespace AcademicFlow.Domain.Services
 
         public Task<AssignmentTask?> GetByIdFull(int id, bool asNoTracking = true)
         {
-            return _assignmentTaskRepository.GetAll(asNoTracking).Include(x => x.CreatedById).Include(x => x.AssignmentEntries).ThenInclude(x => x.User).Include(x => x.AssignmentEntries).ThenInclude(x => x.AssignmentGrade).ThenInclude(x => x.User)
+            return _assignmentTaskRepository.GetAll(asNoTracking).Include(x => x.User).Include(x => x.AssignmentEntries).ThenInclude(x => x.User).Include(x => x.AssignmentEntries).ThenInclude(x => x.AssignmentGrade).ThenInclude(x => x.User)
                     .FirstOrDefaultAsync(x => x.Id == id);
         }
 
