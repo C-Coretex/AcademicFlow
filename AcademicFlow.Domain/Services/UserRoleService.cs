@@ -16,7 +16,8 @@ namespace AcademicFlow.Domain.Services
 
         public Task<UserRole?> GetByUserId(int userId, int courseId)
         {
-            return _userRoleRepository.GetAll().Include(x => x.Courses).FirstOrDefaultAsync(x => x.UserId == userId && x.Courses.Any(y => y.CourseId == courseId));
+            return _userRoleRepository.GetAll().Include(x => x.Courses).Include(x => x.Programs).ThenInclude(x => x.Program)
+                            .ThenInclude(x => x.Courses).FirstOrDefaultAsync(x => x.UserId == userId && (x.Courses.Any(y => y.CourseId == courseId) || x.Programs.Any(y => y.Program.Courses.Any(z => z.CourseId == courseId))));
         }
     }
 }
