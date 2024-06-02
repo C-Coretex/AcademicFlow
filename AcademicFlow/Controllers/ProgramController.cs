@@ -1,7 +1,9 @@
 ﻿using AcademicFlow.Domain.Contracts.Enums;
 using AcademicFlow.Filters;
 using AcademicFlow.Managers.Contracts.IManagers;
+using AcademicFlow.Managers.Managers;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace AcademicFlow.Controllers
 {
@@ -110,7 +112,11 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                await _programManager.EditProgramUserRolesAsync(id, userIds);
+                var response = await _programManager.EditProgramUserRolesAsync(id, userIds);
+                if (!response.IsSuccesful)
+                {
+                    return BadRequest(response.Error);
+                }
                 return Ok();
             }
             catch (Exception e)

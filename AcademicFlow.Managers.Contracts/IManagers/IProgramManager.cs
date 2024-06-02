@@ -1,6 +1,7 @@
 ﻿using AcademicFlow.Domain.Contracts.Entities;
 using AcademicFlow.Domain.Contracts.Enums;
 using AcademicFlow.Domain.Entities;
+using AcademicFlow.Managers.Contracts.Models;
 using AcademicFlow.Managers.Contracts.Models.ProgramModels;
 
 namespace AcademicFlow.Managers.Contracts.IManagers
@@ -12,7 +13,7 @@ namespace AcademicFlow.Managers.Contracts.IManagers
         Program? GetProgramById(int id);
         Task UpdateProgramAsync(Program program);
         IEnumerable<ProgramTableItem> GetProgramTableItemList(int? userId);
-        Task EditProgramUserRolesAsync(int programId, int[] usersIds);
+        Task<ResponseModel> EditProgramUserRolesAsync(int programId, int[] usersIds);
         IEnumerable<User> GetProgramUsers(int programId);
     }
 }

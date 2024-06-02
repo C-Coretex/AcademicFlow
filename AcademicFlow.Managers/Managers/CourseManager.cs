@@ -3,6 +3,7 @@ using AcademicFlow.Domain.Contracts.Enums;
 using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Entities;
 using AcademicFlow.Managers.Contracts.IManagers;
+using AcademicFlow.Managers.Contracts.Models;
 using AcademicFlow.Managers.Contracts.Models.CourseModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -11,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AcademicFlow.Managers.Managers
 {
     public class CourseManager(IMapper mapper, ICourseService courseService, ICourseProgramService courseProgramService, IUserService userService)
-        : BaseManager(mapper), ICourseManager
+        : EducationBaseManager(mapper), ICourseManager
     {
         private readonly ICourseService _courseService = courseService;
         private readonly ICourseProgramService _courseProgramService = courseProgramService;
@@ -27,7 +28,7 @@ namespace AcademicFlow.Managers.Managers
             await _courseService.DeleteCourse(id);
         }
 
-        public Course? GetCourseByIdAsync(int id)
+        public Course GetCourseByIdAsync(int id)
         {
             return _courseService.GetAll().Where(x=> x.Id == id).FirstOrDefault();
         }
@@ -74,9 +75,18 @@ namespace AcademicFlow.Managers.Managers
             await _courseProgramService.AddRangeAsync(toInsertPrograms);
         }
 
-        public async Task EditCourseUserRoles(int courseId, int[] usersIds, RolesEnum role)
+        public async Task<ResponseModel> EditCourseUserRoles(int courseId, int[] usersIds, RolesEnum role)
         {
+            var response = new ResponseModel();
+            var userQuery = _userService.GetUsers();
             var users = usersIds.ToHashSet();
+            var errors = UserRoleValidation(userQuery, users, role);
+            if (errors != null)
+            {
+                response.Error = errors;
+                return response;
+            }
+
             var courseUsers = _courseService.GetUserRoles().Where(x => x.CourseId == courseId && x.UserRole.Role == role);
             var toDelete = courseUsers.Where(x => !users.Contains(x.UserRole.UserId)).ToList();
             await _courseService.DeleteCourseUserRolesRange(toDelete!);
@@ -85,7 +95,7 @@ namespace AcademicFlow.Managers.Managers
                 .Select(x => x.UserRole.UserId)
                 .ToHashSet();
             var toInsertUserIds = users.Where(x => !oldUsersIds.Contains(x)).ToHashSet();
-            var toInsert = _userService.GetUsers()
+            var toInsert = userQuery
                 .Where(x => toInsertUserIds.Contains(x.Id))
                 .SelectMany(x => x.UserRoles)
                 .Where(x => x.Role == role)
@@ -95,6 +105,9 @@ namespace AcademicFlow.Managers.Managers
                     UserRoleId = x!.Id
                 });
             await _courseService.AddCourseUserRolesRange(toInsert);
+
+            response.IsSuccesful = true;
+            return response;
         }
 
         public IEnumerable<User> GetCourseUsers(int courseId, RolesEnum role)
