@@ -6,7 +6,6 @@ Features:
 - Role system with many roles to one user relation
 - Admin/Professor/Student roles
 - Course and assignment system
-- Class/lectures diary
 - Assignment submitting and grading
 - Management of all the data and relations
 
@@ -33,7 +32,7 @@ On login enter:
 - Username: admin
 - For Password enter: BadPassword01
 
-### Sistēmas dokumentācija ir pieejāma šeit: 
+### Sistēmas dokumentācija ir pieejama šeit: 
 
 ### Ja jums rodas jautājumi vai neskaidrības, lūdzu rakstiet uz af21043@edu.lu.lv.
 
