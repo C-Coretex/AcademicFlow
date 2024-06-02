@@ -27,7 +27,7 @@ namespace AcademicFlow.Domain.Services
 
         public Task<AssignmentEntry?> GetById(int id)
         {
-            return _assignmentEntryRepository.GetAll().Include(x => x.AssignmentTask).Include(x => x.AssignmentGrade).FirstOrDefaultAsync(x => x.Id == id);
+            return _assignmentEntryRepository.GetAll().Include(x => x.AssignmentTask).Include(x => x.AssignmentGrade).Include(x => x.CreatedById).FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }
