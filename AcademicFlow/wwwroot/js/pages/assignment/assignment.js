@@ -21,17 +21,17 @@ $(document).ready(async function () {
       }
     });
 
-    $('.breadcrumb-item.active').text(assignment.assignmentName);
+    $('.breadcrumb-item.active').text(assignment.id);
 
     assignmentBlock.append($(`<h1 class="display-4 my-4">${assignment.assignmentName}</h1>`));
     assignmentBlock.append($(`<hr class="my-4">`));
-    assignmentBlock.append($(`<p class="lead">${assignment.assignmentDescription}</p>`));
+    assignmentBlock.append($(`<p class="lead mb-4">${assignment.assignmentDescription}</p>`));
     assignmentBlock.append($(`<p><strong>Author:</strong> ${assignment.createdBy?.name} ${assignment.createdBy?.surname}</p>`));
     assignmentBlock.append($(`<p><strong>Assignment Weight:</strong> ${assignment.assignmentWeight}</p>`));
     assignmentBlock.append($(`<p><strong>Last modified:</strong> ${formatDate(new Date(assignment.modified))}</p>`));
     assignmentBlock.append($(`<p><strong>Deadline:</strong> ${formatDate(new Date(assignment.deadline))}</p>`));
 
-    if (assignment.createdBy?.personalCode == userData.personalCode) {
+    if (assignment.createdBy?.id == userData.id) {
       const assignmentEntries = await $.ajax({
         url: '/api/Assignment/GetAssignmentEntriesForAssignmentTask',
         method: "GET",
@@ -46,7 +46,7 @@ $(document).ready(async function () {
       assignmentEntriesBlock.append($(`<hr class="my-4">`));
 
       if (assignmentEntries?.assignmentEntityOutputModels?.length) {
-        // !!!TODO
+        renderAssignmentEntryTable(assignmentEntriesBlock, assignmentEntries);
       } else {
         assignmentEntriesBlock.append($('<p>This assignment has no entries yet.</p>'))
       }
@@ -55,7 +55,7 @@ $(document).ready(async function () {
 
       const deleteButton = $('<button>', {
         type: 'button',
-        class: 'btn btn-danger',
+        class: 'btn btn-danger mt-4',
         id: 'deleteAssignment',
         text: 'Delete assignment'
       });
@@ -65,11 +65,10 @@ $(document).ready(async function () {
           $.ajax({
             url: `/api/Assignment/DeleteAssignmentTask?id=${assignment.id}`,
             method: "Delete",
-            dataType: "json",
-            success: function () {
-              window.location.href = 'Assignments';
-            },
+            dataType: "json"
           });
+
+          window.location.href = '/Home/Assignments';
         }
       });
 
@@ -89,7 +88,7 @@ $(document).ready(async function () {
       assignmentEntryBlock.append($(`<hr class="my-4">`));
 
       if (myAssignmentEntry?.assignmentEntityOutputModels?.length) {
-        renderAssignmentEntryTable(assignmentEntryBlock, myAssignmentEntry.assignmentEntityOutputModels);
+        renderAssignmentEntryTable(assignmentEntryBlock, myAssignmentEntry);
       } else {
         assignmentEntryBlock.append($('<p>This assignment has no entries yet.</p>'))
         assignmentEntryBlock.append($('<a class="btn btn-success mt-4" href="/Home/AssignmentEntry/New">Add new assignment entry</a>'))

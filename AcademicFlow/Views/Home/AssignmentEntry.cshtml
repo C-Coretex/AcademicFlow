@@ -1,0 +1,58 @@
+﻿@{
+    var assignmentId = ViewData["AssignmentId"];
+    var assignmentEntryId = ViewData["AssignmentEntryId"];
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <partial name="../Course/Partials/_CourseNav" />
+        <div class="col-sm p-0 min-vh-100">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mt-4">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Assignment</li>
+                        <li class="breadcrumb-item assignment-id"></li>
+                        <li class="breadcrumb-item">Assignment Entry</li>
+                        <li class="breadcrumb-item active assignment-entry-id" aria-current="page"></li>
+                    </ol>
+                </nav>
+
+                <div id="assignment-entry-item" assignmentId="@assignmentId" assignmentEntryId="@assignmentEntryId"></div>
+                
+                <div id="assignment-entry-grade" class="d-none mt-5">
+                    <h2 class="display-6 my-4">Add assignment grade</h2>
+                    <hr class="my-4">
+
+                    <div id="form-logs"></div>
+
+                    <form id="assignmentEntryGradeForm" class="form-horizontal">
+                        @Html.Hidden("AssignmentEntryId", assignmentEntryId)
+
+                        <div class="form-group">
+                            <label for="Grade" class="col-md-2 control-label">Grade</label>
+
+                            <div class="col-md-10">
+                                <input type="number" class="form-control" id="Grade" name="Grade" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Grade" class="col-md-2 control-label">Comment</label>
+
+                            <div class="col-md-10">
+                                <textarea class="form-control" id="Comment" name="Comment" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group mt-4">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Grade an assignment" class="btn btn-success js-add-assignment-entry-grade" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="~/js/dist/pages/assignmentEntry/assignmentEntry.js" asp-append-version="true"></script>

@@ -1,4 +1,4 @@
-//This file is used to store commonly used functions to stay on DRY method
+﻿//This file is used to store commonly used functions to stay on DRY method
 
 export function toggleObjectVisibility($object, state) {//State is false -> hide container, State is true -> show container
     if (state) {
@@ -58,7 +58,7 @@ export async function renderAssignmentEntryTable(parent, assignmentEntries) {
     
         const tbody = $('<tbody>');
 
-        $.each(assignmentEntries, function(_, assignment) {
+        $.each(assignmentEntries?.assignmentEntityOutputModels, function(_, assignment) {
             const assignmentEntry = assignment?.assignmentEntryOutputModel;
             if (!assignmentEntry) return;
 
@@ -68,8 +68,8 @@ export async function renderAssignmentEntryTable(parent, assignmentEntries) {
             tr.append($(`<td class="text-muted">${formatDate(new Date(assignmentEntry.modified))}</td>`))
             tr.append($(`<td class="text-muted">${assignmentEntry.createdBy?.name} ${assignmentEntry.createdBy?.surname}</td>`))
             tr.append($(`<td class="text-muted">${assignmentEntry.fileName}</td>`))
-            tr.append($(`<td class="text-muted">!!!TODO</td>`))
-            tr.append($(`<td><a href="/Home/AssignmentEntry/${assignmentEntry.id}" class="text-success">View</a></td>`))
+            tr.append($(`<td class="text-muted">${assignment?.assignmentGradeOutputModel ? `<strong>${assignment?.assignmentGradeOutputModel.grade}/10</strong>` : '-'}</td>`))
+            tr.append($(`<td><a href="/Home/Assignment/${assignmentEntries?.assignmentTaskOutputModel?.id}/AssignmentEntry/${assignmentEntry.id}" class="text-success">View</a></td>`))
     
             tbody.append(tr);
         });
