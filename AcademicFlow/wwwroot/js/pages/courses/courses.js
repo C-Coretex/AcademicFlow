@@ -43,20 +43,34 @@ $(document).ready(async function () {
         studentBlock.append($('<h2 class="display-4 my-4">').text(`Student courses`));
         studentBlock.append($('<hr class="my-4">'));
 
-        if (programs?.length) {
-            $.each(programs, function(_, program) {
-                const tableParams = { 
-                    assignedUserId: userData.id,
-                    assingedProgramId: program.id,
-                    adminView: false 
-                };
-                const title = $('<h3 class="display-6 my-4">').text(`${program.name} (${program.semesterNr}. sem)`);
+        // if (programs?.length) {
+        //     $.each(programs, function(_, program) {
+        //         const tableParams = { 
+        //             assignedUserId: userData.id,
+        //             assingedProgramId: program.id,
+        //             adminView: false 
+        //         };
+        //         const title = $('<h3 class="display-6 my-4">').text(`${program.name} (${program.semesterNr}. sem)`);
     
-                addCourseBlock(studentBlock, tableParams, title);
-            });
+        //         addCourseBlock(studentBlock, tableParams, title);
+        //     });
+        // } else {
+        //     studentBlock.append($('<p>No courses available.</p>'))
+        // }
+
+        // QuickFix
+        if (userData.roles.some(role => role == 'Student')) {
+            const tableParams = { 
+                assignedUserId: userData.id,
+                role: 'Student',
+                adminView: false 
+            };
+
+            addCourseBlock(studentBlock, tableParams);
         } else {
-            studentBlock.append($('<p>No courses available.</p>'))
+            studentBlock.append($('<p>No courses available.</p>'));
         }
+        // QuickFix
 
         professorBlock.append($('<h2 class="display-4 my-4">').text(`Professor courses`));
         professorBlock.append($('<hr class="my-4">'));
@@ -74,7 +88,7 @@ $(document).ready(async function () {
         }
 
     } catch (e) {
-        console.error("Error sending AJAX request:", error);
+        console.error("Error sending AJAX request:", e);
         professorBlock.append(`<div class="alert alert-danger mt-2" role="alert">${e?.responseText ?? 'Internal Error'}</div>`);
     }
 });
