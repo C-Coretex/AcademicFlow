@@ -168,7 +168,7 @@ namespace AcademicFlow.Controllers
         // Add assignment grade
         [AuthorizeUser(RolesEnum.Professor)]
         [HttpPut("AddAssignmentGrade")]
-        public async Task<IActionResult> AddAssignmentGrade([FromBody] AssignmentGradeInputModel assignmentGrade)
+        public async Task<IActionResult> AddAssignmentGrade([FromForm] AssignmentGradeInputModel assignmentGrade)
         {
             try
             {
