@@ -71,7 +71,7 @@ $(document).ready(async function () {
     if (assignmentEntry.createdBy?.id == userData.id) {
         const deleteButton = $('<button>', {
             type: 'button',
-            class: 'btn btn-danger',
+            class: 'btn btn-danger mt-4',
             id: 'deleteAssignmentEntry',
             text: 'Delete assignment entry'
         });
@@ -133,17 +133,10 @@ $(document).ready(async function () {
                     url: '/api/Assignment/AddAssignmentGrade',
                     processData: false, // Prevent jQuery from processing data (handled by FormData)
                     contentType: false, // Don't set content type header (FormData sets it)
-                    data: formData,
-                    success: function () {
-                        logBlock.append(`<div class="alert alert-success mt-2" role="alert">Assignment grade is added.</div>`);
-                    },
-                    error: function (xhr) {
-                        const errorMessage = xhr.responseText;
-                        console.error('Error adding grade:', errorMessage);
-    
-                        logBlock.append(`<div class="alert alert-danger mt-2" role="alert">Assignment grade is not added.</div>`);
-                    }
+                    data: formData
                 })
+
+                window.location.reload();
             });
         }
     }

@@ -25,7 +25,7 @@ $(document).ready(async function () {
 
     assignmentBlock.append($(`<h1 class="display-4 my-4">${assignment.assignmentName}</h1>`));
     assignmentBlock.append($(`<hr class="my-4">`));
-    assignmentBlock.append($(`<p class="lead mb-4">${assignment.assignmentDescription}</p>`));
+    assignmentBlock.append($(`<p class="lead mb-4">Task: "${assignment.assignmentDescription}"</p>`));
     assignmentBlock.append($(`<p><strong>Author:</strong> ${assignment.createdBy?.name} ${assignment.createdBy?.surname}</p>`));
     assignmentBlock.append($(`<p><strong>Assignment Weight:</strong> ${assignment.assignmentWeight}</p>`));
     assignmentBlock.append($(`<p><strong>Last modified:</strong> ${formatDate(new Date(assignment.modified))}</p>`));
