@@ -63,7 +63,7 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                var program = _programManager.GetProgramById(id);
+                var program = _programManager.GetProgramWebModel(id);
                 return Ok(program);
             }
             catch (Exception e)

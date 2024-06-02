@@ -4,7 +4,9 @@ using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Entities;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models;
+using AcademicFlow.Managers.Contracts.Models.CourseModels;
 using AcademicFlow.Managers.Contracts.Models.ProgramModels;
+using AcademicFlow.Managers.Contracts.Models.UserModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using System.Data;
@@ -30,6 +32,19 @@ namespace AcademicFlow.Managers.Managers
         public Program? GetProgramById(int id)
         {
             return _programService.GetAll().Where(x => x.Id == id).FirstOrDefault();
+        }
+
+        public ProgramWebModel GetProgramWebModel(int id)
+        {
+            var program = _programService.GetAllWithUsers().Where(x => x.Id == id).FirstOrDefault();
+            if (program == null)
+            {
+                return new ProgramWebModel();
+            }
+            var usersIds = program.UserRoles.Select(x => x.Id).ToHashSet();
+            var model = Mapper.Map<ProgramWebModel>(program);
+            model.Users = _userService.GetUsersWithRoles().Where(x => usersIds.Contains(x.Id)).ProjectTo<UserListModel>(MapperConfig).ToList();
+            return model;
         }
 
         public async Task UpdateProgramAsync(Program program)

@@ -8,6 +8,7 @@ namespace AcademicFlow.Domain.Contracts.IServices
         Task<Program?> GetProgramByIdAsync(int id);
         Task UpdateProgramAsync(Program entity);
         IQueryable<Program> GetAll();
+        IQueryable<Program> GetAllWithUsers();
         Task DeleteProgramAsync(int id);
         Task DeleteProgramUserRolesRangeAsync(IEnumerable<ProgramUserRole> userRoles);
         Task AddProgramUserRolesRangeAsync(IEnumerable<ProgramUserRole> userRoles);

@@ -38,7 +38,7 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                var course = _courseManager.GetCourseByIdAsync(id);
+                var course = _courseManager.GetCourseById(id);
                 if (course == null)
                 {
                     var message = $"Course {id} do not exist";
@@ -66,10 +66,8 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                var course = _courseManager.GetCourseByIdAsync(id);
-
+                var course = _courseManager.GetCourseWebModel(id);
                 return adminView ? Ok(course) : PartialView("Partials/_CourseListItem", course);
-                //return PartialView("Partials/_CourseItem", course);  /// return html content
             }
             catch (Exception e)
             {

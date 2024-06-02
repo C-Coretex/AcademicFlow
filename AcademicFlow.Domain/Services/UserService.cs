@@ -29,6 +29,10 @@ namespace AcademicFlow.Domain.Services
         {
             return _userRepository.GetAll().Include(x => x.UserCredentials).Where(x => !x.IsDeleted).AsNoTracking();
         }
+        public IQueryable<User> GetUsersWithRoles()
+        {
+            return _userRepository.GetAll().Include(x => x.UserRoles).Where(x => !x.IsDeleted).AsNoTracking();
+        }
 
         public async Task UpdateUser(User user)
         {

@@ -5,18 +5,20 @@ using AcademicFlow.Domain.Entities;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models;
 using AcademicFlow.Managers.Contracts.Models.CourseModels;
+using AcademicFlow.Managers.Contracts.Models.UserModels;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AcademicFlow.Managers.Managers
 {
-    public class CourseManager(IMapper mapper, ICourseService courseService, ICourseProgramService courseProgramService, IUserService userService)
+    public class CourseManager(IMapper mapper, ICourseService courseService, ICourseProgramService courseProgramService, IUserService userService, IUserRoleService userRoleService)
         : EducationBaseManager(mapper), ICourseManager
     {
         private readonly ICourseService _courseService = courseService;
         private readonly ICourseProgramService _courseProgramService = courseProgramService;
         private readonly IUserService _userService = userService;
+        private readonly IUserRoleService _userRoleService = userRoleService;
 
         public async Task<int?> AddCourseAsync(Course course)
         {
@@ -28,9 +30,26 @@ namespace AcademicFlow.Managers.Managers
             await _courseService.DeleteCourse(id);
         }
 
-        public Course GetCourseByIdAsync(int id)
+        public Course GetCourseById(int id)
         {
-            return _courseService.GetAll().Where(x=> x.Id == id).FirstOrDefault();
+            return _courseService.GetAll().Where(x => x.Id == id).FirstOrDefault();
+        }
+
+        public CourseWebModel GetCourseWebModel(int id)
+        {
+            var course = _courseService.GetAll().Where(x => x.Id == id).FirstOrDefault();
+            if (course == null)
+            {
+                return new CourseWebModel();
+            }
+            var model = Mapper.Map<CourseWebModel>(course);
+            var usersIds = _userRoleService.GetAll()
+                .Where(x => x.Courses.Any(y => y.CourseId == model.Id)
+                    || x.Programs.Any(y => y.Program.Courses.Any(z => z.CourseId == model.Id)))
+                .GroupBy(x => x.UserId)
+                .Select(x => x.First().UserId).ToHashSet();
+            model.AssigmentUsers = _userService.GetUsersWithRoles().Where(x => usersIds.Contains(x.Id)).ProjectTo<UserListModel>(MapperConfig).ToList();
+            return model;
         }
 
         public async Task UpdateCourseAsync(Course course)

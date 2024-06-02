@@ -5,13 +5,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AcademicFlow.Domain.Services
 {
-    public class UserRoleService: IUserRoleService
+    public class UserRoleService : IUserRoleService
     {
         private readonly IUserRoleRepository _userRoleRepository;
 
         public UserRoleService(IUserRoleRepository userRoleRepository)
         {
             _userRoleRepository = userRoleRepository;
+        }
+
+        public IQueryable<UserRole> GetAll()
+        {
+            return _userRoleRepository.GetAll().Include(x => x.Courses).Include(x => x.Programs).ThenInclude(x => x.Program)
+                            .ThenInclude(x => x.Courses);
         }
 
         public Task<UserRole?> GetByUserId(int userId, int courseId)

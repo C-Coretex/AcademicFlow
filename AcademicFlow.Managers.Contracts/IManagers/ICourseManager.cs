@@ -11,7 +11,8 @@ namespace AcademicFlow.Managers.Contracts.IManagers
         Task<int?> AddCourseAsync(Course course); 
         Task DeleteCourseAsync(int id);
 
-        Course? GetCourseByIdAsync(int id);
+        Course? GetCourseById(int id);
+        CourseWebModel GetCourseWebModel(int id);
 
         Task UpdateCourseAsync(Course course);
 

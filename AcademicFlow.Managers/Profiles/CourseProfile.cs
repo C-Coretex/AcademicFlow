@@ -9,6 +9,7 @@ namespace AcademicFlow.Managers.Profiles
         public CourseProfile()
         {
             CreateMap<Course, CourseTableItem>();
+            CreateMap<Course, CourseWebModel>();
         }
     }
 }

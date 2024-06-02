@@ -1,11 +1,6 @@
 ﻿using AcademicFlow.Domain.Entities;
 using AcademicFlow.Managers.Contracts.Models.UserModels;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AcademicFlow.Managers.Profiles
 {
@@ -16,6 +11,9 @@ namespace AcademicFlow.Managers.Profiles
             CreateMap<User, UserWebModel>()
                 .ForMember(x => x.UserRegistrationData, opt => opt.MapFrom(x => new UserRegistrationData(x.UserCredentials)))
                 .ForMember(x => x.Roles, opt => opt.MapFrom(x => x.UserRoles.Select(x => x.Role.ToString())));
+            CreateMap<User, UserListModel>()
+                .ForMember(x => x.Roles, opt => opt.MapFrom(x => x.UserRoles.Select(x => x.Role.ToString())));
+
         }
     }
 }
