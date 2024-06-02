@@ -27,9 +27,9 @@ namespace AcademicFlow.Managers.Managers
             await _programService.DeleteProgramAsync(id);
         }
 
-        public async Task<Program?> GetProgramByIdAsync(int id)
+        public Program? GetProgramById(int id)
         {
-            return await _programService.GetProgramByIdAsync(id);
+            return _programService.GetAll().Where(x => x.Id == id).FirstOrDefault();
         }
 
         public async Task UpdateProgramAsync(Program program)

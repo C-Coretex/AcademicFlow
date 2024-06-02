@@ -9,7 +9,7 @@ namespace AcademicFlow.Managers.Contracts.IManagers
     {
         Task<int?> AddProgramAsync(Program program);
         Task DeleteProgramAsync(int id);
-        Task<Program?> GetProgramByIdAsync(int id);
+        Program? GetProgramById(int id);
         Task UpdateProgramAsync(Program program);
         IEnumerable<ProgramTableItem> GetProgramTableItemList(int? userId);
         Task EditProgramUserRolesAsync(int programId, int[] usersIds);
