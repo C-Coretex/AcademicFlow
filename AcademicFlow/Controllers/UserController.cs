@@ -102,7 +102,12 @@ namespace AcademicFlow.Controllers
         {
             try
             {
+                var userRegistrationEndpoint = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/Home/UserRegistration?secretKey=";
+
                 var user = await _userManager.GetUserModelById(userId);
+                if(!string.IsNullOrEmpty(user.UserRegistrationData.RegistrationUrl))
+                    user.UserRegistrationData.RegistrationUrl = userRegistrationEndpoint + user.UserRegistrationData.RegistrationUrl;
+
                 return Ok(user);
             }
             catch (Exception e)
