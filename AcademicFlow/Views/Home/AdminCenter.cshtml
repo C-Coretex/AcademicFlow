@@ -137,7 +137,7 @@
                 </div>
                 <div class="col-sm-9">
                     <div class="d-flex">
-                        <div class="me-5">
+                        <div class="me-5 js-assign-users-course-wrapper">
                             <h4>Assign Users to Course</h4>
                             <div class="d-flex mb-2">
                                 <div class="d-flex flex-column me-2">
@@ -164,9 +164,10 @@
                                     <i class="fa-solid fa-file-pen me-2"></i><div>Assign to course</div>
                                 </button>
                             </div>
+                            <div class="js-response-message"></div>
                         </div>
                        
-                        <div>
+                        <div class="js-assign-users-program-wrapper">
                             <h4>Assign Users to Program</h4>
                             <div class="d-flex mb-2">
                                 <div class="d-flex flex-column me-2">
@@ -181,6 +182,7 @@
                                     <i class="fa-solid fa-file-pen me-2"></i><div>Assign to program</div>
                                 </button>
                             </div>
+                            <div class="js-response-message"></div>
                         </div>
                         
                     </div>
@@ -230,20 +232,25 @@
                     </form>
                 </div>
                 <div class="col-sm-8">
-                    <h3>Assign Programs to Course</h3>
-                    <div class="d-flex justify-content-end mb-4">
-                        <div class="d-flex flex-column me-2">
-                            <span class="mb-2">Select course: </span>
-                            <div class="js-dd-courses">
-                                <select class="form-select d-flex align-items-center cursor-pointer js-course-dd-selected-value me-2" aria-expanded="false">
-                                    <option> </option>
-                                </select>
+                    <div class="js-assign-program-course-wrapper mb-4">
+                        <h3>Assign Programs to Course</h3>
+                        <div class="d-flex justify-content-end ">
+                            <div class="d-flex flex-column me-2">
+                                <span class="mb-2">Select course: </span>
+                                <div class="js-dd-courses">
+                                    <select class="form-select d-flex align-items-center cursor-pointer js-course-dd-selected-value me-2" aria-expanded="false">
+                                        <option> </option>
+                                    </select>
+                                </div>
                             </div>
+                            <button class="btn btn-primary d-flex align-items-center js-assign-programms-to-course">
+                                <i class="fa-solid fa-file-pen me-2"></i><div>Assign to course</div>
+                            </button>
                         </div>
-                        <button class="btn btn-primary d-flex align-items-center js-assign-programms-to-course">
-                            <i class="fa-solid fa-file-pen me-2"></i><div>Assign to course</div>
-                        </button>
+                        <div class="js-response-message"></div>
                     </div>
+                    
+
                     <div>
                         <h3>All Programs</h3>
                         <table class="table table-striped" id="programsTable">

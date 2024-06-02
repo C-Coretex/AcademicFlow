@@ -181,16 +181,19 @@ export async function editCourseUserRoles(courseId, userIds, role) {
         });
         
         if (response.status === "success") {
+            $('.js-assign-users-course-wrapper').find('.js-response-message').html(`<div class="alert alert-success mt-2" role="alert">User is assigned.</div>`);
             console.log("Course user roles edited successfully!");
             // Handle successful update (e.g., display success message)
             return (true);
         } else {
+            $('.js-assign-users-course-wrapper').find('.js-response-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not assigned: ${response.message}</div>`);
+
             console.error("Error editing course user roles:", response.message);
             // Handle error (e.g., display error message)
             return (false);
         }
     } catch (error) {
-        console.error("Error sending AJAX request:", error);
+        console.error("Error sending AJAX request:", errorюыефегыЕуче);
         // Handle any errors during the AJAX request
         return (false);
     }
@@ -211,9 +214,12 @@ export async function editProgramUserRoles(programId, usersIds) {
         });
 
         if (response.status === "success") {
+            $('.js-assign-users-program-wrapper').find('.js-response-message').html(`<div class="alert alert-success mt-2" role="alert">User is assigned.</div>`);
             console.log("Course user roles edited successfully!");
             // Handle successful update (e.g., display success message)
         } else {
+            $('.js-assign-users-program-wrapper').find('.js-response-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not assigned: ${response.message}</div>`);
+
             console.error("Error editing course user roles:", response.message);
             // Handle error (e.g., display error message)
         }
@@ -240,9 +246,13 @@ export async function editCoursePrograms(courseId, programsIds) {
         });
 
         if (response.status === "success") {
+            $('.js-assign-program-course-wrapper').find('.js-response-message').html(`<div class="alert alert-success mt-2" role="alert">Program is assigned.</div>`);
+
             console.log("Course user roles edited successfully!");
             // Handle successful update (e.g., display success message)
         } else {
+            $('.js-assign-program-course-wrapper').find('.js-response-message').html(`<div class="alert alert-danger mt-2" role="alert">Program is not assigned: ${response.message}</div>`);
+
             console.error("Error editing course user roles:", response.message);
             // Handle error (e.g., display error message)
         }
