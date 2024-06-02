@@ -197,6 +197,25 @@ export async function getUserByID(id) {
         });
     });
 }
+export async function getUserCourses(id) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: `/api/Course/GetCourseUsers?userId=${parseInt(id)}`,
+            type: 'GET',
+            dataType: 'json',
+            processData: false,
+            contentType: "application/json",
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error:", textStatus, errorThrown);
+                reject(new Error("Failed to get user data")); 
+
+            }
+        });
+    });
+}
 
 export async function getCourseByID(id) {
     return new Promise((resolve, reject) => {

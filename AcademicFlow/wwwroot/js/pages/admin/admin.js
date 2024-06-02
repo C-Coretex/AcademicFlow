@@ -1,4 +1,4 @@
-﻿import { toggleObjectVisibility, editCourseUserRoles, editProgramUserRoles, getProgramByID, checkUserPermissionsLevel, getCurrentUser, renderHeaderLinks, getUserByID, getCourseByID, editCoursePrograms  } from "./../../components/utils.js";
+﻿import { toggleObjectVisibility, editCourseUserRoles, getUserCourses, editProgramUserRoles, getProgramByID, checkUserPermissionsLevel, getCurrentUser, renderHeaderLinks, getUserByID, getCourseByID, editCoursePrograms  } from "./../../components/utils.js";
 import { Table } from "./../../components/table.js";
 
 let selectedUsersIDs = [];
@@ -87,8 +87,10 @@ async function showUserManagementTools(userId) {
     toggleObjectVisibility($editUser, false);
 
     const userData = await getUserByID(userId);
+    const userCourses = await getUserCourses(userId);
     $('.js-user-fullname').text(userData.name + ' ' + userData.surname);
     renderUserData(userData);
+    renderAssignedUserCourses(userCourses);
     console.log(userData);
 
 }
@@ -212,6 +214,34 @@ function renderProgramData(data) {
 
     userElement.innerHTML = htmlContent;
 }
+
+function renderAssignedUserCourses(data) {
+    const userElement = document.querySelector('.js-show-user-courses');
+    let htmlContent = '';
+
+    htmlContent += `<h2>User Courses</h2>`;
+    htmlContent += `<table>`;
+
+    // Table header row
+    htmlContent += `<tr>`;
+    htmlContent += `<th>Field</th>`;
+    htmlContent += `<th>Value</th>`;
+    htmlContent += `</tr>`;
+
+    // Table body rows
+    for (const key in data) {
+        const value = data[key] || 'N/A'; // Handle missing data
+        htmlContent += `<tr>`;
+        htmlContent += `<td>${key}</td>`;
+        htmlContent += `<td data-${key}="${value}">${value}</td>`;
+        htmlContent += `</tr>`;
+    }
+
+    htmlContent += `</table>`;
+
+    userElement.innerHTML = htmlContent;
+}
+
 
 function initUsersTable(users) {
 
@@ -660,6 +690,10 @@ async function triggerGetUserByID(id) {
     const userData = await getUserByID(id);
     return userData;
 }
+async function triggergetUserCourses(id) {
+    const userCoursesData = await getUserCourses(id);
+    return userCoursesData;
+}
 async function triggerGetCourseByID(id) {
     const courseData = await getCourseByID(id);
     return courseData;
@@ -673,6 +707,17 @@ function refreshUsersInfoTable(id) {
     triggerGetUserByID(id)
         .then(userData => { // Resolve function receives the user data
             renderUserData(userData);
+            console.log(userData); // Optional: Log the user data
+        })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+            // Handle errors appropriately (e.g., display an error message to the user)
+        });
+}
+function refreshUsersCoursesInfoTable(id) {
+    triggergetUserCourses(id)
+        .then(userData => { // Resolve function receives the user data
+            renderAssignedUserCourses(userData);
             console.log(userData); // Optional: Log the user data
         })
         .catch(error => {
@@ -925,6 +970,7 @@ $(document).ready(async function () {
                     $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is changed.</div>`);
                     console.log('User edited successfully');
                     refreshUsersInfoTable(userId);
+                    refreshUsersCoursesInfoTable(userId);
 
                 },
                 error: function (xhr, response, status, error) {
