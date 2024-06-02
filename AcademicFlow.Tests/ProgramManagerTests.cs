@@ -74,7 +74,7 @@ namespace AcademicFlow.Tests
             var id = 1;
 
             // Act
-            var result = await _programManager.GetProgramByIdAsync(id);
+            var result = await _programManager.GetProgramById(id);
 
             // Assert
             Assert.NotNull(result);
@@ -87,7 +87,7 @@ namespace AcademicFlow.Tests
             // Arrange
             var id = 1;
 
-            var program = await _programManager.GetProgramByIdAsync(id);
+            var program = await _programManager.GetProgramById(id);
             Assert.NotNull(program);
 
             program.Name = "Program 1 Update";

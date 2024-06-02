@@ -27,9 +27,9 @@ namespace AcademicFlow.Managers.Managers
             await _courseService.DeleteCourse(id);
         }
 
-        public async Task<Course?> GetCourseByIdAsync(int id)
+        public Course? GetCourseByIdAsync(int id)
         {
-            return await _courseService.GetCourseById(id);
+            return _courseService.GetAll().Where(x=> x.Id == id).FirstOrDefault();
         }
 
         public async Task UpdateCourseAsync(Course course)

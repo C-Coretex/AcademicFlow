@@ -1,4 +1,4 @@
-﻿import { toggleObjectVisibility, editCourseUserRoles, editProgramUserRoles, checkUserPermissionsLevel, getCurrentUser, renderHeaderLinks, getUserByID, getCourseByID, editCoursePrograms  } from "./../../components/utils.js";
+﻿import { toggleObjectVisibility, editCourseUserRoles, getUserCourses, editProgramUserRoles, getProgramByID, checkUserPermissionsLevel, getCurrentUser, renderHeaderLinks, getUserByID, getCourseByID, editCoursePrograms  } from "./../../components/utils.js";
 import { Table } from "./../../components/table.js";
 
 let selectedUsersIDs = [];
@@ -82,14 +82,40 @@ function renderProgrammsDropdownValues(programData) {
 
 async function showUserManagementTools(userId) {
     const $manageUser = $('.add-user-container');
-    const $ediUder = $('.user-table');
+    const $editUser = $('.user-table');
     toggleObjectVisibility($manageUser, true);
-    toggleObjectVisibility($ediUder, false);
+    toggleObjectVisibility($editUser, false);
 
     const userData = await getUserByID(userId);
+    const userCourses = await getUserCourses(userId);
     $('.js-user-fullname').text(userData.name + ' ' + userData.surname);
     renderUserData(userData);
+    renderAssignedUserCourses(userCourses);
     console.log(userData);
+
+}
+async function showCourseManagementTools(courseId) {
+    const $manageCourse = $('.course-manager');
+    const $editCourse = $('.all-courses-tab');
+    toggleObjectVisibility($manageCourse, true);
+    toggleObjectVisibility($editCourse, false);
+
+    const courseData = await getCourseByID(courseId);
+    $('.js-course-title').text(courseData.publicId + ": " + courseData.name);
+    renderCourseData(courseData);
+    console.log(courseData);
+
+}
+async function showProgramManagementTools(programId) {
+    const $manageProgram = $('.all-programs-tab');
+    const $editProgram = $('.program-manager');
+    toggleObjectVisibility($editProgram, true);
+    toggleObjectVisibility($manageProgram, false);
+
+    const programData = await getProgramByID(programId);
+    $('.js-course-title').text("Semester: " + programData.semesterNr + ", Program: " + programData.name);
+    renderProgramData(programData);
+    console.log(programData);
 
 }
 function renderUserData(data) {
@@ -135,6 +161,87 @@ function renderUserData(data) {
 
     userElement.innerHTML = htmlContent;
 }
+function renderCourseData(data) {
+    const userElement = document.querySelector('.js-show-course-data');
+    let htmlContent = '';
+
+    htmlContent += `<h2>Information</h2>`;
+    htmlContent += `<table>`;
+
+    // Table header row
+    htmlContent += `<tr>`;
+    htmlContent += `<th>Field</th>`;
+    htmlContent += `<th>Value</th>`;
+    htmlContent += `</tr>`;
+
+    // Table body rows
+    for (const key in data) {
+        const value = data[key] || 'N/A'; // Handle missing data
+        htmlContent += `<tr>`;
+        htmlContent += `<td>${key}</td>`;
+        htmlContent += `<td class="js-course-info-${key}" data-${key}="${value}">${value}</td>`;
+        htmlContent += `</tr>`;
+    }
+
+    htmlContent += `</table>`;
+
+    userElement.innerHTML = htmlContent;
+}
+
+function renderProgramData(data) {
+    const userElement = document.querySelector('.js-show-program-data');
+    let htmlContent = '';
+
+    htmlContent += `<h2>Information</h2>`;
+    htmlContent += `<table>`;
+
+    // Table header row
+    htmlContent += `<tr>`;
+    htmlContent += `<th>Field</th>`;
+    htmlContent += `<th>Value</th>`;
+    htmlContent += `</tr>`;
+
+    // Table body rows
+    for (const key in data) {
+        const value = data[key] || 'N/A'; // Handle missing data
+        htmlContent += `<tr>`;
+        htmlContent += `<td>${key}</td>`;
+        htmlContent += `<td class="js-program-info-${key}" data-${key}="${value}">${value}</td>`;
+        htmlContent += `</tr>`;
+    }
+
+    htmlContent += `</table>`;
+
+    userElement.innerHTML = htmlContent;
+}
+
+function renderAssignedUserCourses(data) {
+    const userElement = document.querySelector('.js-show-user-courses');
+    let htmlContent = '';
+
+    htmlContent += `<h2>User Courses</h2>`;
+    htmlContent += `<table>`;
+
+    // Table header row
+    htmlContent += `<tr>`;
+    htmlContent += `<th>Field</th>`;
+    htmlContent += `<th>Value</th>`;
+    htmlContent += `</tr>`;
+
+    // Table body rows
+    for (const key in data) {
+        const value = data[key] || 'N/A'; // Handle missing data
+        htmlContent += `<tr>`;
+        htmlContent += `<td>${key}</td>`;
+        htmlContent += `<td data-${key}="${value}">${value}</td>`;
+        htmlContent += `</tr>`;
+    }
+
+    htmlContent += `</table>`;
+
+    userElement.innerHTML = htmlContent;
+}
+
 
 function initUsersTable(users) {
 
@@ -196,7 +303,6 @@ function initUsersTable(users) {
                     td.querySelector('.js-copy').addEventListener('click', function (e) {
                         e.stopPropagation();
                         const $button = $(this);
-                        let deleteBtn = $button[0];
 
                         const link = $button.data('link');
                         console.log(link);
@@ -324,13 +430,38 @@ function initCoursesTable(courses) {
             targets: 4,
             title: 'Course Description',
             name: 'description',
-            data: 'description'
+            data: 'description',
+            width: 250
         },
         {
             targets: 5,
             title: 'Image',
             name: 'imageUrl',
             data: 'imageUrl'
+        },
+        {
+            targets: 6,
+            title: 'Actions',
+            name: 'id',
+            data: 'id',
+            createdCell: function (td, cellData, rowData, row, col) {
+                if (td.querySelector('.js-table-edit-course')) {
+                    td.querySelector('.js-table-edit-course').addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const $button = $(this);
+
+                        const courseID = parseInt($button.data('courseid'));
+                        console.log('selected ID', courseID);
+                        showCourseManagementTools(courseID);
+
+                    }, true);
+                }
+            },
+            render: function (data, type, rowData, meta) {
+
+                return `<button class="btn btn-primary not-for-select js-table-edit-course" data-courseid="${data}"><i class="fa-regular fa-edit p-2 not-for-select"></i></button>`;
+
+            }
         }
     ];
     const options = {
@@ -342,7 +473,7 @@ function initCoursesTable(courses) {
             table.rows().every(row => $(row.node()).css('cursor', 'pointer'));
 
             $('#coursesTable tbody').on('click', 'tr', function (event) {
-                event.stopPropagation();
+                /*event.stopPropagation();
                 const that = this;
                 console.log($(that).hasClass('selected'));
                 if ($(that).hasClass('selected')) {
@@ -363,7 +494,36 @@ function initCoursesTable(courses) {
                         console.error('Error fetching user data:', error);
                     });
 
-                console.log('Selected Data', selectedData);
+                console.log('Selected Data', selectedData);*/
+
+                event.stopPropagation();
+                const that = this;
+                const clickedElement = $(event.target);
+                console.log(clickedElement);
+
+                if (!clickedElement.hasClass('not-for-select')) {
+                    if ($(that).hasClass('selected')) {
+                        $(that).removeClass('selected');
+                    } else {
+                        $(that).addClass('selected');
+                    }
+                    const selectedData = $('#coursesTable').DataTable().row(that).data();
+                    selectedCoursesIDs = $.map(table.rows('.selected').data(), function (item) {
+                        return item.id
+                    });
+                    //let requestedUser = await getUserByID();
+
+                    getCourseByID(selectedData.id)
+                        .then(courseData => {
+                            //
+                        })
+                        .catch(error => {
+                            console.error('Error fetching user data:', error);
+                        });
+
+
+                    console.log('Selected Data', selectedData);
+                }
             });
         }
     };
@@ -392,18 +552,42 @@ function initProgramsTable(programs) {
             name: 'semesterNr',
             data: 'semesterNr',
             width: 100
+        },
+        {
+            targets: 3,
+            title: 'Actions',
+            name: 'id',
+            data: 'id',
+            createdCell: function (td, cellData, rowData, row, col) {
+                if (td.querySelector('.js-table-edit-program')) {
+                    td.querySelector('.js-table-edit-program').addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const $button = $(this);
+
+                        const programID = parseInt($button.data('programid'));
+                        console.log('selected ID', programID);
+                        showProgramManagementTools(programID);
+
+                    }, true);
+                }
+            },
+            render: function (data, type, rowData, meta) {
+
+                return `<button class="btn btn-primary not-for-select js-table-edit-program" data-programid="${data}"><i class="fa-regular fa-edit p-2 not-for-select"></i></button>`;
+
+            }
         }
     ];
     const options = {
         ordering: true,
         order: [[0, 'asc']],
         select: true,
-        initComplete: function () {
+        initComplete: function (event) {
             let table = $('#programsTable').DataTable();
             table.rows().every(row => $(row.node()).css('cursor', 'pointer'));
             
             $('#programsTable tbody').on('click', 'tr', function (event) {
-                event.stopPropagation();
+             /*   event.stopPropagation();
                 const that = this;
                 console.log($(that).hasClass('selected'));
                 if ($(that).hasClass('selected')) {
@@ -419,7 +603,35 @@ function initProgramsTable(programs) {
                     console.log('item',item);
                     return item.id
                 });
-                console.log('programsIds',selectedProgramsIDs);
+                console.log('programsIds',selectedProgramsIDs);*/
+                event.stopPropagation();
+                const that = this;
+                const clickedElement = $(event.target);
+                console.log(clickedElement);
+
+                if (!clickedElement.hasClass('not-for-select')) {
+                    if ($(that).hasClass('selected')) {
+                        $(that).removeClass('selected');
+                    } else {
+                        $(that).addClass('selected');
+                    }
+                    const selectedData = $('#programsTable').DataTable().row(that).data();
+                    selectedProgramsIDs = $.map(table.rows('.selected').data(), function (item) {
+                        return item.id
+                    });
+                    //let requestedUser = await getUserByID();
+
+                    getProgramByID(selectedData.id)
+                        .then(programData => {
+                            //
+                        })
+                        .catch(error => {
+                            console.error('Error fetching user data:', error);
+                        });
+
+
+                    console.log('Selected Data', selectedData);
+                }
             });
         }
     };
@@ -463,10 +675,32 @@ async function triggerRefreshUsersTable() {
     console.log('test here',usersData);
     refreshUsersTable(usersData);
 }
+async function triggerRefreshCoursesTable() {
+    const coursesData = await getCoursesData();
+    console.log('test here', coursesData);
+    refreshCoursesTable(coursesData);
+}
+async function triggerRefreshProgramsTable() {
+    const programsData = await getProgramsData();
+    console.log('test here', programsData);
+    refreshProgramsTable(programsData);
+}
 
 async function triggerGetUserByID(id) {
     const userData = await getUserByID(id);
     return userData;
+}
+async function triggergetUserCourses(id) {
+    const userCoursesData = await getUserCourses(id);
+    return userCoursesData;
+}
+async function triggerGetCourseByID(id) {
+    const courseData = await getCourseByID(id);
+    return courseData;
+}
+async function triggerGetProgramByID(id) {
+    const courseData = await getProgramByID(id);
+    return courseData;
 }
 
 function refreshUsersInfoTable(id) {
@@ -474,6 +708,39 @@ function refreshUsersInfoTable(id) {
         .then(userData => { // Resolve function receives the user data
             renderUserData(userData);
             console.log(userData); // Optional: Log the user data
+        })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+            // Handle errors appropriately (e.g., display an error message to the user)
+        });
+}
+function refreshUsersCoursesInfoTable(id) {
+    triggergetUserCourses(id)
+        .then(userData => { // Resolve function receives the user data
+            renderAssignedUserCourses(userData);
+            console.log(userData); // Optional: Log the user data
+        })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+            // Handle errors appropriately (e.g., display an error message to the user)
+        });
+}
+function refreshCoursesInfoTable(id) {
+    triggerGetCourseByID(id)
+        .then(courseData => { // Resolve function receives the user data
+            renderCourseData(courseData);
+            console.log(courseData); // Optional: Log the user data
+        })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+            // Handle errors appropriately (e.g., display an error message to the user)
+        });
+}
+function refreshProgramsInfoTable(id) {
+    triggerGetProgramByID(id)
+        .then(programData => { // Resolve function receives the user data
+            renderProgramData(programData);
+            console.log(programData); // Optional: Log the user data
         })
         .catch(error => {
             console.error('Error fetching user data:', error);
@@ -524,6 +791,22 @@ $(document).ready(async function () {
         triggerRefreshUsersTable();
 
     });
+    $(".js-back-to-course-manager").on('click', function (data) {
+        const $manageCourse = $('.all-courses-tab');
+        const $editCourse = $('.course-manager');
+        toggleObjectVisibility($editCourse, false);
+        toggleObjectVisibility($manageCourse, true);
+        triggerRefreshCoursesTable();
+
+    });
+    $(".js-back-to-program-manager").on('click', function (data) {
+        const $manageProgram = $('.all-programs-tab');
+        const $editProgram = $('.program-manager');
+        toggleObjectVisibility($editProgram, false);
+        toggleObjectVisibility($manageProgram, true);
+        triggerRefreshProgramsTable();
+
+    });
 
    /* $(".js-course-dd-selection-menu").on('click', 'li a', function (data) {
         const selectedCourseID = $(data.currentTarget).attr('value');
@@ -559,14 +842,19 @@ $(document).ready(async function () {
         }
         
         assignUsersToCourse(parseInt(selectedCourseID), selectedUsersIDs, selectedRoleAsNum);
-        triggerRefreshUsersTable();
+        //triggerRefreshUsersTable();
+    });
+    $('.js-assign-programms-to-course').on('click', function (data) {
+        const selectedCourseID = $(".all-programs-tab").find(".js-course-dd-selected-value").find(":selected").val();
+        assignProgramsToCourse(parseInt(selectedCourseID), selectedProgramsIDs);
+        //triggerRefreshUsersTable();
     });
 
     $('.js-assign-users-to-program').on('click', function (data) {
         const selectedProgramID = $(".user-table").find(".js-program-dd-selected-value").find(":selected").val();
         console.log(selectedProgramID);
         assignProgramsToCourse(parseInt(selectedProgramID), selectedUsersIDs);
-        triggerRefreshUsersTable();
+        //triggerRefreshUsersTable();
     });
 
     $('.nav-item').on('click', async function () {
@@ -646,7 +934,6 @@ $(document).ready(async function () {
                     $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is added.</div>`);
                     console.log('User added successfully');
                     triggerRefreshUsersTable();
-                    
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
@@ -663,6 +950,7 @@ $(document).ready(async function () {
     $('.js-edit-user').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#editUserForm');
+        const userId = parseInt($('.js-user-info-id').data('id'));
         if (true) {  //TODO add form validation
             const formData = new FormData();
             console.log($form[0]);
@@ -680,9 +968,9 @@ $(document).ready(async function () {
                 data: formData,
                 success: function (response) {
                     $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">User is changed.</div>`);
-                    console.error('Error:', textStatus, errorThrown);
                     console.log('User edited successfully');
-                    refreshUsersInfoTable(userID);
+                    refreshUsersInfoTable(userId);
+                    refreshUsersCoursesInfoTable(userId);
 
                 },
                 error: function (xhr, response, status, error) {
@@ -781,6 +1069,7 @@ $(document).ready(async function () {
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function () {
+                    triggerRefreshCoursesTable();
                     $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is added.</div>`);
                 },
                 error: function (xhr, response, status, error) {
@@ -797,8 +1086,14 @@ $(document).ready(async function () {
     $('.js-edit-course').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#editCourse');
+        const courseID = parseInt($('.js-course-info-id').data('id'))
         if (true) {  //TODO add form validation
-            const formData = new FormData($form[0]);
+            const formData = new FormData();
+            formData.append('id', parseInt($('.js-course-info-id').data('id')));
+            const formElements = $form.serializeArray();
+            formElements.forEach(element => {
+                formData.append(element.name, element.value);
+            });
             $.ajax({
                 type: "POST",
                 url: '/api/Course/EditCourse',
@@ -807,6 +1102,8 @@ $(document).ready(async function () {
                 data: formData,
                 success: function (_) {
                     $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is edited.</div>`);
+                    refreshCoursesInfoTable(courseID);
+                    //TODO refresh info table
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
@@ -821,8 +1118,10 @@ $(document).ready(async function () {
     $('.js-delete-course').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#deleteCourse');
+        const courseID = parseInt($('.js-course-info-id').data('id'));
         if (true) {  //TODO add form validation
-            const formData = new FormData($form[0]);
+            const formData = new FormData();
+            formData.append('id', courseID);
             $.ajax({
                 type: 'Delete',
                 url: '/api/Course/DeleteCourse',
@@ -831,6 +1130,7 @@ $(document).ready(async function () {
                 data: formData,
                 success: function (_) {
                     $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Course is deleted.</div>`);
+                    document.querySelector('.js-back-to-course-manager').click();
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;
@@ -855,6 +1155,7 @@ $(document).ready(async function () {
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function () {
+                    triggerRefreshProgramsTable();
                     $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Program is added.</div>`);
                 },
                 error: function (xhr, response, status, error) {
@@ -871,8 +1172,14 @@ $(document).ready(async function () {
     $('.js-edit-program').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#editProgram');
+        const programID = parseInt($('.js-program-info-id').data('id'))
         if (true) {  //TODO add form validation
-            const formData = new FormData($form[0]);
+            const formData = new FormData();
+            formData.append('id', programID);
+            const formElements = $form.serializeArray();
+            formElements.forEach(element => {
+                formData.append(element.name, element.value);
+            });
             
             $.ajax({
                 type: "POST",
@@ -881,6 +1188,7 @@ $(document).ready(async function () {
                 contentType: false, // Don't set content type header (FormData sets it)
                 data: formData,
                 success: function (_) {
+                    refreshProgramsInfoTable(programID);
                     $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Program is edited.</div>`);
                 },
                 error: function (xhr, response, status, error) {
@@ -896,9 +1204,10 @@ $(document).ready(async function () {
     $('.js-delete-program').on('click', function (ev) {
         ev.preventDefault();
         const $form = $('#deleteProgram');
+        const programID = parseInt($('.js-program-info-id').data('id'));
         if (true) {  //TODO add form validation
-            const formData = new FormData($form[0]);
-
+            const formData = new FormData();
+            formData.append('id', programID);
             $.ajax({
                 type: 'Delete',
                 url: '/api/Program/DeleteProgram',
@@ -907,6 +1216,7 @@ $(document).ready(async function () {
                 data: formData,
                 success: function (_) {
                     $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Program is deleted.</div>`);
+                    document.querySelector('.js-back-to-program-manager').click();
                 },
                 error: function (xhr, response, status, error) {
                     const errorMessage = xhr.responseText;

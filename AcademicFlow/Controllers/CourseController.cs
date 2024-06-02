@@ -38,7 +38,7 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                var course = await _courseManager.GetCourseByIdAsync(id);
+                var course = _courseManager.GetCourseByIdAsync(id);
                 if (course == null)
                 {
                     var message = $"Course {id} do not exist";
@@ -62,11 +62,11 @@ namespace AcademicFlow.Controllers
 
         [AuthorizeUser(RolesEnum.Admin, RolesEnum.Professor, RolesEnum.Student)]
         [HttpGet("GetCourse")]
-        public async Task<IActionResult> GetCourse(int id, bool adminView = true)
+        public IActionResult GetCourse(int id, bool adminView = true)
         {
             try
             {
-                var course = await _courseManager.GetCourseByIdAsync(id);
+                var course = _courseManager.GetCourseByIdAsync(id);
 
                 return adminView ? Ok(course) : PartialView("Partials/_CourseListItem", course);
                 //return PartialView("Partials/_CourseItem", course);  /// return html content

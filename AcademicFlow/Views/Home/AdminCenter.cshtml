@@ -26,10 +26,10 @@
                 <li class="nav-item" data-nav-el="allCourses">
                     <a class="nav-link link-dark">
                         <i class="fa-solid fa-book-open"></i>
-                        All Courses
+                        Courses manager
                     </a>
                 </li>
-                <li class="nav-item" data-nav-el="addCourse">
+                <li class="nav-item d-none" data-nav-el="addCourse">
                     <a class="nav-link link-dark">
                         <i class="fa-solid fa-gear"></i>
                         Course manager
@@ -38,10 +38,10 @@
                 <li class="nav-item" data-nav-el="allPrograms">
                     <a class="nav-link link-dark">
                         <i class="fa-solid fa-layer-group"></i>
-                        All Programs
+                        Programs manager
                     </a>
                 </li>
-                <li class="nav-item" data-nav-el="addProgram">
+                <li class="nav-item d-none" data-nav-el="addProgram">
                     <a class="nav-link link-dark">
                         <i class="fa-solid fa-gear"></i>
                         Program manager
@@ -49,28 +49,19 @@
                 </li>
             </ul>
             <hr>
-            <div class="dropdown" role="button">
-                <a class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle cursor-pointer" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-circle-user me-2"></i>
-                    <div class="js-user-name"></div>
-                </a>
-                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><button class="dropdown-item js-logout-user"><i class="fa-solid fa-arrow-right-from-bracket"></i><span> Sign out</span></button></li>
-                </ul>
-            </div>
         </div>
 
         <div class="add-user-container d-none">
             <h1 class="authentication-page__heading"><button class="btn btn-primary js-back-to-user-manager"><i class="fa-regular fa-circle-left"></i></button> 
                 Edit User - <span class="js-user-fullname"></span>
-                </h1>
+            </h1>
             
             <h5 class="authentication-page__message"></h5>
 
             <div class="d-flex">
-                <div class="js-show-user-data col-sm-3">
+                <div class="js-show-user-data col-sm-4">
+                </div>
+                <div class="js-show-user-courses col-sm-4">
                 </div>
                 <div class="col-sm-9 d-flex">
 
@@ -206,45 +197,76 @@
         </div>
 
         <div class="col all-courses-tab d-none">
-            <h1>All Courses</h1>
-            <table class="table table-striped" id="coursesTable">
-            </table>
+            <h1 class="authentication-page__heading">Courses manager</h1>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                    <form id="createCourse" class="me-4">
+                        <h3>Add Course</h3>
+                        <partial name="Partials/_CourseForm" />
+                        <button type="button" class="btn btn-primary w-100 js-add-course">Add Course</button>
+                        <div class="error-message"></div>
+                    </form>
+                </div>
+                <div class="col-sm-9">
+                    <h3>All Courses</h3>
+                    <table class="table table-striped" id="coursesTable">
+                    </table>
+                </div>
+            </div>
         </div>
 
         <div class="col all-programs-tab programs-table d-none">
-            <h2>All Programs</h2>
-            <div class="d-flex justify-content-end mb-2">
-                <div class="d-flex flex-column me-2">
-                    <span class="mb-2">Select course: </span>
-                    <div class="js-dd-courses">
-                        <select class="form-select d-flex align-items-center cursor-pointer js-course-dd-selected-value me-2" aria-expanded="false">
-                            <option> </option>
-                        </select>
-                    </div>
+
+            <h2>Programs Manager</h2>
+            <hr>
+            <div class="row">
+                <div class="col-sm-4">
+                    <form id="createProgram" class="me-4">
+                        <h3>Add Program</h3>
+                        <partial name="Partials/_ProgramForm" />
+                        <button type="button" class="btn btn-primary w-100 js-add-program">Add Program</button>
+                        <div class="error-message"></div>
+                    </form>
                 </div>
-                <button class="btn btn-primary d-flex align-items-center js-assign-programms-to-course">
-                    <i class="fa-solid fa-file-pen me-2"></i><div>Assign to course</div>
-                </button>
+                <div class="col-sm-8">
+                    <h3>Assign Programs to Course</h3>
+                    <div class="d-flex justify-content-end mb-4">
+                        <div class="d-flex flex-column me-2">
+                            <span class="mb-2">Select course: </span>
+                            <div class="js-dd-courses">
+                                <select class="form-select d-flex align-items-center cursor-pointer js-course-dd-selected-value me-2" aria-expanded="false">
+                                    <option> </option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary d-flex align-items-center js-assign-programms-to-course">
+                            <i class="fa-solid fa-file-pen me-2"></i><div>Assign to course</div>
+                        </button>
+                    </div>
+                    <div>
+                        <h3>All Programs</h3>
+                        <table class="table table-striped" id="programsTable">
+                        </table>
+                    </div>
+                    
+                </div>
+               
             </div>
-            <table class="table table-striped" id="programsTable">
-            </table>
+            
         </div>
 
         <div class="course-manager col d-none">
-            <h1 class="authentication-page__heading">Course manager</h1>
-            <h5 class="authentication-page__message"></h5>
+            <h1 class="authentication-page__heading">
+                <button class="btn btn-primary js-back-to-course-manager"><i class="fa-regular fa-circle-left"></i></button>
+                Edit Course - <span class="js-course-title"></span>
+            </h1>
             <div class="d-flex">
-                
-                <form id="createCourse" class="me-4">
-                    <h3>Add Course</h3>
-                    <partial name="Partials/_CourseForm" />
-                    <button type="button" class="btn btn-primary w-100 js-add-course">Add Course</button>
-                    <div class="error-message"></div>
-                </form>
-                
+                <div class="js-show-course-data col-sm-4">
+                </div>
                 <form id="editCourse" class="me-4">
                     <h3>Edit Course</h3>
-                    <div class="form__input-container mb-2">
+                    <div class="form__input-container mb-2 d-none">
                         <label for="id">Course Id</label>
                         <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter course id">
                     </div>
@@ -254,8 +276,8 @@
                 </form>
 
                 <form id="deleteCourse" class="">
-                    <h3>Delete Course</h3>
-                    <div class="form__input-container mb-2">
+                    <h3 class="d-none">Delete Course</h3>
+                    <div class="form__input-container mb-2 d-none">
                         <label for="id">Course Id</label>
                         <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter course id">
                     </div>
@@ -267,18 +289,18 @@
         </div>
 
         <div class="program-manager col d-none">
-            <h1 class="authentication-page__heading">Program manager</h1>
+            <h1 class="authentication-page__heading">
+                <button class="btn btn-primary js-back-to-program-manager"><i class="fa-regular fa-circle-left"></i></button>
+                Edit Program - <span class="js-program-title"></span>
+            </h1>
+            
             <h5 class="authentication-page__message"></h5>
             <div class="d-flex">
-                <form id="createProgram" class="me-4">
-                    <h3>Add Program</h3>
-                    <partial name="Partials/_ProgramForm" />
-                    <button type="button" class="btn btn-primary w-100 js-add-program">Add Program</button>
-                    <div class="error-message"></div>
-                </form>
+                <div class="js-show-program-data col-sm-4">
+                </div>
                 <form id="editProgram" class="me-4">
                     <h3>Edit Program</h3>
-                    <div class="form__input-container mb-2">
+                    <div class="form__input-container mb-2 d-none">
                         <label for="id">Program Id</label>
                         <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter program id">
                     </div>
@@ -288,7 +310,7 @@
                 </form>
                 <form id="deleteProgram" class="">
                     <h3>Delete Program</h3>
-                    <div class="form__input-container mb-2">
+                    <div class="form__input-container mb-2 d-none">
                         <label for="id">Program Id</label>
                         <input type="number" id="id" name="id" class="form__input form-control" placeholder="Enter program id">
                     </div>
