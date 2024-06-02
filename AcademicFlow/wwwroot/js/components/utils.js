@@ -1,4 +1,4 @@
-﻿//This file is used to store commonly used functions to stay on DRY method
+//This file is used to store commonly used functions to stay on DRY method
 
 export function toggleObjectVisibility($object, state) {//State is false -> hide container, State is true -> show container
     if (state) {
@@ -27,14 +27,16 @@ async function logoutUser() {
 };
 
 export function proceedLogout() {
-    logoutUser()
-        .then(() => { // After successful logout
-            window.location.href = "/Home/Login";
-        })
-            .catch(error => {
-                console.error("Error logging out:", error);
-                // Handle logout errors (optional)
-            });
+    if (confirm("Are you sure you want to proceed?") == true) {
+        logoutUser()
+            .then(() => { // After successful logout
+                window.location.href = "/Home/Login";
+            })
+                .catch(error => {
+                    console.error("Error logging out:", error);
+                    // Handle logout errors (optional)
+                });
+    }
 };
 
 export async function renderAssignmentEntryTable(parent, assignmentEntries) {
