@@ -216,6 +216,25 @@ export async function getCourseByID(id) {
             }
         });
     });
+
+} export async function getProgramByID(id) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: `/api/Program/GetProgram?id=${parseInt(id)}`,
+            type: 'GET',
+            dataType: 'json',
+            processData: false,
+            contentType: "application/json",
+            success: function (data) {
+                resolve(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error:", textStatus, errorThrown);
+                reject(new Error("Failed to get user data"));
+
+            }
+        });
+    });
 }
 
 export function redirectUserWithoutAccess(userRole,page) {
@@ -245,6 +264,7 @@ export function checkUserPermissionsLevel(roles) {
 }
 
 export function renderHeaderLinks(userRole) {
+    //TODO if admin and regular user - show all tabs
     if (userRole) {
         switch (userRole) {
             case 1:
