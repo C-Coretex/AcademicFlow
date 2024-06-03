@@ -173,11 +173,24 @@ function renderCourseData(data) {
 
     // Table body rows
     for (const key in data) {
-        const value = data[key] || 'N/A'; // Handle missing data
-        htmlContent += `<tr>`;
-        htmlContent += `<td>${key}</td>`;
-        htmlContent += `<td class="js-course-info-${key}" data-${key}="${value}">${value}</td>`;
-        htmlContent += `</tr>`;
+        if (key !== 'assigmentUsers') {
+            const value = data[key] || 'N/A'; // Handle missing data
+            htmlContent += `<tr>`;
+            htmlContent += `<td>${key}</td>`;
+            htmlContent += `<td class="js-course-info-${key}" data-${key}="${value}">${value}</td>`;
+            htmlContent += `</tr>`;
+        } else {
+            const value = data[key] || 'N/A'; // Handle missing data;
+            htmlContent += `<tr>`;
+            htmlContent += `<td>Assigned Users</td><td>`;
+            for (let i = 0; i < value.length; i++) {
+                htmlContent += `${value[i].name} ${value[i].surname}`;
+                if (!(i == (value.length-1))) {
+                    htmlContent += ", ";
+                }
+            }            
+            htmlContent += `</td></tr>`;
+        }
     }
 
     htmlContent += `</table>`;
@@ -200,11 +213,30 @@ function renderProgramData(data) {
 
     // Table body rows
     for (const key in data) {
-        const value = data[key] || 'N/A'; // Handle missing data
+        /*const value = data[key] || 'N/A'; // Handle missing data
         htmlContent += `<tr>`;
         htmlContent += `<td>${key}</td>`;
         htmlContent += `<td class="js-program-info-${key}" data-${key}="${value}">${value}</td>`;
-        htmlContent += `</tr>`;
+        htmlContent += `</tr>`;*/
+
+        if (key !== 'users') {
+            const value = data[key] || 'N/A'; // Handle missing data
+            htmlContent += `<tr>`;
+            htmlContent += `<td>${key}</td>`;
+            htmlContent += `<td class="js-program-info-${key}" data-${key}="${value}">${value}</td>`;
+            htmlContent += `</tr>`;
+        } else {
+            const value = data[key] || 'N/A'; // Handle missing data;
+            htmlContent += `<tr>`;
+            htmlContent += `<td>Assigned Users</td><td>`;
+            for (let i = 0; i < value.length; i++) {
+                htmlContent += `${value[i].name} ${value[i].surname}`;
+                if (!(i == (value.length - 1))) {
+                    htmlContent += ", ";
+                }
+            }
+            htmlContent += `</td></tr>`;
+        }
     }
 
     htmlContent += `</table>`;
