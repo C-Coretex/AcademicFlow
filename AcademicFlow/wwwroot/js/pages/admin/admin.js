@@ -91,7 +91,6 @@ async function showUserManagementTools(userId) {
     $('.js-user-fullname').text(userData.name + ' ' + userData.surname);
     renderUserData(userData);
     renderAssignedUserCourses(userCourses);
-    console.log(userData);
 
 }
 async function showCourseManagementTools(courseId) {
@@ -103,7 +102,6 @@ async function showCourseManagementTools(courseId) {
     const courseData = await getCourseByID(courseId);
     $('.js-course-title').text(courseData.publicId + ": " + courseData.name);
     renderCourseData(courseData);
-    console.log(courseData);
 
 }
 async function showProgramManagementTools(programId) {
@@ -115,7 +113,6 @@ async function showProgramManagementTools(programId) {
     const programData = await getProgramByID(programId);
     $('.js-course-title').text("Semester: " + programData.semesterNr + ", Program: " + programData.name);
     renderProgramData(programData);
-    console.log(programData);
 
 }
 function renderUserData(data) {
@@ -176,11 +173,24 @@ function renderCourseData(data) {
 
     // Table body rows
     for (const key in data) {
-        const value = data[key] || 'N/A'; // Handle missing data
-        htmlContent += `<tr>`;
-        htmlContent += `<td>${key}</td>`;
-        htmlContent += `<td class="js-course-info-${key}" data-${key}="${value}">${value}</td>`;
-        htmlContent += `</tr>`;
+        if (key !== 'assigmentUsers') {
+            const value = data[key] || 'N/A'; // Handle missing data
+            htmlContent += `<tr>`;
+            htmlContent += `<td>${key}</td>`;
+            htmlContent += `<td class="js-course-info-${key}" data-${key}="${value}">${value}</td>`;
+            htmlContent += `</tr>`;
+        } else {
+            const value = data[key] || 'N/A'; // Handle missing data;
+            htmlContent += `<tr>`;
+            htmlContent += `<td>Assigned Users</td><td>`;
+            for (let i = 0; i < value.length; i++) {
+                htmlContent += `${value[i].name} ${value[i].surname}`;
+                if (!(i == (value.length-1))) {
+                    htmlContent += ", ";
+                }
+            }            
+            htmlContent += `</td></tr>`;
+        }
     }
 
     htmlContent += `</table>`;
@@ -203,11 +213,30 @@ function renderProgramData(data) {
 
     // Table body rows
     for (const key in data) {
-        const value = data[key] || 'N/A'; // Handle missing data
+        /*const value = data[key] || 'N/A'; // Handle missing data
         htmlContent += `<tr>`;
         htmlContent += `<td>${key}</td>`;
         htmlContent += `<td class="js-program-info-${key}" data-${key}="${value}">${value}</td>`;
-        htmlContent += `</tr>`;
+        htmlContent += `</tr>`;*/
+
+        if (key !== 'users') {
+            const value = data[key] || 'N/A'; // Handle missing data
+            htmlContent += `<tr>`;
+            htmlContent += `<td>${key}</td>`;
+            htmlContent += `<td class="js-program-info-${key}" data-${key}="${value}">${value}</td>`;
+            htmlContent += `</tr>`;
+        } else {
+            const value = data[key] || 'N/A'; // Handle missing data;
+            htmlContent += `<tr>`;
+            htmlContent += `<td>Assigned Users</td><td>`;
+            for (let i = 0; i < value.length; i++) {
+                htmlContent += `${value[i].name} ${value[i].surname}`;
+                if (!(i == (value.length - 1))) {
+                    htmlContent += ", ";
+                }
+            }
+            htmlContent += `</td></tr>`;
+        }
     }
 
     htmlContent += `</table>`;
@@ -305,7 +334,6 @@ function initUsersTable(users) {
                         const $button = $(this);
 
                         const link = $button.data('link');
-                        console.log(link);
                         navigator.clipboard.writeText(link);
 
                     }, true);
@@ -337,7 +365,6 @@ function initUsersTable(users) {
                         let deleteBtn = $button[0];
 
                         const userID = parseInt($button.data('userid'));
-                        console.log('selected ID', userID);
                         showUserManagementTools(userID);
 
                     }, true);
@@ -367,7 +394,6 @@ function initUsersTable(users) {
                 event.stopPropagation();
                 const that = this;
                 const clickedElement = $(event.target);
-                console.log(clickedElement);
 
                 if (!clickedElement.hasClass('not-for-select')) {
                     if ($(that).hasClass('selected')) {
@@ -391,7 +417,6 @@ function initUsersTable(users) {
                         });
 
 
-                    console.log('Selected Data', selectedData);
                 }
             });
         }
@@ -451,7 +476,6 @@ function initCoursesTable(courses) {
                         const $button = $(this);
 
                         const courseID = parseInt($button.data('courseid'));
-                        console.log('selected ID', courseID);
                         showCourseManagementTools(courseID);
 
                     }, true);
@@ -473,33 +497,11 @@ function initCoursesTable(courses) {
             table.rows().every(row => $(row.node()).css('cursor', 'pointer'));
 
             $('#coursesTable tbody').on('click', 'tr', function (event) {
-                /*event.stopPropagation();
-                const that = this;
-                console.log($(that).hasClass('selected'));
-                if ($(that).hasClass('selected')) {
-                    $(that).removeClass('selected');
-                } else {
-                    $(that).addClass('selected');
-                }
-
-                const selectedData = $('#coursesTable').DataTable().row(that).data();
-                selectedCoursesIDs = $.map(table.rows('.selected').data(), function (item) {
-                    return item.id
-                });
-                getCourseByID(selectedData.id)
-                    .then(courseData => {
-                        //showUserManagementTools(userData);
-                    })
-                    .catch(error => {
-                        console.error('Error fetching user data:', error);
-                    });
-
-                console.log('Selected Data', selectedData);*/
+                
 
                 event.stopPropagation();
                 const that = this;
                 const clickedElement = $(event.target);
-                console.log(clickedElement);
 
                 if (!clickedElement.hasClass('not-for-select')) {
                     if ($(that).hasClass('selected')) {
@@ -522,7 +524,6 @@ function initCoursesTable(courses) {
                         });
 
 
-                    console.log('Selected Data', selectedData);
                 }
             });
         }
@@ -565,7 +566,6 @@ function initProgramsTable(programs) {
                         const $button = $(this);
 
                         const programID = parseInt($button.data('programid'));
-                        console.log('selected ID', programID);
                         showProgramManagementTools(programID);
 
                     }, true);
@@ -587,27 +587,10 @@ function initProgramsTable(programs) {
             table.rows().every(row => $(row.node()).css('cursor', 'pointer'));
             
             $('#programsTable tbody').on('click', 'tr', function (event) {
-             /*   event.stopPropagation();
-                const that = this;
-                console.log($(that).hasClass('selected'));
-                if ($(that).hasClass('selected')) {
-                    $(that).removeClass('selected');
-                } else {
-                    $(that).addClass('selected');
-                }
-                const selectedData = $('#programsTable').DataTable().row(that).data();
-
-                console.log('Selected Data', selectedData);
-
-                selectedProgramsIDs = $.map(table.rows('.selected').data(), function (item) {
-                    console.log('item',item);
-                    return item.id
-                });
-                console.log('programsIds',selectedProgramsIDs);*/
+             
                 event.stopPropagation();
                 const that = this;
                 const clickedElement = $(event.target);
-                console.log(clickedElement);
 
                 if (!clickedElement.hasClass('not-for-select')) {
                     if ($(that).hasClass('selected')) {
@@ -630,7 +613,6 @@ function initProgramsTable(programs) {
                         });
 
 
-                    console.log('Selected Data', selectedData);
                 }
             });
         }
@@ -672,17 +654,14 @@ async function assignProgramsToCourse(selectedProgramID, selectedUsersIDs) {
 
 async function triggerRefreshUsersTable() {
     const usersData = await getUsersData();
-    console.log('test here',usersData);
     refreshUsersTable(usersData);
 }
 async function triggerRefreshCoursesTable() {
     const coursesData = await getCoursesData();
-    console.log('test here', coursesData);
     refreshCoursesTable(coursesData);
 }
 async function triggerRefreshProgramsTable() {
     const programsData = await getProgramsData();
-    console.log('test here', programsData);
     refreshProgramsTable(programsData);
 }
 
@@ -705,46 +684,40 @@ async function triggerGetProgramByID(id) {
 
 function refreshUsersInfoTable(id) {
     triggerGetUserByID(id)
-        .then(userData => { // Resolve function receives the user data
+        .then(userData => { 
             renderUserData(userData);
-            console.log(userData); // Optional: Log the user data
         })
         .catch(error => {
             console.error('Error fetching user data:', error);
-            // Handle errors appropriately (e.g., display an error message to the user)
         });
 }
 function refreshUsersCoursesInfoTable(id) {
     triggergetUserCourses(id)
-        .then(userData => { // Resolve function receives the user data
+        .then(userData => { 
             renderAssignedUserCourses(userData);
-            console.log(userData); // Optional: Log the user data
         })
         .catch(error => {
             console.error('Error fetching user data:', error);
-            // Handle errors appropriately (e.g., display an error message to the user)
         });
 }
 function refreshCoursesInfoTable(id) {
     triggerGetCourseByID(id)
-        .then(courseData => { // Resolve function receives the user data
+        .then(courseData => { 
             renderCourseData(courseData);
-            console.log(courseData); // Optional: Log the user data
         })
         .catch(error => {
             console.error('Error fetching user data:', error);
-            // Handle errors appropriately (e.g., display an error message to the user)
+            
         });
 }
 function refreshProgramsInfoTable(id) {
     triggerGetProgramByID(id)
-        .then(programData => { // Resolve function receives the user data
+        .then(programData => { 
             renderProgramData(programData);
-            console.log(programData); // Optional: Log the user data
         })
         .catch(error => {
             console.error('Error fetching user data:', error);
-            // Handle errors appropriately (e.g., display an error message to the user)
+            
         });
 }
 
@@ -758,11 +731,10 @@ $(document).ready(async function () {
 
     try {
         const usersData = await getUsersData();
-        console.log(usersData);
         refreshUsersTable(usersData);
     } catch (error) {
         console.error("Error fetching user data:", error);
-        // Handle errors here (e.g., display error message)
+        
     }
 
     try {
@@ -770,7 +742,7 @@ $(document).ready(async function () {
         refreshCoursesTable(coursesData);
     } catch (error) {
         console.error("Error fetching user data:", error);
-        // Handle errors here (e.g., display error message)
+        
     }
 
     try {
@@ -808,19 +780,6 @@ $(document).ready(async function () {
 
     });
 
-   /* $(".js-course-dd-selection-menu").on('click', 'li a', function (data) {
-        const selectedCourseID = $(data.currentTarget).attr('value');
-        console.log($(this).text());
-        $(".js-course-dd-selected-value").text(`${$(this).text()}`);
-        console.log(selectedCourseID);
-    });
-    $(".js-program-dd-selection-menu").on('click', 'li a', function (data) {
-        const selectedProgramID = $(data.currentTarget).attr('value');
-        console.log($(this).text());
-        $(".js-program-dd-selected-value").text(`${$(this).text()}`);
-        console.log(selectedProgramID);
-    });*/
-
     $('.js-assign-users-to-course').on('click', function (data) {
         const selectedCourseID = $(".user-table").find(".js-course-dd-selected-value").find(":selected").val();
         const selectedRole = $('.js-select-role-to-course').find(":selected").val();
@@ -835,26 +794,21 @@ $(document).ready(async function () {
                     break;
                 default: selectedRoleAsNum = null;
             }
-                // Get the value of the checked checkbox
-            console.log('Selected role:', selectedRole);
+                
         } else {
             console.log('No role selected.');
         }
         
         assignUsersToCourse(parseInt(selectedCourseID), selectedUsersIDs, selectedRoleAsNum);
-        //triggerRefreshUsersTable();
     });
     $('.js-assign-programms-to-course').on('click', function (data) {
         const selectedCourseID = $(".all-programs-tab").find(".js-course-dd-selected-value").find(":selected").val();
         assignProgramsToCourse(parseInt(selectedCourseID), selectedProgramsIDs);
-        //triggerRefreshUsersTable();
     });
 
     $('.js-assign-users-to-program').on('click', function (data) {
         const selectedProgramID = $(".user-table").find(".js-program-dd-selected-value").find(":selected").val();
-        console.log(selectedProgramID);
         assignProgramsToCourse(parseInt(selectedProgramID), selectedUsersIDs);
-        //triggerRefreshUsersTable();
     });
 
     $('.nav-item').on('click', async function () {
@@ -873,11 +827,9 @@ $(document).ready(async function () {
                 toggleObjectVisibility($(containers.$allUsers), true);
                 try {
                     const usersData = await getUsersData();
-                    console.log(usersData);
                     refreshUsersTable(usersData);
                 } catch (error) {
                     console.error("Error fetching user data:", error);
-                    // Handle errors here (e.g., display error message)
                 }
                 
                 break;
@@ -901,11 +853,9 @@ $(document).ready(async function () {
                 toggleObjectVisibility($(containers.$allPrograms), true);
                 try {
                     const programsData = await getProgramsData();
-                    console.log(programsData);
                     refreshProgramsTable(programsData);
                 } catch (error) {
                     console.error("Error fetching user data:", error);
-                    // Handle errors here (e.g., display error message)
                 }
                 break;
             case 'addProgram':
@@ -953,7 +903,6 @@ $(document).ready(async function () {
         const userId = parseInt($('.js-user-info-id').data('id'));
         if (true) {  //TODO add form validation
             const formData = new FormData();
-            console.log($form[0]);
             formData.append('id',parseInt($('.js-user-info-id').data('id')));
             const formElements = $form.serializeArray();
             formElements.forEach(element => {
@@ -1036,7 +985,6 @@ $(document).ready(async function () {
             }
         });
 
-        console.log(formData);
         $.ajax({
             type: "POST",
             url: "/api/User/ChangeRoles",
@@ -1241,7 +1189,6 @@ $(document).ready(async function () {
             url: "/api/User/ResetPassword",
             data: { userId: userID },  
             success: function (response) {
-                console.log("Got it:", response);
                 $form.find('.error-message').html(`<div class="alert alert-success mt-2" role="alert">Password is reset.</div><div>Copy and send the link to the user:</div><span>${response}</span>`);
             },
             error: function (xhr, status, error) {

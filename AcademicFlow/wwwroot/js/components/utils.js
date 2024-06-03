@@ -169,32 +169,31 @@ export async function editCourseUserRoles(courseId, userIds, role) {
     const requestData = {
         id: courseId,
         userIds: userIds,
-        role: role, // Assuming role is an enum value that matches the server-side definition
+        role: role, 
     };
-    console.log(requestData);
     try {
         const response = await $.ajax({
-            url: "/api/Course/EditCourseUserRoles", // Replace with your actual URL
+            url: "/api/Course/EditCourseUserRoles", 
             method: "POST",
-            dataType: "json", // Expected response data type
+            dataType: "json",
             data: requestData
         });
         
-        if (response.status === "success") {
+        if (response.status === 200) {
             $('.js-assign-users-course-wrapper').find('.js-response-message').html(`<div class="alert alert-success mt-2" role="alert">User is assigned.</div>`);
             console.log("Course user roles edited successfully!");
-            // Handle successful update (e.g., display success message)
+
             return (true);
         } else {
             $('.js-assign-users-course-wrapper').find('.js-response-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not assigned: ${response.message}</div>`);
 
             console.error("Error editing course user roles:", response.message);
-            // Handle error (e.g., display error message)
+
             return (false);
         }
     } catch (error) {
-        console.error("Error sending AJAX request:", errorюыефегыЕуче);
-        // Handle any errors during the AJAX request
+        $('.js-assign-users-course-wrapper').find('.js-response-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not assigned: ${response.message}</div>`);
+        console.error("Error sending AJAX request:", error.message);
         return (false);
     }
 }
@@ -204,10 +203,9 @@ export async function editProgramUserRoles(programId, usersIds) {
         id: programId,
         userIds: usersIds
     };
-    console.log('send data', requestData);
     try {
         const response = await $.ajax({
-            url: "/api/Program/EditProgramUserRoles", // Replace with your actual URL
+            url: "/api/Course/EditCoursePrograms", // Replace with your actual URL
             method: "POST",
             dataType: "json", // Expected response data type
             data: requestData
@@ -224,6 +222,8 @@ export async function editProgramUserRoles(programId, usersIds) {
             // Handle error (e.g., display error message)
         }
     } catch (error) {
+        $('.js-assign-users-program-wrapper').find('.js-response-message').html(`<div class="alert alert-danger mt-2" role="alert">User is not assigned: ${response.message}</div>`);
+
         console.error("Error sending AJAX request:", error);
         // Handle any errors during the AJAX request
     }
@@ -236,7 +236,6 @@ export async function editCoursePrograms(courseId, programsIds) {
         id: courseId,
         progamIds: programsIds
     };
-    console.log('send data',requestData);
     try {
         const response = await $.ajax({
             url: "/api/Course/EditCoursePrograms", // Replace with your actual URL
@@ -251,12 +250,14 @@ export async function editCoursePrograms(courseId, programsIds) {
             console.log("Course user roles edited successfully!");
             // Handle successful update (e.g., display success message)
         } else {
-            $('.js-assign-program-course-wrapper').find('.js-response-message').html(`<div class="alert alert-danger mt-2" role="alert">Program is not assigned: ${response.message}</div>`);
+            $('.js-assign-program-course-wrapper').find('.js-response-message').html(`<div class="alert alert-danger mt-2" role="alert">Program is not assigned: ${error.message}</div>`);
 
             console.error("Error editing course user roles:", response.message);
             // Handle error (e.g., display error message)
         }
     } catch (error) {
+        $('.js-assign-program-course-wrapper').find('.js-response-message').html(`<div class="alert alert-danger mt-2" role="alert">Program is not assigned: ${error.message}</div>`);
+
         console.error("Error sending AJAX request:", error);
         // Handle any errors during the AJAX request
     }
@@ -410,7 +411,6 @@ export function renderHeaderLinks(userRole) {
 }
 
 export function getURLbyUserRole(roleValue) {
-    console.log(roleValue);
     switch (roleValue) {
         case 1:
             return "/Home/AdminCenter"
