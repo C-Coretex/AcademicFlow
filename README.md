@@ -12,7 +12,7 @@ Features:
 ----
 
 ### How to run the application:
-- Install the latest version of Visual Studio
+- Install the latest version of Visual Studio (including ASP.NET and web development, Node.js development, Data storage and processing)
 - Install node.js (https://nodejs.org/en/download/package-manager)
 - Install ef core tools (https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
 - Install SSMS (optionally https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
@@ -32,7 +32,7 @@ On login enter:
 - Username: admin
 - For Password enter: BadPassword01
 
-### Sistēmas dokumentācija un citi prezentēšanas faili ir pieejama šeit: https://universityoflatvia387-my.sharepoint.com/:f:/g/personal/af21043_edu_lu_lv/EkkDZQu9jglFtMWV4tmkKaEBtHEU5GqXnyw5VzPdyoB0RA?e=8DGxcS
+### Sistēmas dokumentācija un citi prezentēšanas faili ir pieejami šeit: https://universityoflatvia387-my.sharepoint.com/:f:/g/personal/af21043_edu_lu_lv/EkkDZQu9jglFtMWV4tmkKaEBtHEU5GqXnyw5VzPdyoB0RA?e=8DGxcS
 
 ### Ja jums rodas jautājumi vai neskaidrības, lūdzu rakstiet uz af21043@edu.lu.lv.
 
