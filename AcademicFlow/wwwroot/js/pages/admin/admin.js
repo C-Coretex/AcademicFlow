@@ -651,6 +651,12 @@ async function assignProgramsToCourse(selectedCourseID, selectedProgramsIDs) {
         triggerRefreshUsersTable();
     }
 }
+async function assignUsersToProgram(selectedProgramID, selectedUsersIDs) {
+    const result = await editProgramUserRoles(selectedProgramID, selectedUsersIDs);
+    if (result) {
+        triggerRefreshUsersTable();
+    }
+}
 
 async function triggerRefreshUsersTable() {
     const usersData = await getUsersData();
@@ -808,7 +814,7 @@ $(document).ready(async function () {
 
     $('.js-assign-users-to-program').on('click', function (data) {
         const selectedProgramID = $(".user-table").find(".js-program-dd-selected-value").find(":selected").val();
-        assignProgramsToCourse(parseInt(selectedProgramID), selectedUsersIDs);
+        assignUsersToProgram(parseInt(selectedProgramID), selectedUsersIDs);
     });
 
     $('.nav-item').on('click', async function () {

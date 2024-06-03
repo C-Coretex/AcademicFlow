@@ -198,14 +198,14 @@ export async function editCourseUserRoles(courseId, userIds, role) {
     }
 }
 //EditProgramUserRoles
-export async function editProgramUserRoles(courseId, progamsIds) {
+export async function editProgramUserRoles(programId, usersIds) {
     const requestData = {
-        id: courseId,
-        progamIds: progamsIds
+        id: programId,
+        userIds: usersIds
     };
     try {
         const response = await $.ajax({
-            url: "/api/Course/EditCoursePrograms", // Replace with your actual URL
+            url: "/api/Program/EditProgramUserRoles", // Replace with your actual URL
             method: "POST",
             dataType: "json", // Expected response data type
             data: requestData
