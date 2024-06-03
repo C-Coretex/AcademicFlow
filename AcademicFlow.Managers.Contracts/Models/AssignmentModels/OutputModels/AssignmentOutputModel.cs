@@ -81,10 +81,13 @@ namespace AcademicFlow.Managers.Contracts.Models.AssignmentModels.OutputModels
             AssignmentsOutputModels = course.AssignmentTasks.Select(x => new AssignmentsOutputModel(x, mapper)).ToList();
 
             var totalWeight = AssignmentsOutputModels.Sum(x => x.AssignmentTaskOutputModel?.AssignmentWeight ?? 0);
+
+            AverageCourseGrade = 0;
+
             foreach (var assignmentOutputModel in AssignmentsOutputModels)
             {
                 var assignmentEntity = assignmentOutputModel.AssignmentEntityOutputModels.Where(x => x != null && x.GradeWithWeight != null).ToList();
-                AverageCourseGrade = assignmentEntity.Sum(x => x.GradeWithWeight) / totalWeight;
+                AverageCourseGrade += assignmentEntity.Sum(x => x.GradeWithWeight) / totalWeight;
             }
         }
     }
