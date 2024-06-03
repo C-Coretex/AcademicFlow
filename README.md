@@ -50,3 +50,6 @@ On login enter:
 ----
 
 ![image](https://github.com/C-Coretex/AcademicFlow/assets/44605873/5a918857-c054-4487-9ba6-2d3b86b2bc37)
+
+![image](https://github.com/C-Coretex/AcademicFlow/assets/44605873/4424458f-c753-47b5-b6e1-602cc532bbc3)
+
