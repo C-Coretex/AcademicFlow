@@ -645,8 +645,8 @@ async function assignUsersToCourse(selectedCourseID, selectedUsersIDs, selectedR
     }
 }
 
-async function assignProgramsToCourse(selectedProgramID, selectedUsersIDs) {
-    const result = await editProgramUserRoles(selectedProgramID, selectedUsersIDs);
+async function assignProgramsToCourse(selectedCourseID, selectedProgramsIDs) {
+    const result = await editCoursePrograms(selectedCourseID, selectedProgramsIDs);
     if (result) {
         triggerRefreshUsersTable();
     }
