@@ -48,6 +48,8 @@ namespace AcademicFlow.Domain.Services
         public async Task<User?> GetUserByIdWithAssignments(int userId)
         {
             var user = await _userRepository.GetAll().Include(x => x.AssignmentTasks)
+                                                     .ThenInclude(x => x.Course)
+                                                     .Include(x => x.AssignmentTasks)
                                                      .ThenInclude(x => x.AssignmentEntries)
                                                      .ThenInclude(x => x.AssignmentGrade)
                                                      .FirstOrDefaultAsync(u => u.Id == userId);
