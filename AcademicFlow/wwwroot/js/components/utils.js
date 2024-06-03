@@ -198,10 +198,10 @@ export async function editCourseUserRoles(courseId, userIds, role) {
     }
 }
 //EditProgramUserRoles
-export async function editProgramUserRoles(programId, usersIds) {
+export async function editProgramUserRoles(courseId, progamsIds) {
     const requestData = {
-        id: programId,
-        userIds: usersIds
+        id: courseId,
+        progamIds: progamsIds
     };
     try {
         const response = await $.ajax({
