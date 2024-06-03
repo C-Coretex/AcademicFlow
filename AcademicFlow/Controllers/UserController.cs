@@ -123,7 +123,6 @@ namespace AcademicFlow.Controllers
         {
             try
             {
-                var user = _userManager.GetUserById(userId);
                 await _userManager.DeleteUser(userId);
                 return Ok();
             }
