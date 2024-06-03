@@ -143,6 +143,26 @@ namespace AcademicFlow.Tests
             await _userManager.UpdateUser(updatedUser);
 
         }
+
+        [Fact]
+        public async Task UpdateUser_ShouldReturnOk_IfNullValues()
+        {
+            var updatedUser = new User()
+            {
+                Id = 1,
+                Name = "Name 1",
+                Surname = "Surname 1",
+                PersonalCode = "12345-67890",
+                Email = null,
+                PhoneNumber = null,
+                Age = null
+            };
+
+            // Act
+            await _userManager.UpdateUser(updatedUser);
+
+        }
+        
         private void BuildDefaultMocks()
         {
             _users = new List<User>
