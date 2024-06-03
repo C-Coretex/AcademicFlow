@@ -53,8 +53,8 @@ namespace AcademicFlow.Domain.Services
 
         public IQueryable<Course> GetCoursesWithAssignmentsByUserId(int userId)
         {
-            return _courseRepository.GetAll().Include(x => x.Users.Where(x => x.Id == userId)).Include(x => x.AssignmentTasks).ThenInclude(x => x.User).ThenInclude(x => x.AssignmentEntries)
-                                                                                                .ThenInclude(x => x.User).ThenInclude(x => x.AssignmentGrades);
+            return _courseRepository.GetAll(false).Include(x => x.Users.Where(x => x.Id == userId)).Include(x => x.AssignmentTasks).ThenInclude(x => x.User).ThenInclude(x => x.AssignmentEntries)
+                                                                                                .ThenInclude(x => x.User).ThenInclude(x => x.AssignmentGrades).ThenInclude(x => x.User);
         }
     }
 }
