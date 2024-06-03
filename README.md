@@ -12,7 +12,7 @@ Features:
 ----
 
 ### How to run the application:
-- Install the latest version of Visual Studio
+- Install the latest version of Visual Studio (including ASP.NET and web development, Node.js development, Data storage and processing)
 - Install node.js (https://nodejs.org/en/download/package-manager)
 - Install ef core tools (https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
 - Install SSMS (optionally https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
