@@ -1,3 +1,5 @@
+using AcademicFlow.Domain.Contracts.Enums;
+using AcademicFlow.Filters;
 using AcademicFlow.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -23,11 +25,13 @@ namespace AcademicFlow.Controllers
             return View();
         }
 
+        [AuthorizeUser(RolesEnum.Admin)]
         public IActionResult AdminCenter()
         {
             return View();
         }
 
+        [AuthorizeUser(RolesEnum.Professor, RolesEnum.Student)]
         public IActionResult MainPage()
         {
             return View();
@@ -47,13 +51,15 @@ namespace AcademicFlow.Controllers
         {
             return View();
         }
-        
+
+        [AuthorizeUser]
         [HttpGet("Home/Courses")]
         public IActionResult Courses()
         {
             return View();
         }
 
+        [AuthorizeUser]
         [HttpGet("Home/Course/{id}")]
         public IActionResult Course(int id)
         {
@@ -62,18 +68,21 @@ namespace AcademicFlow.Controllers
             return View();
         }
 
+        [AuthorizeUser]
         [HttpGet("Home/Assignment/New")]
         public IActionResult NewAssignment()
         {
             return View();
         }
 
+        [AuthorizeUser]
         [HttpGet("Home/Assignments")]
         public IActionResult Assignments()
         {
             return View();
         }
 
+        [AuthorizeUser]
         [HttpGet("Home/Assignment/{id}")]
         public IActionResult Assignment(int id)
         {
@@ -82,12 +91,14 @@ namespace AcademicFlow.Controllers
             return View();
         }
 
+        [AuthorizeUser]
         [HttpGet("Home/AssignmentEntry/New")]
         public IActionResult NewAssignmentEntry()
         {
             return View();
         }
 
+        [AuthorizeUser]
         [HttpGet("Home/Assignment/{assignmentId}/AssignmentEntry/{id}")]
         public IActionResult AssignmentEntry(int assignmentId, int id)
         {
