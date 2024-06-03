@@ -56,7 +56,7 @@ namespace AcademicFlow.Domain.Services
             return _courseRepository.GetAll(false)
         .Include(course => course.Users.Where(user => user.Id == userId))
         .Include(course => course.AssignmentTasks)
-            .ThenInclude(task => task.AssignmentEntries)
+            .ThenInclude(task => task.AssignmentEntries.Where(y => y.CreatedById == userId))
                 .ThenInclude(entry => entry.User)
         .Include(course => course.AssignmentTasks)
             .ThenInclude(task => task.AssignmentEntries)
