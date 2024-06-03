@@ -32,7 +32,7 @@ On login enter:
 - Username: admin
 - For Password enter: BadPassword01
 
-### Sistēmas dokumentācija ir pieejama šeit: 
+### Sistēmas dokumentācija un citi prezentēšanas faili ir pieejama šeit: https://universityoflatvia387-my.sharepoint.com/:f:/g/personal/af21043_edu_lu_lv/EkkDZQu9jglFtMWV4tmkKaEBhNsFLQk2WgqLD1R6SmkV9Q?e=v0KnFt
 
 ### Ja jums rodas jautājumi vai neskaidrības, lūdzu rakstiet uz af21043@edu.lu.lv.
 
