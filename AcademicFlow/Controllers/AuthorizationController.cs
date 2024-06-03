@@ -79,7 +79,7 @@ namespace AcademicFlow.Controllers
             }
         }
 
-        [HttpGet("PasswordReset")]
+        [HttpPost("PasswordReset")]
         public async Task<IActionResult> PasswordReset([FromBody] UserModel userModel)
         {
             try

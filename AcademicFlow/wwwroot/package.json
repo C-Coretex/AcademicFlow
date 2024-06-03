@@ -53,6 +53,14 @@
     "assignmentEntry": {
       "source": "js/pages/assignmentEntry/assignmentEntry.js",
       "distDir": "js/dist"
+    },
+    "mainPage": {
+      "source": "js/pages/mainPage/mainPage.js",
+      "distDir": "js/dist"
+    },
+    "passwordReset": {
+      "source": "js/pages/passwordReset/passwordReset.js",
+      "distDir": "js/dist"
     }
   },
   "scripts": {
@@ -60,6 +68,7 @@
     "build": "parcel build"
   },
   "dependencies": {
+    "bootstrap-select": "^1.13.18",
     "fullcalendar": "^6.1.11",
     "sass": "^1.75.0"
   }
