@@ -59,7 +59,7 @@ namespace AcademicFlow.Domain.Services
             .ThenInclude(task => task.AssignmentEntries.Where(y => y.CreatedById == userId))
                 .ThenInclude(entry => entry.User)
         .Include(course => course.AssignmentTasks)
-            .ThenInclude(task => task.AssignmentEntries.Where(y => y.CreatedById == userId))
+            .ThenInclude(task => task.AssignmentEntries)
                 .ThenInclude(entry => entry.AssignmentGrade)
                     .ThenInclude(grade => grade.User);
         }
