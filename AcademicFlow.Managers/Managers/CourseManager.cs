@@ -85,7 +85,6 @@ namespace AcademicFlow.Managers.Managers
         public async Task EditCourseProgramsAsync(int courseId, int[] programIds)
         {
             var oldPrograms = _courseProgramService.GetAll().Where(x => x.CourseId == courseId).ToList();
-
             var toDeletePrograms = oldPrograms.Where(x => !programIds.Contains(x.ProgramId));
             await _courseProgramService.DeleteRangeAsync(toDeletePrograms);
 
