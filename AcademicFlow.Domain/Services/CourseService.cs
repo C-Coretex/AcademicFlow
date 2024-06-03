@@ -50,6 +50,12 @@ namespace AcademicFlow.Domain.Services
         {
             return _courseUserRoleRepository.GetAll().Include(x => x.UserRole).ThenInclude(x => x.User).Include(x => x.Course);
         }
+
+        public IQueryable<Course> GetCoursesWithAssignmentsByUserId(int userId)
+        {
+            return _courseRepository.GetAll().Include(x => x.Users.Where(x => x.Id == userId)).Include(x => x.AssignmentTasks).ThenInclude(x => x.User).ThenInclude(x => x.AssignmentEntries)
+                                                                                                .ThenInclude(x => x.User).ThenInclude(x => x.AssignmentGrades);
+        }
     }
 }
 

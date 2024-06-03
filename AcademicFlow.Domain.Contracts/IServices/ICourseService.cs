@@ -19,5 +19,7 @@ namespace AcademicFlow.Domain.Contracts.IServices
         Task AddCourseUserRolesRange(IEnumerable<CourseUserRole> userRoles);
 
         IEnumerable<CourseUserRole> GetUserRoles();
+
+        IQueryable<Course> GetCoursesWithAssignmentsByUserId(int userId);
     }
 }
