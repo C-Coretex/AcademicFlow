@@ -52,7 +52,7 @@ On login enter:
 Sistēmā ir pievienota drošības pārbaude - nereģistrēti lietotāji nevar piekļūt sistēmai. 
 Lai lietotājs būtu reģistrēts, tam arī jābūt kāda lome : administrators, students vai profesors. Vai arī visi kopā, bet jābūt vismaz viena.
 Tad secība lietotāja izveidošanai ir sekojoša:
-1. Administrators pievieno jaunu lietotāju un rediģē tā lomu.
+1. Administrators pievieno jaunu lietotāju un rediģē tam lomu.
 2. Pēc speciālas saites (var nokopēt, nospiežot kopēšanas pogu "Register Link" tabulā) lietotājs ievada jaunu lietotāja vārdu un paroli.
 3. Ja viss bija izdarīts pareizi - lietotājs tiek pāradresēts lietotāja profilā
 ----
