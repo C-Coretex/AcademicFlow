@@ -9,6 +9,12 @@ Features:
 - Assignment submitting and grading
 - Management of all the data and relations
 
+---
+
+### Sistēmas dokumentācija un citi prezentēšanas faili ir pieejami šeit: https://universityoflatvia387-my.sharepoint.com/:f:/g/personal/af21043_edu_lu_lv/EkkDZQu9jglFtMWV4tmkKaEBtHEU5GqXnyw5VzPdyoB0RA?e=8DGxcS
+
+### Ja jums rodas jautājumi vai neskaidrības, lūdzu rakstiet uz af21043@edu.lu.lv.
+
 ----
 
 #### How to run the application:
@@ -29,12 +35,12 @@ Check the same string in ...\AcademicFlow\AcademicFlow.Migrations\appsettings.js
 - If everything is fine - press green arrow button on the top of the screen (in the middle of the toolbar) ![image](https://github.com/C-Coretex/AcademicFlow/assets/145047860/d7009ef3-d010-4a82-9923-8c9c5db5e479)
 
 #### For database restore:
---Open SQL Server Management Studio and connect to the target SQL Server instance.
---Right-click on the Databases node, and select Restore Database.
---Select Device and click the ellipses (...)
---In the dialog Select backup devices, click Add, navigate to the database backup in the filesystem of the server, and select the backup. Click OK.
---If needed, change the target location for the data and log files, in the Files pane. Note that it is best practice to place data and log files on different drives.
---Click OK. This will initiate the database restore. After it completes, you will have the AdventureWorks database installed on your SQL Server instance.
+- Open SQL Server Management Studio and connect to the target SQL Server instance.
+- Right-click on the Databases node, and select Restore Database.
+- Select Device and click the ellipses (...)
+- In the dialog Select backup devices, click Add, navigate to the database backup in the filesystem of the server, and select the backup. Click OK.
+- If needed, change the target location for the data and log files, in the Files pane. Note that it is best practice to place data and log files on different drives.
+- Click OK. This will initiate the database restore. After it completes, you will have the AcademicFlow database installed on your SQL Server instance.
 
 The application shoud run successfully.
 
@@ -42,11 +48,10 @@ On login enter:
 - Username: admin
 - For Password enter: BadPassword01
 
-### Sistēmas dokumentācija un citi prezentēšanas faili ir pieejami šeit: https://universityoflatvia387-my.sharepoint.com/:f:/g/personal/af21043_edu_lu_lv/EkkDZQu9jglFtMWV4tmkKaEBtHEU5GqXnyw5VzPdyoB0RA?e=8DGxcS
-
-### Ja jums rodas jautājumi vai neskaidrības, lūdzu rakstiet uz af21043@edu.lu.lv.
-
 
 ----
 
 ![image](https://github.com/C-Coretex/AcademicFlow/assets/44605873/5a918857-c054-4487-9ba6-2d3b86b2bc37)
+
+![image](https://github.com/C-Coretex/AcademicFlow/assets/44605873/4424458f-c753-47b5-b6e1-602cc532bbc3)
+
