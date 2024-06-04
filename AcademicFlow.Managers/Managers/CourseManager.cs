@@ -107,7 +107,6 @@ namespace AcademicFlow.Managers.Managers
 
             var courseUsers = _courseService.GetUserRoles().Where(x => x.CourseId == courseId && x.UserRole.Role == role);
             var toDelete = courseUsers.Where(x => !users.Contains(x.UserRole.UserId)).ToList();
-            await _courseService.DeleteCourseUserRolesRange(toDelete!);
 
             var oldUsersIds = courseUsers
                 .Select(x => x.UserRole.UserId)
@@ -122,6 +121,8 @@ namespace AcademicFlow.Managers.Managers
                     CourseId = courseId,
                     UserRoleId = x!.Id
                 });
+
+            await _courseService.DeleteCourseUserRolesRange(toDelete!);
             await _courseService.AddCourseUserRolesRange(toInsert);
 
             response.IsSuccesful = true;
