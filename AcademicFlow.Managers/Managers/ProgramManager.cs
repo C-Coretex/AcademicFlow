@@ -4,7 +4,6 @@ using AcademicFlow.Domain.Contracts.IServices;
 using AcademicFlow.Domain.Entities;
 using AcademicFlow.Managers.Contracts.IManagers;
 using AcademicFlow.Managers.Contracts.Models;
-using AcademicFlow.Managers.Contracts.Models.CourseModels;
 using AcademicFlow.Managers.Contracts.Models.ProgramModels;
 using AcademicFlow.Managers.Contracts.Models.UserModels;
 using AutoMapper;
@@ -74,11 +73,10 @@ namespace AcademicFlow.Managers.Managers
                 return response;
             }
 
-            var courseUsers = _programService.GetAllUserRoles().Where(x => x.ProgramId == programId && x.UserRole.Role == RolesEnum.Student);
-            var toDelete = courseUsers.Where(x => !users.Contains(x.UserRole.UserId)).ToList();
-            await _programService.DeleteProgramUserRolesRangeAsync(toDelete!);
+            var programUsers = _programService.GetAllUserRoles().Where(x => x.ProgramId == programId && x.UserRole.Role == RolesEnum.Student);
+            var toDelete = programUsers.Where(x => !users.Contains(x.UserRole.UserId)).ToList();
 
-            var oldUsersIds = courseUsers
+            var oldUsersIds = programUsers
                 .Select(x => x.UserRole.UserId)
                 .ToHashSet();
             var toInsertUserIds = users.Where(x => !oldUsersIds.Contains(x)).ToHashSet();
@@ -91,7 +89,10 @@ namespace AcademicFlow.Managers.Managers
                     ProgramId = programId,
                     UserRoleId = x!.Id
                 });
+
+            await _programService.DeleteProgramUserRolesRangeAsync(toDelete!);
             await _programService.AddProgramUserRolesRangeAsync(toInsert);
+
             response.IsSuccesful = true;
             return response;
         }

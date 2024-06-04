@@ -27,7 +27,7 @@ namespace AcademicFlow.Domain.Services
 
         public IQueryable<Course> GetAll()
         {
-            return _courseRepository.GetAll().Include(x => x.Programs).ThenInclude(x => x.Program).ThenInclude(x => x.UserRoles)
+            return _courseRepository.GetAll().Include(x => x.Programs).ThenInclude(x => x.Program).ThenInclude(x => x.UserRoles).ThenInclude(x => x.UserRole)
                 .Include(x => x.Users).ThenInclude(x => x.UserRole).AsNoTracking();
         }
 
