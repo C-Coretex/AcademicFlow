@@ -24,10 +24,11 @@ namespace AcademicFlow.Managers.Managers
         private readonly IUserRoleService _userRoleService;
         private readonly IUserService _userService;
         private readonly IOptions<AppConfigs> _appConfigs;
+        private readonly ICourseService _courseService;
 
         public AssignmentManager(IAssignmentTaskService assignmentTaskService, IAssignmentEntryService assignmentEntryService, 
                                  IAssignmentGradeService assignmentGradeService, IUserRoleService userRoleService, IUserService userService, IMapper mapper,
-                                 IOptions<AppConfigs> appConfigs) : base(mapper)
+                                 IOptions<AppConfigs> appConfigs, ICourseService courseService) : base(mapper)
         {
             _assignmentTaskService = assignmentTaskService;
             _assignmentEntryService = assignmentEntryService;
@@ -35,6 +36,7 @@ namespace AcademicFlow.Managers.Managers
             _userRoleService = userRoleService;
             _userService = userService;
             _appConfigs = appConfigs;
+            _courseService = courseService;
         }
 
         public async Task AddAssignmentTask(AssignmentTaskInputModel assignmentTask)
@@ -229,10 +231,9 @@ namespace AcademicFlow.Managers.Managers
 
         public async Task<IEnumerable<AssignmentsOutputModelByCourse>> GetAllAssignmentsForAllCourses()
         {
-            var user = await _userService.GetUserByIdWithAssignments(UserId) ?? throw new Exception("User by this id is not found"); ;                
+            var courses = _courseService.GetCoursesWithAssignmentsByUserId(UserId).ToList();// ?? throw new Exception("User by this id is not found"); ;                
 
-            var courseIdAssignmentTaskGroup = user.AssignmentTasks.GroupBy(x => x.CourseId);
-            var returnData = courseIdAssignmentTaskGroup.Select(x => new AssignmentsOutputModelByCourse(x.First().Course, Mapper)).ToList();
+            var returnData = courses.Select(x => new AssignmentsOutputModelByCourse(x, Mapper)).ToList();
 
             return returnData;
         }

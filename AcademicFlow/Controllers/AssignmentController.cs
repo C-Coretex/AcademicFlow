@@ -280,7 +280,7 @@ namespace AcademicFlow.Controllers
         }
 
         // Get all assignment grades for all courses
-        [AuthorizeUser(RolesEnum.Student)]
+        [AuthorizeUser(RolesEnum.Professor, RolesEnum.Student)]
         [HttpGet("GetAllAssignmentGradesForAllCourses")]
         public async Task<IActionResult> GetAllAssignmentGradesForAllCourses()
         {
